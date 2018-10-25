@@ -3,15 +3,20 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
-var ejsMate = require('ejs-mate');
+const ejsMate = require('ejs-mate');
+const session = require('express-session');
+const flash = require('express-flash');
+const cookieParser = require('cookie-parser');
+const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
+
+const secret = require('./config/secret');
+ 
 
 const app = express();
 
-//Imports
-var User = require('./models/user');
-
 //MongoDB Connection
-mongoose.connect('mongodb://jihad:jihad1234@ds115353.mlab.com:15353/e-commerce_db', function(err){
+mongoose.connect(secret.database, function(err){
     if(err){
         console.log(err);
     }else{
@@ -26,34 +31,28 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
+app.use(cookieParser());
+app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: secret.secretKey,
+    store: new MongoStore({ url: secret.database, autoReconnect: true })
+}));
+app.use(flash());
+app.use(passport.initialize());
 
 
-//Home Route
-app.get('/', function(req, res, next){
-    res.render('main/home');
-});
+//Controllers Import
+var mainCon = require('./routes/mainController');
+var userCon = require('./routes/userController');
 
-//About Route
-app.get('/about', function(req, res, next){
-    res.render('main/about');
-});
 
-//User Creation
-app.post('/create-user', function(req, res, next){
-    var newUser = new User();
+//Routes
+app.use('/', mainCon);
+app.use('/user',userCon);
 
-    newUser.profile.name = req.body.name;
-    newUser.password = req.body.password;
-    newUser.email = req.body.email;
 
-    newUser.save(function(err){
-        if(err) return next(err);
-        res.json('Successfully created a new User');
-    });
-
-});
-
-app.listen(3000, function(err){
+app.listen(secret.port, function(err){
     if(err) throw err;
     console.log('Server is Running on http://127.0.0.1:3000/');
 })
