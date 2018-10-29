@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 
+
 const secret = require('./config/secret');
  
 
@@ -29,8 +30,6 @@ app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.engine('ejs', ejsMate);
-app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use(session({
     resave: true,
@@ -40,6 +39,15 @@ app.use(session({
 }));
 app.use(flash());
 app.use(passport.initialize());
+app.use(passport.session());
+app.use(function(req, res, next){
+    res.locals.user = req.user;
+    next();
+});
+
+//View engine
+app.engine('ejs', ejsMate);
+app.set('view engine', 'ejs');
 
 
 //Controllers Import
@@ -49,7 +57,7 @@ var userCon = require('./routes/userController');
 
 //Routes
 app.use('/', mainCon);
-app.use('/user',userCon);
+app.use('/user', userCon);
 
 
 app.listen(secret.port, function(err){
