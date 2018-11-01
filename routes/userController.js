@@ -20,23 +20,24 @@ router.get('/signup', function(req, res, next){
 
 //User signup
 router.post('/signup', function(req, res, next){
-    var newUser = new User();
+    var user = new User();
 
-    newUser.profile.name = req.body.name;
-    newUser.email = req.body.email;
-    newUser.password = req.body.password;
+    user.profile.name = req.body.name;
+    user.email = req.body.email;
+    user.password = req.body.password;
+    user.profile.picture = user.gravatar();
 
     User.findOne({ email: req.body.email }, function(err, existingUser){
         if(existingUser){
             req.flash('errors', 'Account with that eamil address already exists');
-            return res.redirect('/user/signup');
+            return res.redirect('/signup');
         }else{
-            newUser.save(function(err, newUser){
+            user.save(function(err, user){
                 if(err) return next(err);
 
-                req.logIn(newUser, function(err){
+                req.logIn(user, function(err){
                     if(err) return next(err);
-                    res.redirect('/user/profile');
+                    res.redirect('/profile');
                 });
             });
         }
@@ -52,15 +53,37 @@ router.get('/login', function(req, res, next){
 
 //User login
 router.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/user/profile',
-    failureRedirect: '/user/login',
+    successRedirect: '/profile',
+    failureRedirect: '/login',
     failureFlash: true
 }));
 
-
+//User logout
 router.get('/logout', function(req, res, next) {
     req.logout();
     res.redirect('/');
+});
+
+//Profile update form
+router.get('/edit-profile', function(req, res, next){
+    res.render('accounts/editProfile', { message: req.flash('success') });
+});
+
+//Profile update
+router.post('/edit-profile', function(req, res, next){
+    User.findOne({ _id: req.user._id }, function(err, user){
+        if(err) return next(err);
+
+        if(req.body.name) user.profile.name = req.body.name;
+        if(req.body.contact) user.contact = req.body.contact;
+        if(req.body.address) user.address = req.body.address;
+
+        user.save(function(err){
+            if(err) return next(err);
+            req.flash('success', 'Successfully edited profile');
+            return res.redirect('/edit-profile');
+        });
+    })
 });
 
 module.exports = router;

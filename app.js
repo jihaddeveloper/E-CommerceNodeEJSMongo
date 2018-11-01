@@ -12,7 +12,7 @@ const passport = require('passport');
 
 
 const secret = require('./config/secret');
- 
+var Category = require('./models/category');
 
 const app = express();
 
@@ -40,9 +40,18 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(function(req, res, next){
     res.locals.user = req.user;
     next();
+});
+
+app.use(function(req, res, next){
+    Category.find({}, function(err, categories){
+        if(err) return next(err);
+        res.locals.categories = categories;
+        next();
+    });
 });
 
 //View engine
@@ -53,11 +62,15 @@ app.set('view engine', 'ejs');
 //Controllers Import
 var mainCon = require('./routes/mainController');
 var userCon = require('./routes/userController');
+var adminCon = require('./routes/adminController');
+var apiCon = require('./api/api');
 
 
 //Routes
-app.use('/', mainCon);
-app.use('/user', userCon);
+app.use(mainCon);
+app.use(userCon);
+app.use(adminCon);
+app.use('/api', apiCon);
 
 
 app.listen(secret.port, function(err){
