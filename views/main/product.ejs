@@ -1,19 +1,39 @@
 <% layout('layoutPage') -%>
 
-<div class="container" style="width:70%; min-height: 700px">
+<div class="container" style="width:80%; min-height: 600px">
     <div class="row">
         <div class="col-md-4">
             <img src="<%= product.image %>">
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <h3>
-                <%= product.name %>
-            </h3>
-            <h1>$
-                <%= product.price %>.00
-            </h1>
-        </div>
+            <div class="col-md-4">
+                    <h2><%= product.name %></h2>
+                    <h3>$<%= product.price %>.00</h3>
+        
+
+                    <form method="POST">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <input type="hidden" name="quantity" id="quantity" value="1">
+                            <button type="button" class="btn btn-default" id="minus" name="">-</button>
+                            <button type="button" class="btn btn-default" id="total" name="">1</button>
+                            <button type="button" class="btn btn-default" id="plus" name="">+</button>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
+                            <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.price %>">
+
+                            <input type="text" class="form-control" name="item" id="item" value="<%= product.name %>">
+                            <input type="text" class="form-control" name="priceValue" id="priceValue" value="<%= product.price %>">
+                        </div>
+
+                        <% if (user) { %>
+                            <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
+                        <% } else { %>
+                            <a href="/signup" class="btn btn-warning btn-lg">First Signup to buy</a>
+                        <% } %>
+                    </form>
+            </div>
     </div>
 </div>

@@ -13,6 +13,7 @@ const passport = require('passport');
 
 const secret = require('./config/secret');
 var Category = require('./models/category');
+var cartLength = require('./middlewares/cartLengthMiddleware');
 
 const app = express();
 
@@ -41,11 +42,17 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+//User session
 app.use(function(req, res, next){
     res.locals.user = req.user;
     next();
 });
 
+//Cart length
+app.use(cartLength);
+
+//Category load
 app.use(function(req, res, next){
     Category.find({}, function(err, categories){
         if(err) return next(err);

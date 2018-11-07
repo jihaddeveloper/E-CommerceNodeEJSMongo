@@ -1,11 +1,13 @@
 const router = require('express').Router();
 const User = require('../models/user');
+const Cart = require('../models/cart');
+const async = require('async');
 const passport = require('passport');
 const passportConfig = require('../config/passport');
 
 
 //Profile page
-router.get('/profile', function(req, res, next){
+router.get('/profile', passportConfig.isAuthenticated, function(req, res, next){
     User.findOne({ _id: req.user._id }, function(err, user) {
         if(err) return next(err);
         res.render('accounts/profile', { user: user });
@@ -20,28 +22,44 @@ router.get('/signup', function(req, res, next){
 
 //User signup
 router.post('/signup', function(req, res, next){
-    var user = new User();
 
-    user.profile.name = req.body.name;
-    user.email = req.body.email;
-    user.password = req.body.password;
-    user.profile.picture = user.gravatar();
+    async.waterfall([
 
-    User.findOne({ email: req.body.email }, function(err, existingUser){
-        if(existingUser){
-            req.flash('errors', 'Account with that eamil address already exists');
-            return res.redirect('/signup');
-        }else{
-            user.save(function(err, user){
+        function(callback){
+            var user = new User();
+
+            user.profile.name = req.body.name;
+            user.email = req.body.email;
+            user.password = req.body.password;
+            user.profile.picture = user.gravatar();
+        
+            User.findOne({ email: req.body.email }, function(err, existingUser){
+                if(existingUser){
+                    req.flash('errors', 'Account with that eamil address already exists');
+                    return res.redirect('/signup');
+                }else{
+                    user.save(function(err, user){
+                        if(err) return next(err);
+                        callback(null, user);
+                    });
+                }
+            });
+        },
+
+        function(user){
+            var cart = new Cart();
+
+            cart.owner = user._id;
+            cart.save(function(err){
                 if(err) return next(err);
-
                 req.logIn(user, function(err){
                     if(err) return next(err);
                     res.redirect('/profile');
                 });
             });
         }
-    });
+
+    ]);   
     
 });
 

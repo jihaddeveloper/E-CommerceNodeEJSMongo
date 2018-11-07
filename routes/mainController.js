@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 var Product = require('../models/product');
-
+var Cart = require('../models/cart');
 //Pagination function
 function paginate(req, res, next){
     //Paginate product page
@@ -20,6 +20,32 @@ function paginate(req, res, next){
         });
     });
 }
+
+//Product mapping
+Product.createMapping(function(err, mapping){
+    if(err) {
+        console.log('Error in creating mapping');
+        console.log(err);
+    }else {
+        console.log('Mapping created');
+        console.log(mapping);
+    }
+});
+
+var stream = Product.synchronize();
+var count = 0;
+
+stream.on('data',function() {
+    count++;
+})
+
+stream.on('close',function() {
+    console.log('Indexed ' + count + ' documents');
+})
+
+stream.on('err',function() {
+    console.log(err);
+})
 
 //Home Route
 router.get('/', function(req, res, next){
@@ -59,37 +85,11 @@ router.get('/product/:id', function(req, res, next){
     });
 });
 
-//Search product mapping
-Product.createMapping(function(err, mapping){
-    if(err) {
-        console.log('Error in creating mapping');
-        console.log(err);
-    }else {
-        console.log('Mapping created');
-        console.log(mapping);
-    }
-});
-
-var stream = Product.synchronize();
-var count = 0;
-
-stream.on('data',function() {
-    count++;
-})
-
-stream.on('close',function() {
-    console.log('Indexed ' + count + ' documents');
-})
-
-stream.on('err',function() {
-    console.log(err);
-})
-
 //Search route
 router.post('/search', function(req, res, next){
     res.redirect('/search?q=' + req.body.q);
 });
-
+//Search
 router.get('/search', function(req, res, next){
     if(req.query.q){
         Product.search({ query_string: { query: req.query.q } },
@@ -104,6 +104,48 @@ router.get('/search', function(req, res, next){
                  });
              });
     }
+});
+
+//Cart view
+router.get('/cart', function(req, res, next){
+    Cart.findOne({ owner: req.user._id })
+    .populate('items.item')
+    .exec(function(err, foundCart){
+        if(err) return next(err);
+        res.render('main/cart', { foundCart: foundCart, message: req.flash('remove') } );
+    });
+});
+
+//Product added to cart
+router.post('/product/:product_id', function(req, res, next){
+    Cart.findOne({ owner: req.user._id }, function(err, cart){
+        cart.items.push({ 
+            item: req.body.product_id,
+            price: parseFloat(req.body.priceValue),
+            quantity: parseInt(req.body.quantity)
+         });
+
+         cart.total = (cart.total + parseFloat(req.body.priceValue)).toFixed(2);
+
+         cart.save(function(err){
+             if(err) return next(err);
+             return res.redirect('/cart');
+         });
+    });
+});
+
+//Product remove from cart
+router.post('/remove', function(req, res, next){
+    Cart.findOne({ owner: req.user._id }, function(err, foundCart){
+        foundCart.items.pull(String(req.body.item));
+        foundCart.total = (foundCart.total - parseFloat(req.body.price)).toFixed(2);
+
+        foundCart.save(function(err, found){
+            if(err) return next(err);
+            req.flash('remove', 'Successfully removed');
+            res.redirect('/cart');
+        });
+    });
 });
 
 module.exports = router;
