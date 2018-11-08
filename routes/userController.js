@@ -104,4 +104,12 @@ router.post('/edit-profile', function(req, res, next){
     })
 });
 
+//facebook login route
+router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
+//facebook login
+router.get('/auth/facebook/callback', passport.authenticate('facebook',{
+    successRedirect: '/profile',
+    failureRedirect: '/login'
+}));
+
 module.exports = router;

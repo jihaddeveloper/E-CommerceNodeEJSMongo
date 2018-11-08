@@ -7,6 +7,10 @@ const crypto = require('crypto');
 var UserSchema = new Schema({
     email: { type: String, unique: true, loadClass: true },
     password: String,
+
+    facebook: String,
+    tokens: Array,
+
     profile: {
         name: { type: String, default: '' },
         picture: { type: String, default: ''}
