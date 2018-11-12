@@ -14,7 +14,7 @@
             <% } else { %>
                 <p> Contact: <%= user.contact %></p>
             <% } %>
-            <% if(user.address === '' || typeof user.address === 'undefined') { %> 
+            <% if(user.address.city === '' || typeof user.address.city === 'undefined') { %> 
                 <p>Address: <span style="color: brown; font-weight: bold">You have no address</span></p>
             <% } else { %>
                 <p> Address: <%= user.address %></p>

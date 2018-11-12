@@ -4,6 +4,9 @@ const Cart = require('../models/cart');
 const async = require('async');
 const passport = require('passport');
 const passportConfig = require('../config/passport');
+const secretConfig = require('../config/secret');
+
+const jwt = require('jsonwebtoken');
 
 
 //Profile page
@@ -42,6 +45,14 @@ router.post('/signup', function(req, res, next){
                         if(err) return next(err);
                         callback(null, user);
                     });
+
+                    var token = jwt.sign({ user: user },
+                         secretConfig.secretKey, {
+                             expiresIn: '1d'
+                    });
+
+                    //res.json({ token: token });
+
                 }
             });
         },

@@ -16,12 +16,21 @@ var UserSchema = new Schema({
         picture: { type: String, default: ''}
     },
     contact: String,
-    address: String,
+    address: {
+        address1: String,
+        address2: String,
+        city: String,
+        district: String,
+        country: String,
+        postalCode: String,
+    },
     history: [{
         date: Date,
         paid: { type:Number, default:0 }
         //item: { type: Schema.Types.ObjectId, ref: '' }
-    }]
+    }],
+    isSeller: { type: Boolean, default: false},
+    created: { type: Date, default: Date.now }
 });
 
 //Password Hashing
