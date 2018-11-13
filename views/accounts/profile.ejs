@@ -17,10 +17,32 @@
             <% if(user.address.city === '' || typeof user.address.city === 'undefined') { %> 
                 <p>Address: <span style="color: brown; font-weight: bold">You have no address</span></p>
             <% } else { %>
-                <p> Address: <%= user.address %></p>
+                <p> Address: <%= user.address.city %></p>
             <% } %>
 
-            <a href="/edit-profile" class="btn btn-primary btn-lg">Edit Profile</a>
+            <div class="row">
+                <div class="col-md-8 mb-3">
+                    <a href="/" class="btn btn-primary btn-lg">My Orders</a>
+                    <br>
+                    <br>
+                    <a href="/edit-profile" class="btn btn-primary btn-lg">Edit Profile</a>
+                    <br>
+                    <br>    
+                    <a href="/edit-address" class="btn btn-primary btn-lg">Edit Address</a>
+                </div>
+            </div>
+            <br>
+            <% if(user.isSeller === true) { %>
+                <p class="lead">Seller Actions</p>
+                <div class="row">
+                        <div class="col-md-8 mb-3">
+                                <a href="/add-product" class="btn btn-primary btn-lg">Post Products For Sell</a>
+                                <br>
+                                <br>
+                                <a href="/edit-profile" class="btn btn-primary btn-lg">My Products</a>
+                        </div>
+                </div>
+            <% } %>
 
         </div>
 

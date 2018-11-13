@@ -5,8 +5,7 @@ const async = require('async');
 const passport = require('passport');
 const passportConfig = require('../config/passport');
 const secretConfig = require('../config/secret');
-
-const jwt = require('jsonwebtoken');
+const Product = require('../models/product');
 
 
 //Profile page
@@ -29,10 +28,26 @@ router.post('/signup', function(req, res, next){
     async.waterfall([
 
         function(callback){
-            var user = new User();
 
+            // if (req.body.password2 != req.body.password) {
+            //     req.flash( 'errors', 'Passwords do not match' );
+            //   }
+            
+            // if (req.body.password.length < 6) {
+            //     req.flash( 'errors', 'Password must be at least 6 characters' );
+            //     }
+
+            var user = new User();
+            var bool;
+            if(req.body.isSeller === "on"){
+                bool = true;
+            }
+            else{
+                bool = false;
+            }
             user.profile.name = req.body.name;
             user.email = req.body.email;
+            user.isSeller = bool;
             user.password = req.body.password;
             user.profile.picture = user.gravatar();
         
@@ -45,14 +60,6 @@ router.post('/signup', function(req, res, next){
                         if(err) return next(err);
                         callback(null, user);
                     });
-
-                    var token = jwt.sign({ user: user },
-                         secretConfig.secretKey, {
-                             expiresIn: '1d'
-                    });
-
-                    //res.json({ token: token });
-
                 }
             });
         },
@@ -94,33 +101,97 @@ router.get('/logout', function(req, res, next) {
 });
 
 //Profile update form
-router.get('/edit-profile', function(req, res, next){
+router.get('/edit-profile', passportConfig.isAuthenticated, function(req, res, next){
     res.render('accounts/editProfile', { message: req.flash('success') });
 });
 
 //Profile update
-router.post('/edit-profile', function(req, res, next){
+router.post('/edit-profile', passportConfig.isAuthenticated, function(req, res, next){
     User.findOne({ _id: req.user._id }, function(err, user){
         if(err) return next(err);
 
+        var bool;
+        if(req.body.isSeller === "on"){
+            bool = true;
+        }
+        else{
+                bool = false;
+        }
+
         if(req.body.name) user.profile.name = req.body.name;
+        if(req.body.email) user.email = req.body.email;
         if(req.body.contact) user.contact = req.body.contact;
-        if(req.body.address) user.address = req.body.address;
+        
+        user.isSeller = bool;
 
         user.save(function(err){
             if(err) return next(err);
             req.flash('success', 'Successfully edited profile');
-            return res.redirect('/edit-profile');
+            return res.redirect('/profile');
+        });
+    })
+});
+
+//Profile Address update form
+router.get('/edit-address', passportConfig.isAuthenticated, function(req, res, next){
+    res.render('accounts/editAddress', { message: req.flash('success') });
+});
+
+//Profile Address update
+router.post('/edit-address', passportConfig.isAuthenticated, function(req, res, next){
+    User.findOne({ _id: req.user._id }, function(err, user){
+        if(err) return next(err);
+
+        if(req.body.address1) user.address.address1 = req.body.address1;
+        if(req.body.address2) user.address.address2 = req.body.address2;
+        if(req.body.city) user.address.city = req.body.city;
+        if(req.body.district) user.address.district = req.body.district;
+        if(req.body.country) user.address.country = req.body.country;
+        if(req.body.postalCode) user.address.postalCode = req.body.postalCode;
+
+        user.save(function(err){
+            if(err) return next(err);
+            req.flash('success', 'Successfully edited address');
+            return res.redirect('/profile');
         });
     })
 });
 
 //facebook login route
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
+
 //facebook login
 router.get('/auth/facebook/callback', passport.authenticate('facebook',{
     successRedirect: '/profile',
     failureRedirect: '/login'
 }));
+
+//Add product from user form
+router.get('/add-product',passportConfig.isAuthenticated, function(req, res, next){
+    res.render('accounts/addProduct', { message: req.flash('success') });
+});
+
+//Add product from user function
+router.post('/add-product',passportConfig.isAuthenticated, function(req, res, next){
+    User.findOne({ _id: req.user._id }, function(err, user) {
+        if(err) return next(err);
+        
+        let product = new Product();
+
+        product.category = req.body.categoryId;
+        product.name = req.body.name;
+        product.price = req.body.price;
+        product.description = req.body.description;
+        product.owner = req.user._id;
+        product.image = req.file.location;
+
+        product.save(function(err, product){
+            if(err) return next(err);
+            req.flash('success', 'Successfully added product');
+            return res.redirect('/profile');
+        });
+
+    });
+});
 
 module.exports = router;

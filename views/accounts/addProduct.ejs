@@ -5,10 +5,10 @@
         <div class="row">
             <div class="col-md-12 mx-auto">
                 <div class="card card-body">
-                    <h3 class="text-center">Edit Profile</h3>
+                    <h3 class="text-center">Add Product for Sell</h3>
 
                     <% if (message.length > 0) { %>
-                        <div class="alert alert-success alert-dismissible">
+                        <div class="alert alert-danger alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -18,20 +18,20 @@
 
                     <form method="POST">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" name="name" value="<%= user.profile.name %>" placeholder="" required>
+                            <label for="name">Product Name </label>
+                            <input type="text" class="form-control" name="name" value="" placeholder="Abc" required>
                         </div>
                         <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="text" class="form-control" name="email" value="<%= user.email %>" placeholder="" required>
+                            <label for="email">Price</label>
+                            <input type="email" name="email" class="form-control" value="" placeholder="example@abc.com" required>
                         </div>
                         <div class="form-group">
-                                <label for="contact">Contact</label>
-                                <input type="text" name="contact" class="form-control" value="<%= user.contact %>" placeholder="">
+                            <label for="password2">Description  </label>
+                            <input type="password" name="password2" class="form-control" value="" placeholder="password should be at least 6 characters" required>
                         </div>
-                        <div class="form-check">
-                            <label for="isSeller">Is Seller</label>
-                            <input type="checkbox" name="isSeller" class="form-check-input" <%= user.isSeller ? 'checked' : '' %>>
+                        <div class="form-group">
+                            <label for="password">Image  </label>
+                            <input type="file" name="password" class="form-control" value="" placeholder="password should be at least 6 characters" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

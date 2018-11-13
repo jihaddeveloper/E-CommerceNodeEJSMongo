@@ -24,7 +24,7 @@ router.get('/:name', function(req, res, next){
             });
         },
         function(category, callback){
-            for(var i = 0; i < 30; i++){
+            for(var i = 0; i < 5; i++){
 
                 var product = new Product();
 

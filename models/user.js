@@ -15,21 +15,21 @@ var UserSchema = new Schema({
         name: { type: String, default: '' },
         picture: { type: String, default: ''}
     },
-    contact: String,
+    contact: { type: String, default: '' },
     address: {
-        address1: String,
-        address2: String,
-        city: String,
-        district: String,
-        country: String,
-        postalCode: String,
+        address1: { type: String, default: '' },
+        address2: { type: String, default: '' }, 
+        city: { type: String, default: '' },
+        district: { type: String, default: '' },
+        country: { type: String, default: '' },
+        postalCode: { type: String, default: '' },
     },
     history: [{
         date: Date,
         paid: { type:Number, default:0 }
         //item: { type: Schema.Types.ObjectId, ref: '' }
     }],
-    isSeller: { type: Boolean, default: false},
+    isSeller: Boolean,
     created: { type: Date, default: Date.now }
 });
 
