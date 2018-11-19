@@ -2,7 +2,7 @@ const router = require('express').Router();
 const async = require('async');
 const faker = require('faker');
 
-var Cartegory = require('../models/category');
+var Category = require('../models/category');
 var Product = require('../models/product');
 
 
@@ -18,7 +18,7 @@ router.post('/search', function(req, res, next){
 router.get('/:name', function(req, res, next){
     async.waterfall([
         function(callback){
-            Cartegory.findOne({ name: req.params.name }, function(err, category){
+            Category.findOne({ name: req.params.name }, function(err, category){
                 if(err) return next(err);
                 callback(null, category);
             });

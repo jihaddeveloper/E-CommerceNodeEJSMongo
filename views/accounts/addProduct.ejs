@@ -8,7 +8,7 @@
                     <h3 class="text-center">Add Product for Sell</h3>
 
                     <% if (message.length > 0) { %>
-                        <div class="alert alert-danger alert-dismissible">
+                        <div class="alert alert-success alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -16,22 +16,32 @@
                         </div>
                     <% } %>
 
-                    <form method="POST">
+                    <form method="POST" action="/add-product">
+
+                        <div class="form-group">
+                            <label for="category">Select Category </label>
+                                <select name="categoryName">
+                                        <option selected>Choose...</option>
+                                    <% for(var i = 0; i < categories.length; i++) { %>
+                                        <option value='<%= categories[i].name %>'><%= categories[i].name %></option>
+                                    <% } %>
+                                </select>
+                        </div>
                         <div class="form-group">
                             <label for="name">Product Name </label>
-                            <input type="text" class="form-control" name="name" value="" placeholder="Abc" required>
+                            <input type="text" class="form-control" name="name" value="" placeholder="">
                         </div>
                         <div class="form-group">
-                            <label for="email">Price</label>
-                            <input type="email" name="email" class="form-control" value="" placeholder="example@abc.com" required>
+                            <label for="price">Price </label>
+                            <input type="number" name="price" class="form-control" value="" placeholder="">
                         </div>
                         <div class="form-group">
-                            <label for="password2">Description  </label>
-                            <input type="password" name="password2" class="form-control" value="" placeholder="password should be at least 6 characters" required>
+                            <label for="description">Description  </label>
+                            <input type="text" name="description" class="form-control" value="" placeholder="">
                         </div>
                         <div class="form-group">
-                            <label for="password">Image  </label>
-                            <input type="file" name="password" class="form-control" value="" placeholder="password should be at least 6 characters" required>
+                            <label for="image">Image  </label>
+                            <input type="file" name="image" class="form-control" value="" placeholder="">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

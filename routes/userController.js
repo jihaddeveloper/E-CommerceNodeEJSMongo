@@ -6,6 +6,7 @@ const passport = require('passport');
 const passportConfig = require('../config/passport');
 const secretConfig = require('../config/secret');
 const Product = require('../models/product');
+const Category = require('../models/category');
 
 
 //Profile page
@@ -63,7 +64,6 @@ router.post('/signup', function(req, res, next){
                 }
             });
         },
-
         function(user){
             var cart = new Cart();
 
@@ -173,22 +173,31 @@ router.get('/add-product',passportConfig.isAuthenticated, function(req, res, nex
 
 //Add product from user function
 router.post('/add-product',passportConfig.isAuthenticated, function(req, res, next){
+
     User.findOne({ _id: req.user._id }, function(err, user) {
         if(err) return next(err);
         
-        let product = new Product();
 
-        product.category = req.body.categoryId;
-        product.name = req.body.name;
-        product.price = req.body.price;
-        product.description = req.body.description;
-        product.owner = req.user._id;
-        product.image = req.file.location;
+        Category.findOne({ name: req.body.categoryName }, function(err, category){
 
-        product.save(function(err, product){
             if(err) return next(err);
-            req.flash('success', 'Successfully added product');
-            return res.redirect('/profile');
+            var newCategory = category;
+
+            let product = new Product();
+
+            product.category = newCategory._id;
+            product.name = req.body.name;
+            product.price = req.body.price;
+            product.description = req.body.description;
+            product.owner = req.user._id;
+            //product.image = req.file.location;
+
+
+            product.save(function(err, product){
+                if(err) return next(err);
+                req.flash('success', 'Successfully added product');
+                return res.redirect('/add-product');
+            });
         });
 
     });

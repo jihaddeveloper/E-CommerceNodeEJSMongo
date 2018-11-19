@@ -1,22 +1,25 @@
 const router = require('express').Router();
-
+const async = require('async');
+const passportConfig = require('../config/passport');
 var Product = require('../models/product');
 var Cart = require('../models/cart');
+var Review = require('../models/review');
+
 //Pagination function
 function paginate(req, res, next){
     //Paginate product page
-    var perPage = 12;
+    var perPage = 6;
     var page = req.params.page;
 
     Product.find()
-    .skip( perPage*page )
+    .skip( perPage*page-page )
     .limit( perPage )
     .populate('category')
     .exec(function(err, products){
         if(err) return next(err);
         Product.count().exec(function(err, count){
             if(err) return next(err);
-            res.render('main/productMain', { products: products, pages: count/perPage });
+            res.render('main/productMain', { products: products, pages: count / perPage });
         });
     });
 }
@@ -35,6 +38,7 @@ Product.createMapping(function(err, mapping){
 var stream = Product.synchronize();
 var count = 0;
 
+
 stream.on('data',function() {
     count++;
 })
@@ -47,13 +51,14 @@ stream.on('err',function() {
     console.log(err);
 })
 
+
+
+
+
+
 //Home Route
 router.get('/', function(req, res, next){
-    if(req.user){
-        paginate(req, res, next);
-    }else{
-        res.render('main/home');
-    }
+    paginate(req, res, next);
 });
 
 //Pages
@@ -66,7 +71,7 @@ router.get('/about', function(req, res, next){
     res.render('main/about');
 });
 
-//Products Route
+//Products Route home page
 router.get('/products/:id', function(req, res, next){
     Product
     .find({ category: req.params.id })
@@ -85,10 +90,15 @@ router.get('/product/:id', function(req, res, next){
     });
 });
 
+
+
 //Search route
 router.post('/search', function(req, res, next){
     res.redirect('/search?q=' + req.body.q);
 });
+
+
+
 //Search
 router.get('/search', function(req, res, next){
     if(req.query.q){
@@ -147,5 +157,8 @@ router.post('/remove', function(req, res, next){
         });
     });
 });
+
+
+//Post review to product
 
 module.exports = router;
