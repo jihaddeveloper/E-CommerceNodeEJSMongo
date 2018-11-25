@@ -7,6 +7,7 @@ const passportConfig = require('../config/passport');
 const secretConfig = require('../config/secret');
 const Product = require('../models/product');
 const Category = require('../models/category');
+const Review = require('../models/review');
 
 
 //Profile page

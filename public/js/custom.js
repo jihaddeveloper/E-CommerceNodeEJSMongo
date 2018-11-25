@@ -1,4 +1,4 @@
-// Custom Search
+// Elastic Search ajax
 $(function(){
     $('#search').keyup(function(){
 
@@ -36,6 +36,13 @@ $(function(){
                 }
             },
             error: function(err){
+
+                $('#searchResults').empty();
+
+                var html = "'<p>Noting Found</p>'";
+                
+                $('#searchResults').append(html);
+                
                 console.log(err);
             }
         });
@@ -43,7 +50,7 @@ $(function(){
 });
 
 
-//Cart product quantity increase decrease
+//Cart product quantity inecrease
 $(document).on('click', '#plus', function(e){
     e.preventDefault();
     var priceValue = parseFloat($('#priceValue').val());
@@ -57,6 +64,8 @@ $(document).on('click', '#plus', function(e){
     $('#total').html(quantity);
 });
 
+
+//Cart product quantity  decrease
 $(document).on('click', '#minus', function(e){
     e.preventDefault();
     var priceValue = parseFloat($('#priceValue').val());

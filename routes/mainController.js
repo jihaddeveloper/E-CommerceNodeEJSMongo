@@ -4,6 +4,37 @@ const passportConfig = require('../config/passport');
 var Product = require('../models/product');
 var Cart = require('../models/cart');
 var Review = require('../models/review');
+const User = require('../models/user');
+
+
+//Product mapping
+
+var stream = Product.synchronize();
+var count = 0;
+
+
+stream.on('data',function() {
+    count++;
+})
+
+stream.on('close',function() {
+    console.log('Indexed ' + count + ' documents');
+})
+
+stream.on('err',function() {
+    console.log(err);
+})
+
+Product.createMapping(function(err, mapping){
+    if(err) {
+        console.log('Error in creating mapping');
+        console.log(err);
+    }else {
+        console.log('Mapping created');
+        console.log(mapping);
+    }
+});
+
 
 //Pagination function
 function paginate(req, res, next){
@@ -24,32 +55,8 @@ function paginate(req, res, next){
     });
 }
 
-//Product mapping
-Product.createMapping(function(err, mapping){
-    if(err) {
-        console.log('Error in creating mapping');
-        console.log(err);
-    }else {
-        console.log('Mapping created');
-        console.log(mapping);
-    }
-});
-
-var stream = Product.synchronize();
-var count = 0;
 
 
-stream.on('data',function() {
-    count++;
-})
-
-stream.on('close',function() {
-    console.log('Indexed ' + count + ' documents');
-})
-
-stream.on('err',function() {
-    console.log(err);
-})
 
 
 
@@ -139,7 +146,7 @@ router.post('/product/:product_id', function(req, res, next){
 
          cart.save(function(err){
              if(err) return next(err);
-             return res.redirect('/cart');
+             return res.redirect('/');
          });
     });
 });
@@ -160,5 +167,32 @@ router.post('/remove', function(req, res, next){
 
 
 //Post review to product
+router.post('/add-review', passportConfig.isAuthenticated, function(req, res, next){
+    User.findOne({ _id: req.user._id }, function(err, user) {
+        if(err) return next(err);
+
+        Product.findOne({ _id: req.body.product_id }, function(err, product){
+            if(err) return next(err);
+
+            let review = new Review();
+
+            review.owner = req.user._id;
+            if(req.body.title) review.title = req.body.title;
+            if(req.body.description) review.description = req.body.description;
+            review.rating = req.body.rating;
+
+            product.reviews.push(review._id);
+            product.save();
+
+            review.save(function(err, newReview){
+                if(err) return next(err);
+                req.flash('success', 'Successfully added Review');
+                return res.redirect('/add-review');
+            });
+        });
+
+    });
+});
+
 
 module.exports = router;

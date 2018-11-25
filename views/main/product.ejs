@@ -3,7 +3,7 @@
 <div class="container" style="width:80%; min-height: 600px">
     <div class="row">
         <div class="col-md-4">
-            <img src="<%= product.image %>">
+            <img src="data:image/png;base64, <%= product.image %>">
         </div>
     </div>
     <div class="row">
@@ -24,6 +24,8 @@
                             <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
                             <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.price %>">
 
+                            <!-- <p class="form-control" name="item" id="item"><%= product.name %></p>
+                            <p class="form-control" name="priceValue" id="priceValue"><%= product.price %></p> -->
                             <input type="text" class="form-control" name="item" id="item" value="<%= product.name %>">
                             <input type="text" class="form-control" name="priceValue" id="priceValue" value="<%= product.price %>">
                         </div>
