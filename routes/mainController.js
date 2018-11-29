@@ -6,6 +6,8 @@ var Cart = require('../models/cart');
 var Review = require('../models/review');
 const User = require('../models/user');
 
+const stripe = require('stripe')('sk_test_v6upa8MEdWolNaz3cThw8uoT');
+
 
 //Product mapping
 
@@ -39,7 +41,7 @@ Product.createMapping(function(err, mapping){
 //Pagination function
 function paginate(req, res, next){
     //Paginate product page
-    var perPage = 6;
+    var perPage = 9;
     var page = req.params.page;
 
     Product.find()
@@ -83,6 +85,7 @@ router.get('/products/:id', function(req, res, next){
     Product
     .find({ category: req.params.id })
     .populate('category')
+    .populate('review')
     .exec(function(err, products){
         if(err) return next(err);
         res.render('main/category', { products: products });
@@ -91,12 +94,23 @@ router.get('/products/:id', function(req, res, next){
 
 //Single product route
 router.get('/product/:id', function(req, res, next){
-    Product.findById({ _id: req.params.id }, function(err, product){
+    Product.findById({ _id: req.params.id })
+    .populate('category')
+    .deepPopulate('reviews.owner')
+    .populate({ path:'reviews', populate: { path: 'reviews' }})
+    .exec(function(err, product){
         if(err) return next(err);
         res.render('main/product', {product: product});
     });
 });
 
+//Single product route
+// router.get('/product/:id', function(req, res, next){
+//     Product.findById({ _id: req.params.id }, function(err, product){
+//         if(err) return next(err);
+//         res.render('main/product', {product: product});
+//     });
+// });
 
 
 //Search route
@@ -146,7 +160,7 @@ router.post('/product/:product_id', function(req, res, next){
 
          cart.save(function(err){
              if(err) return next(err);
-             return res.redirect('/');
+             return res.redirect('/product/'+ req.body.product_id);
          });
     });
 });
@@ -194,5 +208,23 @@ router.post('/add-review', passportConfig.isAuthenticated, function(req, res, ne
     });
 });
 
+
+//Payment Route
+router.post('/payment', function(req, res, next){
+    var stripeToken = req.body.stripeToken;
+    var currentCharges = Math.round(req.body.stripeMoney * 100);
+
+    stripe.customers.create({
+        source: stripeToken,
+    }).then(function(customer){
+        return stripe.charges.create({
+            amount: currentCharges,
+            currency: 'usd',
+            customer: customer.id
+        });
+    });
+
+    res.redirect('/profile');
+});
 
 module.exports = router;

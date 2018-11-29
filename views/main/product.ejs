@@ -9,10 +9,12 @@
     <div class="row">
             <div class="col-md-4">
                     <h2><%= product.name %></h2>
+                    <h1><%= product.category.name %></h1>
+                    <h1><%= product.reviews.owner %></h1>
                     <h3>$<%= product.price %>.00</h3>
         
 
-                    <form method="POST">
+                    <form method="POST" action="">
                         <div class="btn-group" role="group" aria-label="...">
                             <input type="hidden" name="quantity" id="quantity" value="1">
                             <button type="button" class="btn btn-default" id="minus" name="">-</button>

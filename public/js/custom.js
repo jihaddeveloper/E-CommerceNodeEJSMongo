@@ -1,5 +1,10 @@
-// Elastic Search ajax
+
 $(function(){
+
+    //Stripe Payment
+    Stripe.setPublishableKey('pk_test_B9EPqOse0u83mA81X2MgxPRL');
+
+    // Elastic Search ajax
     $('#search').keyup(function(){
 
         var search_term = $(this).val();
@@ -22,7 +27,7 @@ $(function(){
                     html += '<div class="col-md-4">';
                     html += '<a href="/product/' + data[i]._source._id + '">';
                     html += '<div class="thumbnail">';
-                    html += '<img src="' + data[i]._source.image + '">';
+                    html += '<img src="data:image/png;base64,' + data[i]._source.image + '">';
                     html += '<div class="caption">';
                     html += '<h3>' + data[i]._source.name + '</h3>';
                     // html += '<p>' + data[i]._source.category.name + '</p>';
@@ -47,7 +52,7 @@ $(function(){
             }
         });
     });
-});
+
 
 
 //Cart product quantity inecrease
@@ -82,4 +87,47 @@ $(document).on('click', '#minus', function(e){
     $('#quantity').val(quantity);
     $('#priceValue').val(priceValue.toFixed(2));
     $('#total').html(quantity);
+});
+
+
+//Stripe Payment
+
+function stripeResponseHandler(status, response) {
+    // Grab the form:
+    var $form = $('#payment-form');
+  
+    if (response.error) { // Problem!
+  
+      // Show the errors on the form:
+      $form.find('.payment-errors').text(response.error.message);
+      $form.find('.submit').prop('disabled', false); // Re-enable submission
+  
+    } else { // Token was created!
+  
+      // Get the token ID:
+      var token = response.id;
+  
+      // Insert the token ID into the form so it gets submitted to the server:
+      $form.append($('<input type="hidden" name="stripeToken">').val(token));
+  
+      // Submit the form:
+      $form.get(0).submit();
+      
+      // For this demo, we're simply showing the token:
+      alert("Token: " + token);
+    }
+  };
+
+  var $form = $('#payment-form');
+  $form.submit(function(event) {
+    // Disable the submit button to prevent repeated clicks:
+    $form.find('.submit').prop('disabled', true);
+
+    // Request a token from Stripe:
+    Stripe.card.createToken($form, stripeResponseHandler);
+
+    // Prevent the form from being submitted:
+    return false;
+  });
+
 });
