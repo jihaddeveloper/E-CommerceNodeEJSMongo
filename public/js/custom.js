@@ -1,9 +1,7 @@
 
 $(function(){
 
-    //Stripe Payment
-    Stripe.setPublishableKey('pk_test_B9EPqOse0u83mA81X2MgxPRL');
-
+    
     // Elastic Search ajax
     $('#search').keyup(function(){
 
@@ -52,7 +50,7 @@ $(function(){
             }
         });
     });
-
+});
 
 
 //Cart product quantity inecrease
@@ -91,6 +89,8 @@ $(document).on('click', '#minus', function(e){
 
 
 //Stripe Payment
+Stripe.setPublishableKey('pk_test_B9EPqOse0u83mA81X2MgxPRL');
+
 
 function stripeResponseHandler(status, response) {
     // Grab the form:
@@ -100,7 +100,7 @@ function stripeResponseHandler(status, response) {
   
       // Show the errors on the form:
       $form.find('.payment-errors').text(response.error.message);
-      $form.find('.submit').prop('disabled', false); // Re-enable submission
+      $form.find('button').prop('disabled', false); // Re-enable submission
   
     } else { // Token was created!
   
@@ -114,20 +114,24 @@ function stripeResponseHandler(status, response) {
       $form.get(0).submit();
       
       // For this demo, we're simply showing the token:
-      alert("Token: " + token);
+      //alert("Token: " + token);
     }
   };
 
-  var $form = $('#payment-form');
-  $form.submit(function(event) {
-    // Disable the submit button to prevent repeated clicks:
-    $form.find('.submit').prop('disabled', true);
+  jQuery(function($){
 
-    // Request a token from Stripe:
-    Stripe.card.createToken($form, stripeResponseHandler);
+    //Stripe Payment
+    Stripe.setPublishableKey('pk_test_B9EPqOse0u83mA81X2MgxPRL');
 
-    // Prevent the form from being submitted:
-    return false;
-  });
+    var $form = $('#payment-form');
+    $form.submit(function(event) {
+        // Disable the submit button to prevent repeated clicks:
+        $form.find('button').prop('disabled', true);
 
+        // Request a token from Stripe:
+        Stripe.card.createToken($form, stripeResponseHandler);
+
+        // Prevent the form from being submitted:
+        return false;
+    });
 });

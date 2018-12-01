@@ -25,9 +25,9 @@ var UserSchema = new Schema({
         postalCode: { type: String, default: '' },
     },
     history: [{
-        date: Date,
-        paid: { type:Number, default:0 }
-        //item: { type: Schema.Types.ObjectId, ref: '' }
+        paid: { type:Number, default:0 },
+        item: { type: Schema.Types.ObjectId, ref: 'Product' },
+        created: { type: Date, default: Date.now }
     }],
     isSeller: Boolean,
     created: { type: Date, default: Date.now }

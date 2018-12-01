@@ -102,9 +102,9 @@
                                                         <div class="form-group">
                                                             <label for="cardNumber">CARD NUMBER</label>
                                                             <div class="input-group">
-                                                                <input type="tel" class="form-control" name="cardNumber"
+                                                                <input type="text" class="form-control" name="cardNumber"
                                                                     placeholder="Valid Card Number" autocomplete="cc-number"
-                                                                    required autofocus />
+                                                                    required autofocus data-stripe="number" />
                                                                 <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
                                                             </div>
                                                         </div>
@@ -112,18 +112,22 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-xs-7 col-md-7">
-                                                        <div class="form-group">
-                                                            <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span
-                                                                    class="visible-xs-inline">EXP</span> DATE</label>
-                                                            <input type="tel" class="form-control" name="cardExpiry"
-                                                                placeholder="MM / YY" autocomplete="cc-exp" required />
+                                                        <div class="form-row">
+                                                            <label>
+                                                                <span>Expiration (MM)</span>
+                                                                <input type="text" size="2" name="expMonth" data-stripe="exp_month" required>
+                                                            </label>
+                                                            <label>
+                                                                <span>Expiration (YY) </span>
+                                                                <input type="text" size="4" name="expYear" data-stripe="exp_year" required>
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-5 col-md-5 pull-right">
                                                         <div class="form-group">
                                                             <label for="cardCVC">CV CODE</label>
                                                             <input type="tel" class="form-control" name="cardCVC"
-                                                                placeholder="CVC" autocomplete="cc-csc" required />
+                                                                placeholder="CVC" autocomplete="cc-csc" data-stripe="cvc" required />
                                                         </div>
                                                     </div>
                                                 </div>
