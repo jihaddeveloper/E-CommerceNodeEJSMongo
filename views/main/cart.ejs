@@ -44,10 +44,48 @@
             <% } %>
 
         </div>
-
+    </div>
+    <div class="row">
         <div class="col-md-3">
-
-
+            <h2>Address of Customer</h2>
+            <div class="list-group">
+                <p>Name:
+                    <%= user.profile.name %>
+                </p>
+                <p>Contact:
+                    <%= user.contact %>
+                </p>
+                <p>Country:
+                    <%= user.address.country %>
+                </p>
+                <p>District:
+                    <%= user.address.district %>
+                </p>
+                <p>City:
+                    <%= user.address.city %>
+                </p>
+                <p>Area:
+                    <%= user.address.city %>
+                </p>
+                <p>Postal Code:
+                    <%= user.address.postalCode %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <span class="list-group-item">
+                    <h4>Total: $<span class="totalPrice">
+                            <%= foundCart.total %></span></h4>
+                    <div class="form-group">
+                        <input type="hidden" value="<%= foundCart.total %>">
+                        <button type="submit" class="btn btn-primary btn-lg">Pay
+                            with Cash</button>
+                    </div>
+                </span>
+            </div>
         </div>
         <div class="col-md-3">
             <div class="list-group">
@@ -60,78 +98,78 @@
                             with Stripe</button>
                     </div>
                 </span>
-
             </div>
-
         </div>
 
-
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Pay with Stripe</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-                                <!-- You can make it whatever width you want. I'm making it full width
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pay with Stripe</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <!-- You can make it whatever width you want. I'm making it full width
                                  on <= small devices and 4/12 page width on >= medium devices -->
-                                <div class="col-xs-12 col-md-4">
+                            <div class="col-xs-12 col-md-4">
 
 
-                                    <!-- CREDIT CARD FORM STARTS HERE -->
-                                    <div class="panel panel-default credit-card-box">
-                                        <div class="panel-heading display-table">
-                                            <div class="row display-tr">
-                                                <h3 class="panel-title display-td">Payment Details</h3>
-                                                <div class="display-td">
-                                                    <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
-                                                </div>
+                                <!-- CREDIT CARD FORM STARTS HERE -->
+                                <div class="panel panel-default credit-card-box">
+                                    <div class="panel-heading display-table">
+                                        <div class="row display-tr">
+                                            <h3 class="panel-title display-td">Payment Details</h3>
+                                            <div class="display-td">
+                                                <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
                                             </div>
                                         </div>
-                                        <div class="panel-body">
-                                            <form role="form" id="payment-form" method="POST" action="/payment">
-                                                <input type="hidden" name="stripeMoney" value="<%= foundCart.total %>">
-                                                <div class="row">
-                                                    <div class="col-xs-12">
-                                                        <div class="form-group">
-                                                            <label for="cardNumber">CARD NUMBER</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" name="cardNumber"
-                                                                    placeholder="Valid Card Number" autocomplete="cc-number"
-                                                                    required autofocus data-stripe="number" />
-                                                                <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
-                                                            </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <form role="form" id="payment-form" method="POST" action="/payment">
+                                            <input type="hidden" name="stripeMoney" value="<%= foundCart.total %>">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="cardNumber">CARD NUMBER</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" name="cardNumber"
+                                                                placeholder="Valid Card Number" autocomplete="cc-number"
+                                                                required autofocus data-stripe="number" />
+                                                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-xs-7 col-md-7">
-                                                        <div class="form-row">
-                                                            <label>
-                                                                <span>Expiration (MM)</span>
-                                                                <input type="text" size="2" name="expMonth" data-stripe="exp_month" required>
-                                                            </label>
-                                                            <label>
-                                                                <span>Expiration (YY) </span>
-                                                                <input type="text" size="4" name="expYear" data-stripe="exp_year" required>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-5 col-md-5 pull-right">
-                                                        <div class="form-group">
-                                                            <label for="cardCVC">CV CODE</label>
-                                                            <input type="tel" class="form-control" name="cardCVC"
-                                                                placeholder="CVC" autocomplete="cc-csc" data-stripe="cvc" required />
-                                                        </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-7 col-md-7">
+                                                    <div class="form-row">
+                                                        <label>
+                                                            <span>Expiration (MM)</span>
+                                                            <input type="text" size="2" name="expMonth" data-stripe="exp_month"
+                                                                required>
+                                                        </label>
+                                                        <label>
+                                                            <span>Expiration (YY) </span>
+                                                            <input type="text" size="4" name="expYear" data-stripe="exp_year"
+                                                                required>
+                                                        </label>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="row">
+                                                <div class="col-xs-5 col-md-5 pull-right">
+                                                    <div class="form-group">
+                                                        <label for="cardCVC">CV CODE</label>
+                                                        <input type="tel" class="form-control" name="cardCVC"
+                                                            placeholder="CVC" autocomplete="cc-csc" data-stripe="cvc"
+                                                            required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row">
                                                 <div class="col-xs-12">
                                                     <div class="form-group">
                                                         <label for="couponCode">COUPON CODE</label>
@@ -139,31 +177,56 @@
                                                     </div>
                                                 </div>                        
                                                 </div> -->
-                                                <div class="row">
-                                                    <div class="col-xs-12">
-                                                        <button class="btn btn-success btn-lg btn-block" type="submit">Pay: $(<%= foundCart.total %>)</button>
-                                                    </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <button class="btn btn-success btn-lg btn-block" type="submit">Pay:
+                                                        $(
+                                                        <%= foundCart.total %>)</button>
                                                 </div>
-                                                <div class="row" style="display:none;">
-                                                    <div class="col-xs-12">
-                                                        <p class="payment-errors"></p>
-                                                    </div>
+                                            </div>
+                                            <div class="row" style="display:none;">
+                                                <div class="col-xs-12">
+                                                    <p class="payment-errors"></p>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <!-- CREDIT CARD FORM ENDS HERE -->
-
-
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h2>Address of Customer</h2>
+                                <div class="list-group">
+                                    <p>Name:
+                                        <%= user.profile.name %>
+                                    </p>
+                                    <p>Contact:
+                                        <%= user.contact %>
+                                    </p>
+                                    <p>Country:
+                                        <%= user.address.country %>
+                                    </p>
+                                    <p>District:
+                                        <%= user.address.district %>
+                                    </p>
+                                    <p>City:
+                                        <%= user.address.city %>
+                                    </p>
+                                    <p>Area:
+                                        <%= user.address.city %>
+                                    </p>
+                                    <p>Postal Code:
+                                        <%= user.address.postalCode %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-
 </div>

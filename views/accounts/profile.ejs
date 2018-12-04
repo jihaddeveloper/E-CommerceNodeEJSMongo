@@ -22,9 +22,6 @@
 
             <div class="row">
                 <div class="col-md-8 mb-3">
-                    <a href="/" class="btn btn-primary btn-lg">My Orders</a>
-                    <br>
-                    <br>
                     <a href="/edit-profile" class="btn btn-primary btn-lg">Edit Profile</a>
                     <br>
                     <br>    
@@ -46,6 +43,32 @@
 
         </div>
 
+        <div class="col-md-8">
+            
+            <table class="table table-stripped sticky-header"> 
+                <h2 class="text-center"> Oredered Product Histroy</h2>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Product Name</th>
+                        <th>Amount</th>
+                    </tr>
+                    <tbody>
+                        <% for (var i = 0; i < user.history.length; i++ )  { %>
+                            <tr>
+                                <td><%= user.history[i].created %></td>
+                                <td><%= user.history[i].item.name %></td>
+                                <td><%= user.history[i].paid %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </thead>
+
+            </table>
+        </div>
+
     </div>
+
+
 
 </div>

@@ -12,7 +12,9 @@ const Review = require('../models/review');
 
 //Profile page
 router.get('/profile', passportConfig.isAuthenticated, function(req, res, next){
-    User.findOne({ _id: req.user._id }, function(err, user) {
+    User.findOne({ _id: req.user._id })
+         .populate("history.item")
+         .exec(function(err, user) {
         if(err) return next(err);
         res.render('accounts/profile', { user: user });
     });

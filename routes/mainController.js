@@ -74,12 +74,11 @@ router.get('/about', function(req, res, next){
     res.render('main/about');
 });
 
-//Products Route home page
+// Categorywise Products Route page
 router.get('/products/:id', function(req, res, next){
     Product
     .find({ category: req.params.id })
     .populate('category')
-    .populate('review')
     .exec(function(err, products){
         if(err) return next(err);
         res.render('main/category', { products: products });
@@ -88,14 +87,15 @@ router.get('/products/:id', function(req, res, next){
 
 //Single product route
 router.get('/product/:id', function(req, res, next){
-    Product.findById({ _id: req.params.id })
+    Product.findOne({ _id: req.params.id })
     .populate('category')
-    .deepPopulate('reviews.owner')
-    .populate({ path:'reviews', populate: { path: 'reviews' }})
+    .populate('reviews.review')
     .exec(function(err, product){
         if(err) return next(err);
-        res.render('main/product', {product: product});
+        console.log(product.features);
+        res.render('main/product', {product: product, features: product.features});
     });
+    
 });
 
 //Single product route
@@ -113,23 +113,29 @@ router.post('/search', function(req, res, next){
 });
 
 
-
 //Search
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+
 router.get('/search', function(req, res, next){
     if(req.query.q){
-        Product.search({ query_string: { query: req.query.q } },
+        const regex = new RegExp(escapeRegex(req.query.q), 'gi');
+        Product.find({ "name": regex },
              function(err, results){
                  if(err) return next(err);
-                 var data = results.hits.hits.map(function(hit){
-                     return hit;
-                 });
                  res.render('main/searchResult', {
-                     query: req.query.q,
-                     data: data
+                    query: req.query.q,
+                    data: results
                  });
              });
+    }else{
+        paginate(req, res, next);
     }
 });
+
 
 //Cart view
 router.get('/cart', function(req, res, next){
@@ -137,7 +143,7 @@ router.get('/cart', function(req, res, next){
     .populate('items.item')
     .exec(function(err, foundCart){
         if(err) return next(err);
-        res.render('main/cart', { foundCart: foundCart, message: req.flash('remove') } );
+        res.render('main/cart', { foundCart: foundCart, user: req.user , message: req.flash('remove') } );
     });
 });
 
