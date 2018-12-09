@@ -24,11 +24,49 @@ var UserSchema = new Schema({
         country: { type: String, default: '' },
         postalCode: { type: String, default: '' },
     },
+    billingAddress: {
+        billingAddressName: { type: String, default: '' },
+        billingAddress1: { type: String, default: '' },
+        billingAddress2: { type: String, default: '' },
+        billingAddressStreet: { type: String, default: '' },
+        billingAddressArea: { type: String, default: '' },
+        billingAddressCity: { type: String, default: '' },
+        billingAddressDistrict: { type: String, },
+        billingAddressCountry: { type: String, default: '' },
+        billingAddressPostalCode: { type: String, default: '' },
+        billingAddressPhone: { type: String, default: '' }
+    },
+    shippingAddress: {
+        shippingAddressName: { type: String, default: '' },
+        shippingAddress1: { type: String, default: '' },
+        shippingAddress2: { type: String, default: '' },
+        shippingAddressStreet: { type: String, default: '' },
+        shippingAddressArea: { type: String, default: '' },
+        shippingAddressCity: { type: String, default: '' },
+        shippingAddressCountry: { type: String, default: '' },
+        shippingAddressPostalCode: { type: String, default: '' },
+        shippingAddressPhone: { type: String, default: '' }
+    },
+
+    shippingAddressSameAsbillingAddress: Boolean,
+    //oreders
     history: [{
         paid: { type:Number, default:0 },
         item: { type: Schema.Types.ObjectId, ref: 'Product' },
+        invoiceNumber: {},
+        paymentMethod: {},
+        cardHolderName:{},
+        creditCardLast4Digits: {},
+        notes: {},
+        shippingMethods: {},
+        shippingFees: {},
+        taxes: [{}],
+        promoCodes: [{}],
+        paymentTransactionId: {},
+        finalGrandTotal: {},
         created: { type: Date, default: Date.now }
     }],
+    status: Boolean,
     isSeller: Boolean,
     created: { type: Date, default: Date.now }
 });

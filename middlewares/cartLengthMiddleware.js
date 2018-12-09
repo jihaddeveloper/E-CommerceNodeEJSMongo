@@ -16,6 +16,7 @@ module.exports = function(req, res, next){
             next();
         })
     }else{
+        res.locals.cart = 0;
         next();
     }
 }

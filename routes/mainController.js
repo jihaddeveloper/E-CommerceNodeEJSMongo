@@ -27,15 +27,15 @@ stream.on('err',function() {
     console.log(err);
 })
 
-Product.createMapping(function(err, mapping){
-    if(err) {
-        console.log('Error in creating mapping');
-        console.log(err);
-    }else {
-        console.log('Mapping created');
-        console.log(mapping);
-    }
-});
+// Product.createMapping(function(err, mapping){
+//     if(err) {
+//         console.log('Error in creating mapping');
+//         console.log(err);
+//     }else {
+//         console.log('Mapping created');
+//         console.log(mapping);
+//     }
+// });
 
 
 //Pagination function
@@ -98,33 +98,25 @@ router.get('/product/:id', function(req, res, next){
     
 });
 
-//Single product route
-// router.get('/product/:id', function(req, res, next){
-//     Product.findById({ _id: req.params.id }, function(err, product){
-//         if(err) return next(err);
-//         res.render('main/product', {product: product});
-//     });
-// });
 
-
+//Custom Search 
 //Search route
 router.post('/search', function(req, res, next){
     res.redirect('/search?q=' + req.body.q);
 });
 
-
-//Search
-
+//Text making function 
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
-
+//Search function
 router.get('/search', function(req, res, next){
     if(req.query.q){
         const regex = new RegExp(escapeRegex(req.query.q), 'gi');
-        Product.find({ "name": regex },
-             function(err, results){
+        Product.find({ "name": regex })
+        .populate('category')
+             .exec(function(err, results){
                  if(err) return next(err);
                  res.render('main/searchResult', {
                     query: req.query.q,

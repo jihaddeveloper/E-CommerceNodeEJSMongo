@@ -21,7 +21,10 @@ var ProductSchema = new Schema({
     warranty: { type: String, required: false },
     pinned: { type: String, required: false },
     home: { type: String, required: false },
-    features:{ type: Array, required: false },
+    features: { type: Array, required: false },
+    meta:{
+        stock:{type: Number, required: false}
+      },
     created: { type: Date, default: Date.now }
     //toObject: { virtuals: true },
     //toJSON: { virtuals: true }

@@ -3,112 +3,145 @@
 <div class="container">
     <!-- Portfolio Item Row -->
     <div class="row">
-      <div class="col-md-6">
+        <div class="col-md-6">
             <img class="img-fluid img-responsive" src="data:image/png;base64, <%= product.image %>" style="width:450px;">
-      </div>
-      <hr>
- 
-      <div class="col-md-6">
-        <div class="well well-sm" style="background-color:#f4f7ff;">
-            <h3><strong><%= product.name %></strong></h3>
-            <h4><%= product.category.name %></h4>
-            <h4><%= product.reviews.owner %></h4>
-            <h4>$<%= product.price %>.00</h4>
- 
-            <form method="POST" action="">
-                <div class="btn-group" role="group" aria-label="...">
-                    <p>
-                    <input type="hidden" name="quantity" id="quantity" value="1">
-                    <button type="button" class="btn btn-default" id="minus" name="">-</button>
-                    <button type="button" class="btn btn-default" id="total" name="">1</button>
-                    <button type="button" class="btn btn-default" id="plus" name="">+</button>
-                    </p>
-                </div>
- 
-                <div class="form-group">
-                    <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
-                    <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.price %>">
- 
-                    <!-- <p class="form-control" name="item" id="item"><%= product.name %></p>
-                    <p class="form-control" name="priceValue" id="priceValue"><%= product.price %></p> -->
-                    <p><input type="" class="form-control" readonly name="item" id="item" value="<%= product.name %>"></p>
-                    <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.price %>"></p>
-                </div>
- 
-                <% if (user) { %>
-                    <button type="submit" class="btn btn-primary btn-md">Add to Cart</button>
-                <% } else { %>
-                    <a href="/signup" class="btn btn-warning btn-md">First Signup to buy</a>
-                <% } %>
-            </form>
-
-            <br>
- 
-            <div class="text-right">
-                <a class="btn btn-primary" href="#reviews-anchor" id="open-review-box">Leave a Review</a>
-            </div>
- 
-            <div class="row" id="post-review-box" style="display:none;">
-                <div class="col-md-12">
-                    <form accept-charset="UTF-8" action="" method="post">
-                        <input id="ratings-hidden" name="rating" type="hidden">
-                        <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
- 
-                        <div class="text-right">
-                            <div class="stars starrr" data-rating="0"></div>
-                            <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">Cancel</a>
-                            <button class="btn btn-info btn-md" type="submit">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div> 
-
         </div>
- 
-      </div>
+        <hr>
 
-    </div>
- </div>
+        <div class="col-md-6">
+            <div class="well well-sm" style="background-color:#f4f7ff;">
+                <h3><strong>
+                        <%= product.name %>
+                    </strong>
+                </h3>
+                <h4>
+                    <%= product.category.name %>
+                </h4>
+                <h4>$
+                    <%= product.price %>.00
+                </h4>
 
-
-<!-- <div class="container" style="width:80%; min-height: 600px">
-    <div class="row">
-        <div class="col-md-4">
-            <img src="data:image/png;base64, <%= product.image %>">
-        </div>
-    </div>
-    <div class="row">
-            <div class="col-md-4">
-                    <h2><%= product.name %></h2>
-                    <h1><%= product.category.name %></h1>
-                    <h1><%= product.reviews.owner %></h1>
-                    <h3>$<%= product.price %>.00</h3>
-        
-
-                    <form method="POST" action="">
-                        <div class="btn-group" role="group" aria-label="...">
+                <form method="POST" action="/product/'+ product_id">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <p>
                             <input type="hidden" name="quantity" id="quantity" value="1">
                             <button type="button" class="btn btn-default" id="minus" name="">-</button>
                             <button type="button" class="btn btn-default" id="total" name="">1</button>
                             <button type="button" class="btn btn-default" id="plus" name="">+</button>
-                        </div>
+                        </p>
+                    </div>
 
-                        <div class="form-group">
-                            <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
-                            <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.price %>">
+                    <div class="form-group">
+                        <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
+                        <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.price %>">
 
-                            <!-- <p class="form-control" name="item" id="item"><%= product.name %></p>
-                            <p class="form-control" name="priceValue" id="priceValue"><%= product.price %></p> -->
-                            <!-- <input type="text" class="form-control" name="item" id="item" value="<%= product.name %>">
-                            <input type="text" class="form-control" name="priceValue" id="priceValue" value="<%= product.price %>">
-                        </div>
+                        <!-- <p class="form-control" name="item" id="item"><%= product.name %></p>
+                    <p class="form-control" name="priceValue" id="priceValue"><%= product.price %></p> -->
+                        <p><input type="" class="form-control" readonly name="item" id="item" value="<%= product.name %>"></p>
+                        <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.price %>"></p>
+                    </div>
 
-                        <% if (user) { %>
-                            <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
-                        <% } else { %>
-                            <a href="/signup" class="btn btn-warning btn-lg">First Signup to buy</a>
-                        <% } %>
-                    </form>
+                    <% if (user) { %>
+                    <button type="submit" class="btn btn-primary btn-md">Add to Cart</button>
+                    <% } else { %>
+                    <a href="/signup" class="btn btn-warning btn-md">First Signup to buy</a>
+                    <% } %>
+                </form>
+
+                <br>
+
+                <div class="text-right">
+                    <a class="btn btn-primary" href="#reviews-anchor" id="open-review-box">Leave a Review</a>
+                </div>
+
+                <div class="row" id="post-review-box" style="display:none;">
+                    <div class="col-md-12">
+                        <form accept-charset="UTF-8" action="" method="post">
+                            <input id="ratings-hidden" name="rating" type="hidden">
+                            <textarea class="form-control animated" cols="50" id="new-review" name="comment"
+                                placeholder="Enter your review here..." rows="5"></textarea>
+
+                            <div class="text-right">
+                                <div class="stars starrr" data-rating="0"></div>
+                                <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">Cancel</a>
+                                <button class="btn btn-info btn-md" type="">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
+
+        </div>
+
     </div>
-</div> -->
+    <div class="row">
+        <h2>Product Specification</h2>
+        <div class="row">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-3 col-md-6 ">
+                        <strong>Name</strong>
+                    </div>
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= product.name %></strong>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3 col-md-6 ">
+                        <strong>Price</strong>
+                    </div>
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= product.price %></strong>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3 col-md-6 ">
+                        <strong>Brand</strong>
+                    </div>
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= product.brand %></strong>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3 col-md-6 ">
+                        <strong>Model</strong>
+                    </div>
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= product.model %></strong>
+                    </div>
+                </div>
+                <% for ( var i = 0; i < features.length; i++) { %>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= features[i].label %></strong>
+                    </div>
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= features[i].value %></strong>
+                    </div>
+                </div>
+                <% } %>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3 col-md-6 ">
+                        <strong>Stock</strong>
+                    </div>
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= product.meta.stock %></strong>
+                    </div>
+                </div>
+            </li>
+        </div>
+    </div>
+</div>
