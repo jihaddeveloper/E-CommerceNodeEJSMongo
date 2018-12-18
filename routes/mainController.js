@@ -6,6 +6,7 @@ var Cart = require('../models/cart');
 var Review = require('../models/review');
 const User = require('../models/user');
 
+
 const stripe = require('stripe')('sk_test_v6upa8MEdWolNaz3cThw8uoT');
 
 
@@ -41,13 +42,17 @@ stream.on('err',function() {
 //Pagination function
 function paginate(req, res, next){
     //Paginate product page
-    var perPage = 9;
+    var perPage = 6;
     var page = req.params.page;
 
     Product.find()
     .skip( perPage*page-page )
     .limit( perPage )
-    .populate('category')
+    .populate({
+        path:"subcategory",
+        populate:{path:"category"}
+    })
+    .populate('brand')
     .exec(function(err, products){
         if(err) return next(err);
         Product.count().exec(function(err, count){
@@ -74,21 +79,78 @@ router.get('/about', function(req, res, next){
     res.render('main/about');
 });
 
-// Categorywise Products Route page
+// Category wise Products Route page
 router.get('/products/:id', function(req, res, next){
     Product
-    .find({ category: req.params.id })
-    .populate('category')
+    .find({})
+    .populate({
+        path:"subcategory",
+        populate:{path:"category"}
+    })
+    .populate('brand')
     .exec(function(err, products){
+        var Arr=[];
+        for(var i = 0; i < products.length; i++){
+            if(products[i].subcategory.category._id == req.params.id){
+                Arr.push(products[i]);
+            }
+        }
         if(err) return next(err);
-        res.render('main/category', { products: products });
+        res.render('main/category', { products: Arr });
+    }); 
+});
+
+
+// SubCategory wise Products Route page
+router.get('/products/subCategories/:id', function(req, res, next){
+    Product
+    .find({})
+    .populate({
+        path:"subcategory",
+        populate:{path:"category"}
+    })
+    .populate('brand')
+    .exec(function(err, products){
+        var Arr=[];
+        for(var i = 0; i < products.length; i++){
+            if(products[i].subcategory._id == req.params.id){
+                Arr.push(products[i]);
+            }
+        }
+        if(err) return next(err);
+        res.render('main/category', { products: Arr });
+    }); 
+});
+
+// Brand wise Products Route page
+router.get('/products/brands/:id', function(req, res, next){
+    Product
+    .find({})
+    .populate({
+        path:"subcategory",
+        populate:{path:"category"}
+    })
+    .populate('brand')
+    .exec(function(err, products){
+        var Arr=[];
+        for(var i = 0; i < products.length; i++){
+            if(products[i].brand._id == req.params.id){
+                Arr.push(products[i]);
+            }
+        }
+        if(err) return next(err);
+        res.render('main/category', { products: Arr });
     }); 
 });
 
 //Single product route
 router.get('/product/:id', function(req, res, next){
     Product.findOne({ _id: req.params.id })
-    .populate('category')
+    .populate({
+        path:"subcategory",
+        populate:{path:"category"}
+    })
+    .populate('brand')
     .populate('reviews.review')
     .exec(function(err, product){
         if(err) return next(err);
@@ -114,8 +176,14 @@ function escapeRegex(text) {
 router.get('/search', function(req, res, next){
     if(req.query.q){
         const regex = new RegExp(escapeRegex(req.query.q), 'gi');
-        Product.find({ "name": regex })
-        .populate('category')
+        Product.find({
+            $or:[{ "name": regex }]
+        })
+        .populate({
+            path:"subcategory",
+            populate:{path:"category"}
+        })
+        .populate('brand')
              .exec(function(err, results){
                  if(err) return next(err);
                  res.render('main/searchResult', {

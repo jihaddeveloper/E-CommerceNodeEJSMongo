@@ -53,7 +53,7 @@ $(function(){
 });
 
 
-//Cart product quantity inecrease
+//product quantity inecrease
 $(document).on('click', '#plus', function(e){
     e.preventDefault();
     var priceValue = parseFloat($('#priceValue').val());
@@ -68,7 +68,7 @@ $(document).on('click', '#plus', function(e){
 });
 
 
-//Cart product quantity  decrease
+//product quantity  decrease
 $(document).on('click', '#minus', function(e){
     e.preventDefault();
     var priceValue = parseFloat($('#priceValue').val());

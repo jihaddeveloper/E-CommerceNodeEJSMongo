@@ -25,3 +25,17 @@
 
 
       <script src="/js/custom.js"></script>
+
+      <!-- For Password Matching -->
+      <script>
+        var check = function() {
+         if (document.getElementById('password').value ==
+           document.getElementById('confirm_password').value) {
+           document.getElementById('message').style.color = 'green';
+           document.getElementById('message').innerHTML = 'Password Matched';
+         } else {
+           document.getElementById('message').style.color = 'red';
+           document.getElementById('message').innerHTML = 'Password Not Matched !!';
+         }
+        }
+      </script>

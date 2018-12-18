@@ -42,10 +42,15 @@
                             <%= products[i].name %>
                         </h3>
                         <p>
-                            <%= products[i].category.name %>
+                            <%= products[i].subcategory.category.name %>
                         </p>
+                        <p>
+                            <%= products[i].subcategory.name %>
+                        </p>
+                        <p><%= products[i].brand.name %></p>
                         <p>$
-                            <%= products[i].price %>.00</p>
+                            <%= products[i].productPrice.salePrice %>.00
+                        </p>
                     </div>
                     <% if (user) { %>
                     <input type="hidden" name="product_id" id="product_id" value="<%= products[i]._id %>">
@@ -57,7 +62,7 @@
                     <a href="/signup" class="btn btn-primary btn-md">Add to Cart</a>
                     <% } %>
                     <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>"> Details</a>
-                </div>
+            </div>
                 
             
         </div>

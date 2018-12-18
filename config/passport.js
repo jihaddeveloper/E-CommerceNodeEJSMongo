@@ -33,6 +33,9 @@ passport.use('local-login', new LocalStrategy({
         if(!user.comparePassword(password)) {
             return done(null, false, req.flash('loginMessage', 'Wrong password !!'))
         }
+        if(!user.isActive) {
+            return done(null, false, req.flash('loginMessage', 'You need to verify email first !!'))
+        }
         return done(null, user);
     });
 }));

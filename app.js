@@ -9,11 +9,24 @@ const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
+const path = require('path');
 
 
 const secret = require('./config/secret');
-var Category = require('./models/category');
 var cartLength = require('./middlewares/cartLengthMiddleware');
+
+//Models
+var Category = require('./models/category');
+var SubCategory = require('./models/subCategory');
+var Brand = require('./models/brand');
+var Order = require('./models/order');
+var Review = require('./models/review');
+var Tax = require('./models/tax');
+var User = require('./models/user');
+var Cart = require('./models/cart');
+var Product = require('./models/product');
+var OfferDiscount = require('./models/offerDiscount');
+var PaymentMethod = require('./models/paymentMethod');
 
 const app = express();
 
@@ -33,17 +46,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
-    resave: true,
-    saveUninitialized: true,
+    cookie: { maxAge: 30*60000 },
+    resave: false,
+    saveUninitialized: false,
     secret: secret.secretKey,
     store: new MongoStore({ url: secret.database, autoReconnect: true })
 }));
+
+//Flash Masseges
 app.use(flash());
+
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 
-//User session
+//View engine
+app.set('views', path.join(__dirname, 'views'));
+app.engine('ejs', ejsMate);
+app.set('view engine', 'ejs');
+
+
+
+//User 
 app.use(function(req, res, next){
     res.locals.user = req.user;
     next();
@@ -61,9 +87,27 @@ app.use(function(req, res, next){
     });
 });
 
-//View engine
-app.engine('ejs', ejsMate);
-app.set('view engine', 'ejs');
+//SubCategory load
+app.use(function(req, res, next){
+    SubCategory.find({}, function(err, subCategories){
+        if(err) return next(err);
+        res.locals.subCategories = subCategories;
+        next();
+    });
+});
+
+//Brand load
+app.use(function(req, res, next){
+    Brand.find({}, function(err, brands){
+        if(err) return next(err);
+        res.locals.brands = brands;
+        next();
+    });
+});
+
+
+
+
 
 
 //Controllers Import

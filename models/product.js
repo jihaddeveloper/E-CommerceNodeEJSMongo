@@ -6,25 +6,35 @@ const nested = require('nested');
 const Category = require('../models/category');
 const User = require('../models/user');
 const deepPopulate = require('mongoose-deep-populate')(mongoose);
+const SubCategory = require('../models/subCategory');
 
 var ProductSchema = new Schema({
+
+    subcategory: { type: Schema.Types.ObjectId, ref: 'SubCategory' },
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
     name: { type: String },
-    price: Number,
     image: String,
     description: { type: String, default: ''},
-    owner: { type: Schema.Types.ObjectId, ref: 'User' },
+    owner: { type: Schema.Types.ObjectId, ref: 'users' },
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
-    quantity: Number,
-    brand: { type: String, required: false },
     model: { type: String, required: false },
     warranty: { type: String, required: false },
     pinned: { type: String, required: false },
     home: { type: String, required: false },
     features: { type: Array, required: false },
-    meta:{
-        stock:{type: Number, required: false}
-      },
+    brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
+    quantity: {
+        stock: { type: Number, default: ''},
+        storeLive: { type: Number, default: '' }
+    },
+    productPrice: {
+        listPrice: { type: Number},
+        salePrice: { type: Number},
+        wholeSalePrice: { type: Number}
+    },
+    isActive: Boolean,
+    onSale: Boolean,
+    shippingInfo: {type:String},
     created: { type: Date, default: Date.now }
     //toObject: { virtuals: true },
     //toJSON: { virtuals: true }

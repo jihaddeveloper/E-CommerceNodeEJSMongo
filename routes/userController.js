@@ -8,7 +8,11 @@ const secretConfig = require('../config/secret');
 const Product = require('../models/product');
 const Category = require('../models/category');
 const Review = require('../models/review');
+const Joi = require('joi');
+const randomString = require('randomstring');
 
+//Mail Sender
+const mailer = require('../misc/mailer');
 
 //Profile page
 router.get('/profile', passportConfig.isAuthenticated, function(req, res, next){
@@ -19,6 +23,16 @@ router.get('/profile', passportConfig.isAuthenticated, function(req, res, next){
         res.render('accounts/profile', { user: user });
     });
 });
+
+
+//validation schema
+ 
+const userSchema = Joi.object().keys({
+    email: Joi.string().email().required(),
+    name: Joi.string().required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9]{6,30}$/).required(),
+    confirmationPassword: Joi.any().valid(Joi.ref('password')).required()
+  })
 
 //User signup form
 router.get('/signup', function(req, res, next){
@@ -33,15 +47,7 @@ router.post('/signup', function(req, res, next){
 
         function(callback){
 
-            // if (req.body.password2 != req.body.password) {
-            //     req.flash( 'errors', 'Passwords do not match' );
-            //   }
             
-            // if (req.body.password.length < 6) {
-            //     req.flash( 'errors', 'Password must be at least 6 characters' );
-            //     }
-
-            var user = new User();
             var bool;
             if(req.body.isSeller === "on"){
                 bool = true;
@@ -49,19 +55,63 @@ router.post('/signup', function(req, res, next){
             else{
                 bool = false;
             }
-            user.profile.name = req.body.name;
-            user.email = req.body.email;
-            user.isSeller = bool;
-            user.password = req.body.password;
-            user.profile.picture = user.gravatar();
         
             User.findOne({ email: req.body.email }, function(err, existingUser){
                 if(existingUser){
                     req.flash('errors', 'Account with that eamil address already exists');
                     return res.redirect('/signup');
-                }else{
+                }
+                else if(req.body.password2 != req.body.password){
+                    req.flash( 'errors', 'Passwords do not match' );
+                    return res.redirect('/signup');
+                }else if(req.body.password.length < 6){
+                    req.flash( 'errors', 'Password must between 6 to 20 characters' );
+                    return res.redirect('/signup');
+                }
+                else{
+
+                    //Secret Token
+                    const newSecretToken = randomString.generate();
+
+                    var user = new User();
+
+                    user.name = req.body.name;
+                    user.profile.name = req.body.name;
+                    user.email = req.body.email;
+                    user.password = req.body.password;
+                    user.contact = req.body.contact;
+                    user.profile.picture = user.gravatar();
+                    user.isSeller = bool;
+
+                    user.secretToken = newSecretToken;
+
+                    user.isActive = false;
+
                     user.save(function(err, user){
+                        
                         if(err) return next(err);
+
+                        //Mail body
+                        const html = `Hello,
+                        <br/>
+                        Thank you for regestring ....
+                        <br/>
+                        <br/>
+                        Now, please verify your eamil by typing the following token:
+                        <br/>
+                        Token: <b>${ user.secretToken }<b/>
+                        <br/>
+                        Clicking on the following page:
+                        <a href="http://localhost:3000/verify">http://localhost:3000/verify<a/>
+                        <br/>
+                        <br/>
+                        Good Day.... `;
+
+                        //Mail sending
+                        mailer.sendEmail('"Md Jihad Hossain" <devtestjihad@gmail.com>', user.email, 'Email Verification', html);
+
+                        res.render('accounts/verify', { message: 'Successfully account created, now check your eamil and verify to login', errors: '' });
+
                         callback(null, user);
                     });
                 }
@@ -73,10 +123,10 @@ router.post('/signup', function(req, res, next){
             cart.owner = user._id;
             cart.save(function(err){
                 if(err) return next(err);
-                req.logIn(user, function(err){
-                    if(err) return next(err);
-                    res.redirect('/profile');
-                });
+                // req.logIn(user, function(err){
+                //     if(err) return next(err);
+                //     req.logout();
+                // });
             });
         }
 
@@ -84,10 +134,36 @@ router.post('/signup', function(req, res, next){
     
 });
 
+//User email token verify
+router.get('/verify', function(req, res, next){
+    res.render('accounts/verify', { message: '', errors: '' });
+});
+
+router.post('/verify', async(req, res, next)=>{
+
+    try{
+        const secretToken = req.body.secretToken;
+
+    const user = await User.findOne({ 'secretToken': secretToken.trim() });
+
+    if(!user){
+        return res.render('accounts/verify', { message: '', errors: 'No User found' });
+    }
+
+    user.isActive = true;
+    user.secretToken = '';
+    await user.save();
+
+    res.render('accounts/login', { message: 'Successful, now you may login', errors: '' });
+    }catch(error){
+        next(error);
+    }
+});
+
 //User login form
 router.get('/login', function(req, res, next){
     if(req.user) return res.redirect('/');
-    res.render('accounts/login', { message: req.flash('loginMessage') });
+    res.render('accounts/login', { message: req.flash('loginMessage'), errors: '' });
 });
 
 //User login

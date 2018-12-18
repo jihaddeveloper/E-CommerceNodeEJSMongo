@@ -2,11 +2,19 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const Schema = mongoose.Schema;
 const crypto = require('crypto');
+const Joi = require('joi');
 
 //Schema
 var UserSchema = new Schema({
+
+    created: { type: Date, default: Date.now },
+    
     email: { type: String, unique: true, loadClass: true },
-    password: String,
+    password: { type: String, min:6, max: 20},
+    name: { type: String, default: '' },
+    contact: { type: String, default: '' },
+    secretToken: { type: String },
+    isActive: Boolean,
 
     facebook: String,
     tokens: Array,
@@ -15,7 +23,6 @@ var UserSchema = new Schema({
         name: { type: String, default: '' },
         picture: { type: String, default: ''}
     },
-    contact: { type: String, default: '' },
     address: {
         address1: { type: String, default: '' },
         address2: { type: String, default: '' }, 
@@ -43,16 +50,16 @@ var UserSchema = new Schema({
         shippingAddressStreet: { type: String, default: '' },
         shippingAddressArea: { type: String, default: '' },
         shippingAddressCity: { type: String, default: '' },
+        shippingAddressDistrict: { type: String, default: '' },
         shippingAddressCountry: { type: String, default: '' },
         shippingAddressPostalCode: { type: String, default: '' },
         shippingAddressPhone: { type: String, default: '' }
     },
 
     shippingAddressSameAsbillingAddress: Boolean,
-    //oreders
+    
+    orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
     history: [{
-        paid: { type:Number, default:0 },
-        item: { type: Schema.Types.ObjectId, ref: 'Product' },
         invoiceNumber: {},
         paymentMethod: {},
         cardHolderName:{},
@@ -64,11 +71,17 @@ var UserSchema = new Schema({
         promoCodes: [{}],
         paymentTransactionId: {},
         finalGrandTotal: {},
+
+        //Previous
+        paid: { type:Number, default:0 },
+        item: { type: Schema.Types.ObjectId, ref: 'Product' },
         created: { type: Date, default: Date.now }
     }],
+    viewHistory: { type: Schema.Types.ObjectId, ref: 'Product' },
+    cardHolderName: { type: String, default: '' },
+    creditCardLast4Digits: { type: String, default: '' },
     status: Boolean,
-    isSeller: Boolean,
-    created: { type: Date, default: Date.now }
+    isSeller: Boolean
 });
 
 //Password Hashing
