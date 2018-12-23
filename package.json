@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jihaddeveloper/E-CommerceNodeEJSMongo#readme",
   "dependencies": {
+    "array-unique": "^0.3.2",
     "async": "^2.6.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
