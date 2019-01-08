@@ -58,26 +58,14 @@ var UserSchema = new Schema({
 
     shippingAddressSameAsbillingAddress: Boolean,
     
-    orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
-    history: [{
-        invoiceNumber: {},
-        paymentMethod: {},
-        cardHolderName:{},
-        creditCardLast4Digits: {},
-        notes: {},
-        shippingMethods: {},
-        shippingFees: {},
-        taxes: [{}],
-        promoCodes: [{}],
-        paymentTransactionId: {},
-        finalGrandTotal: {},
 
-        //Previous
+    history: [{
         paid: { type:Number, default:0 },
         item: { type: Schema.Types.ObjectId, ref: 'Product' },
         created: { type: Date, default: Date.now }
     }],
-    viewHistory: { type: Schema.Types.ObjectId, ref: 'Product' },
+      
+    paymentMethod: { type: Schema.Types.ObjectId, ref: 'PaymentMethod' },
     cardHolderName: { type: String, default: '' },
     creditCardLast4Digits: { type: String, default: '' },
     status: Boolean,

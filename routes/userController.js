@@ -84,7 +84,6 @@ router.post('/signup', function(req, res, next){
                     user.isSeller = bool;
 
                     user.secretToken = newSecretToken;
-
                     user.isActive = false;
 
                     user.save(function(err, user){

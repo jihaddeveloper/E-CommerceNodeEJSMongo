@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 const path = require('path');
-
+const async = require('async');
 
 const secret = require('./config/secret');
 var cartLength = require('./middlewares/cartLengthMiddleware');
@@ -25,16 +25,17 @@ var Tax = require('./models/tax');
 var User = require('./models/user');
 var Cart = require('./models/cart');
 var Product = require('./models/product');
-var OfferDiscount = require('./models/offerDiscount');
+var Discount = require('./models/discount');
 var PaymentMethod = require('./models/paymentMethod');
+var Supplier = require('./models/supplier');
 
 const app = express();
 
 //MongoDB Connection
-mongoose.connect(secret.database, function(err){
-    if(err){
+mongoose.connect(secret.database, function (err) {
+    if (err) {
         console.log(err);
-    }else{
+    } else {
         console.log('Conntected to MongoDB');
     }
 });
@@ -43,14 +44,22 @@ mongoose.connect(secret.database, function(err){
 app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(cookieParser());
 app.use(session({
-    cookie: { maxAge: 30*60000 },
+    cookie: {
+        maxAge: 24 * 60 * 60000
+        // hours*mins*miliseconds
+    },
     resave: false,
     saveUninitialized: false,
     secret: secret.secretKey,
-    store: new MongoStore({ url: secret.database, autoReconnect: true })
+    store: new MongoStore({
+        url: secret.database,
+        autoReconnect: true
+    })
 }));
 
 //Flash Masseges
@@ -70,7 +79,7 @@ app.set('view engine', 'ejs');
 
 
 //User 
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
     res.locals.user = req.user;
     next();
 });
@@ -78,28 +87,66 @@ app.use(function(req, res, next){
 //Cart length
 app.use(cartLength);
 
+
+
+
 //Category load
-app.use(function(req, res, next){
-    Category.find({}, function(err, categories){
-        if(err) return next(err);
-        res.locals.categories = categories;
+app.use(function (req, res, next) {
+    var sub_arr = [];
+    Category.find({}, function (err, categories) {
+        if (err) return next(err);
+        var cat=[];
+        
+        var count=1;
+        var pro = new Promise(function (resolve, reject) {
+            categories.map((rs) => {
+                var arr = [];
+                
+                SubCategory.find({
+                    category: rs._id
+                }, function (err, docs) {
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        cat.push(rs)
+                        docs.map((result) => {
+                            arr.push({
+                                name: result.name,
+                                id: result._id
+                            })
+                        })
+                    }
+                    sub_arr.push(arr);
+                    if(sub_arr.length === categories.length){
+                        resolve()
+                    }
+                })
+               
+            })
+            
+        })
+        pro.then(() => {
+            res.locals.S_categories = sub_arr;
+            res.locals.categories = cat;
+        })
         next();
     });
 });
 
+
 //SubCategory load
-app.use(function(req, res, next){
-    SubCategory.find({}, function(err, subCategories){
-        if(err) return next(err);
+app.use(function (req, res, next) {
+    SubCategory.find({}, function (err, subCategories) {
+        if (err) return next(err);
         res.locals.subCategories = subCategories;
         next();
     });
 });
 
 //Brand load
-app.use(function(req, res, next){
-    Brand.find({}, function(err, brands){
-        if(err) return next(err);
+app.use(function (req, res, next) {
+    Brand.find({}, function (err, brands) {
+        if (err) return next(err);
         res.locals.brands = brands;
         next();
     });
@@ -124,7 +171,7 @@ app.use(adminCon);
 app.use('/api', apiCon);
 
 
-app.listen(secret.port, function(err){
-    if(err) throw err;
+app.listen(secret.port, function (err) {
+    if (err) throw err;
     console.log('Server is Running on http://127.0.0.1:3000/');
 })

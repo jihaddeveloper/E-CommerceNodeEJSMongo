@@ -10,32 +10,39 @@ const SubCategory = require('../models/subCategory');
 
 var ProductSchema = new Schema({
 
-    subcategory: { type: Schema.Types.ObjectId, ref: 'SubCategory' },
-    category: { type: Schema.Types.ObjectId, ref: 'Category' },
+    created: { type: Date, default: Date.now },
+    serial: { type: String, default: '' },
     name: { type: String },
+    
+    //for proper searching
+    categoryName: { type: String, default: '' },
+    subCategoryName: { type: String, default: '' },
+    brandName: { type: String, default: '' },
+
+    category: { type: Schema.Types.ObjectId, ref: 'Category' },
+    subcategory: { type: Schema.Types.ObjectId, ref: 'SubCategory' },
+    brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
     image: String,
-    description: { type: String, default: ''},
-    owner: { type: Schema.Types.ObjectId, ref: 'users' },
-    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     model: { type: String, required: false },
     warranty: { type: String, required: false },
-    pinned: { type: String, required: false },
-    home: { type: String, required: false },
     features: { type: Array, required: false },
-    brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
     quantity: {
         stock: { type: Number, default: ''},
         storeLive: { type: Number, default: '' }
     },
     productPrice: {
         listPrice: { type: Number},
-        salePrice: { type: Number},
-        wholeSalePrice: { type: Number}
+        purchasePrice: { type: Number}
     },
+    discount: { type: Schema.Types.ObjectId, ref: 'Discount' },
     isActive: Boolean,
-    onSale: Boolean,
-    shippingInfo: {type:String},
-    created: { type: Date, default: Date.now }
+    shippingInfo: {type:String, default: ''},
+    description: { type: String, default: ''},
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+    supplier: {},
+    uploader: {},
+    //pinned: { type: String, required: false },
+    //home: { type: String, required: false },
     //toObject: { virtuals: true },
     //toJSON: { virtuals: true }
 });
@@ -65,10 +72,10 @@ ProductSchema.plugin(deepPopulate);
 //     ]
 // });
 
-ProductSchema.plugin(mongoosastic);
+
 
 //Mongosastic plugin
-
+ProductSchema.plugin(mongoosastic);
 
 
 module.exports = mongoose.model('Product', ProductSchema, 'products');

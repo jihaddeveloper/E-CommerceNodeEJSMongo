@@ -6,15 +6,16 @@ var Cart = require('../models/cart');
 var Review = require('../models/review');
 const User = require('../models/user');
 
+const Order = require('../models/order');
+
 //Product Filtering
 var unique = require("array-unique");
 
-
+//For Stripe payment
 const stripe = require('stripe')('sk_test_v6upa8MEdWolNaz3cThw8uoT');
 
 
-//Product mapping
-
+//Product synchronize and indexing
 var stream = Product.synchronize();
 var count = 0;
 
@@ -30,16 +31,6 @@ stream.on('close', function () {
 stream.on('err', function () {
     console.log(err);
 })
-
-// Product.createMapping(function(err, mapping){
-//     if(err) {
-//         console.log('Error in creating mapping');
-//         console.log(err);
-//     }else {
-//         console.log('Mapping created');
-//         console.log(mapping);
-//     }
-// });
 
 
 //Pagination function
@@ -141,6 +132,7 @@ function categoryfilterpage(req, res, obj){
         .populate('brand')
         .populate('subcategory.category')
         .exec(function (err,docs) {
+
             if (err) {
                 res.send(err);
             } else {
@@ -172,7 +164,6 @@ function categoryfilterpage(req, res, obj){
 
 //Categorywise Products load
 router.get('/products/:id', function (req, res, next) {
-
     var obj= {category: req.params.id };
     categoryfilterpage(req, res, obj);
 });
@@ -352,9 +343,11 @@ function subCategoryFilterPage(req, res, obj){
         .populate('brand')
         .populate('subcategory.category')
         .exec(function (err,docs) {
+
             if (err) {
                 res.send(err);
             } else {
+                
                 for (var i = 0; i < docs.length; i++) {
                     for (var j = 0; j < docs[i].features.length; j++) {
                         array.push(docs[i].features[j].label);
@@ -755,6 +748,7 @@ router.post('/products/brands/filter/:id', (req, res, next) => {
 
 //Single product load
 router.get('/product/:id', function (req, res, next) {
+  
     Product.findOne({
             _id: req.params.id
         })
@@ -795,9 +789,14 @@ router.get('/search', function (req, res, next) {
     if (req.query.q) {
         const regex = new RegExp(escapeRegex(req.query.q), 'gi');
         Product.find({
-                $or: [{
-                    "name": regex
-                }]
+                $or: [ 
+                    { "name": regex },
+                    { "categoryName": regex },
+                    { "subCategoryName": regex },
+                    { "brandName": regex },
+                    { "model": regex },
+                    { "description": regex }
+            ],
             })
             .populate({
                 path: "subcategory",
@@ -939,10 +938,11 @@ router.post('/payment', function (req, res, next) {
                 });
             },
             function (cart, callback) {
-                User.findOne({
-                    _id: req.user._id
-                }, function (err, user) {
+                
+                User.findOne({ _id: req.user._id }, 
+                    function (err, user) {
                     if (user) {
+                       
                         for (var i = 0; i < cart.items.length; i++) {
                             user.history.push({
                                 item: cart.items[i].item,
@@ -952,6 +952,23 @@ router.post('/payment', function (req, res, next) {
                         user.save(function (err, user) {
                             if (err) return next(err);
                             callback(err, user);
+                        });
+
+
+                        //Order Saving
+                        var newOrder = new Order();
+
+                        newOrder.owner = req.user._id;
+                        newOrder.paid = req.body.grandTotalPrice;
+
+                        for (var i = 0; i < cart.items.length; i++) {
+                            newOrder.items.push({
+                                item: cart.items[i].item,
+                                paid: cart.items[i].price
+                            });
+                        }
+                        newOrder.save(function(err,order){
+                            if(err) return next(err);
                         });
                     }
                 });

@@ -11,4 +11,4 @@ var CartSchema = new Schema({
     total: { type: Number, default: 0 }
 });
 
-module.exports = mongoose.model('Cart', CartSchema, 'carts');
+module.exports = mongoose.model('Cart', CartSchema, 'carts');        

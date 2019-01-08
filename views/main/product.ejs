@@ -3,9 +3,6 @@
 <div class="container">
     <!-- Portfolio Item Row -->
     <div class="row">
-        <h1>Product Filtering</h1>
-    </div>
-    <div class="row">
         <div class="col-md-6">
             <img class="img-fluid img-responsive" src="data:image/png;base64, <%= product.image %>" style="width:450px;">
         </div>
@@ -17,14 +14,17 @@
                         <%= product.name %>
                     </strong>
                 </h3>
-                <h4>
+                <h4><b>Category Name: </b>
                     <%= product.subcategory.category.name %>
                 </h4>
-                <h4>
+                <h4><b>Subcategory Name: </b>
                     <%= product.subcategory.name %>
                 </h4>
-                <h4>$
-                    <%= product.productPrice.salePrice %>.00
+                <h4><b>Unite Price: </b>
+                    $<%= product.productPrice.listPrice %>.00
+                </h4>
+                <h4><b>Description: </b>
+                    <%= product.description %>
                 </h4>
 
                 <form method="POST" action="/product/'+ product_id">
@@ -39,18 +39,18 @@
 
                     <div class="form-group">
                         <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
-                        <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.productPrice.salePrice %>">
+                        <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.productPrice.listPrice %>">
 
                         <!-- <p class="form-control" name="item" id="item"><%= product.name %></p>
                     <p class="form-control" name="priceValue" id="priceValue"><%= product.price %></p> -->
                         <p><input type="" class="form-control" readonly name="item" id="item" value="<%= product.name %>"></p>
-                        <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.productPrice.salePrice %>"></p>
+                        <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.productPrice.listPrice %>"></p>
                     </div>
 
                     <% if (user) { %>
                     <button type="submit" class="btn btn-primary btn-md">Add to Cart</button>
                     <% } else { %>
-                    <a href="/signup" class="btn btn-primary btn-md">Add to Cart</a>
+                    <a href="/login" class="btn btn-primary btn-md">Add to Cart</a>
                     <% } %>
                 </form>
 
@@ -101,7 +101,7 @@
                     </div>
                     <div class="col-md-3 col-md-6">
                         <strong>
-                            <%= product.productPrice.salePrice %></strong>
+                            <%= product.productPrice.listPrice %></strong>
                     </div>
                 </div>
                 <hr>
@@ -137,16 +137,6 @@
                     </div>
                 </div>
                 <% } %>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3 col-md-6 ">
-                        <strong>Stock</strong>
-                    </div>
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= product.quantity.stock %></strong>
-                    </div>
-                </div>
             </li>
         </div>
     </div>

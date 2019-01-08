@@ -8,6 +8,7 @@ var OrderSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    orderNumber: { type: String, default: '' },
     invoiceNumber: { type: String, default: '' },
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
     paid: {
@@ -15,8 +16,9 @@ var OrderSchema = new Schema({
         default: 0
     },
     items: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Product'
+        item: { type: Schema.Types.ObjectId, ref: 'Product' },
+        quantity: { type: Number, default: 1 },
+        price: { type: Number, default: 0}
     }],
     
     paymentMethod: { type: String, default: '' },
