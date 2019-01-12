@@ -9,14 +9,14 @@ module.exports = function(req, res, next){
                 for( var i = 0; i < cart.items.length; i++){
                     total += cart.items[i].quantity;
                 }
-                res.locals.cart = total;
+                res.locals.cartItems = total;
             }else{
-                res.locals.cart = 0;
+                res.locals.cartItems = 0;
             }
             next();
         })
     }else{
-        res.locals.cart = 0;
+        res.locals.cartItems = 0;
         next();
     }
 }

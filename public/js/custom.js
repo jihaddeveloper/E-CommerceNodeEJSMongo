@@ -1,7 +1,5 @@
 
 $(function(){
-
-    
     // Elastic Search ajax
     $('#search').keyup(function(){
 
@@ -135,7 +133,7 @@ function stripeResponseHandler(status, response) {
         return false;
     });
 });
-
+//Stripe Payment
 
 
 // review

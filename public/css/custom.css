@@ -16,7 +16,11 @@ body {
 }
 
 
-/* //multilevel dropdown */
+/* new multilevel dropdown */
+/*
+* Custom code to make submenus is Bootstrap 3
+* http://bootsnipp.com/snippets/6N5B
+*/
 .dropdown-submenu {
     position: relative;
 }
@@ -54,13 +58,29 @@ body {
 }
 
 .dropdown-submenu.pull-left {
+
     float: none;
+    clear: both;
+    /*display:block;*/
 }
 
-.dropdown-submenu.pull-left>.dropdown-menu {
-    left: -100%;
+.dropdown-submenu.pull-left1>.dropdown-menu {
+    left:-300px;
     margin-left: 10px;
+
     -webkit-border-radius: 6px 0 6px 6px;
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
+
 }
+
+.dropdown-submenu.pull-left2>.dropdown-menu {
+    left:-230px;
+    margin-left: 10px;
+
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+
+}
+/* new multilevel dropdown */

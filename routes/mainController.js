@@ -164,6 +164,9 @@ function categoryfilterpage(req, res, obj){
 
 //Categorywise Products load
 router.get('/products/:id', function (req, res, next) {
+
+    req.session.returnTo = req.originalUrl;
+
     var obj= {category: req.params.id };
     categoryfilterpage(req, res, obj);
 });
@@ -375,6 +378,8 @@ function subCategoryFilterPage(req, res, obj){
 
 //SubCategory wise Products load
 router.get('/products/subCategory/:id', function (req, res, next) {
+
+    req.session.returnTo = req.originalUrl;
     
     var obj= {subcategory: req.params.id };
     subCategoryFilterPage(req, res, obj)
@@ -586,6 +591,9 @@ function brandFilterPage(req, res, obj){
 
 // Brand wise Products load
 router.get('/products/brands/:id', function (req, res, next) {
+
+    req.session.returnTo = req.originalUrl;
+
     var obj= {brand: req.params.id };
     brandFilterPage(req, res, obj)
 });
@@ -749,6 +757,8 @@ router.post('/products/brands/filter/:id', (req, res, next) => {
 //Single product load
 router.get('/product/:id', function (req, res, next) {
   
+    req.session.returnTo = req.originalUrl;
+    
     Product.findOne({
             _id: req.params.id
         })
@@ -763,7 +773,6 @@ router.get('/product/:id', function (req, res, next) {
         .exec(function (err, product) {
 
             if (err) return next(err);
-            
             res.render('main/product', {
                 product: product,
                 features: product.features

@@ -12,6 +12,10 @@ const passport = require('passport');
 const path = require('path');
 const async = require('async');
 
+const app = express();
+
+
+
 const secret = require('./config/secret');
 var cartLength = require('./middlewares/cartLengthMiddleware');
 
@@ -29,7 +33,7 @@ var Discount = require('./models/discount');
 var PaymentMethod = require('./models/paymentMethod');
 var Supplier = require('./models/supplier');
 
-const app = express();
+
 
 //MongoDB Connection
 mongoose.connect(secret.database, function (err) {
@@ -48,6 +52,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(cookieParser());
+
+//Session Configuration
 app.use(session({
     cookie: {
         maxAge: 24 * 60 * 60000
@@ -62,11 +68,17 @@ app.use(session({
     })
 }));
 
+//Make Seesion avaiable to every page
+app.use(function(req, res, next){
+    res.locals.session = req.session;
+    next();
+});
+
 //Flash Masseges
 app.use(flash());
 
 
-
+//Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -90,10 +102,10 @@ app.use(cartLength);
 
 
 
-//Category load
+//Category and SubCategory load
 app.use(function (req, res, next) {
     var sub_arr = [];
-    Category.find({}, function (err, categories) {
+    Category.find().sort({created: -1}).exec(function (err, categories) {
         if (err) return next(err);
         var cat=[];
         
@@ -152,9 +164,26 @@ app.use(function (req, res, next) {
     });
 });
 
-
-
-
+//Cart Items Modal view
+app.use(function (req, res, next) {
+    if(req.user){
+        var id = req.user._id;
+        Cart.findOne({
+            owner: id
+        })
+        .populate('items.item')
+        .exec(function (err, userCart) {
+            if (err) return next(err);
+            res.locals.userCart = userCart;
+            res.locals.userCartTotalAmount = userCart.total;
+            next();
+        });    
+    }else{
+        res.locals.userCart = null;
+        res.locals.userCartTotalAmount = 0;
+        next();
+    }
+});
 
 
 //Controllers Import

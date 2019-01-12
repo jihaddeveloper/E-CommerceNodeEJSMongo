@@ -166,15 +166,20 @@ router.get('/login', function(req, res, next){
 });
 
 //User login
-router.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/profile',
-    failureRedirect: '/login',
-    failureFlash: true
-}));
+router.post('/login',
+    passport.authenticate('local-login', {  
+        // successRedirect: '/profile',
+        failureRedirect: '/login',
+        failureFlash: true
+    }), function(req, res, next){
+        res.redirect(req.session.returnTo || '/profile');
+        delete req.session.returnTo;
+});
 
 //User logout
 router.get('/logout', function(req, res, next) {
     req.logout();
+    delete req.session.returnTo;
     res.redirect('/');
 });
 
