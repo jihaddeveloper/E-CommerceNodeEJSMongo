@@ -8,6 +8,9 @@ const User = require('../models/user');
 
 const Order = require('../models/order');
 
+//SessionCart Model
+var SessionCart = require('../models/sessionCart');
+
 //Product Filtering
 var unique = require("array-unique");
 
@@ -174,6 +177,9 @@ router.get('/products/:id', function (req, res, next) {
 
 //Categorywise Products filtering
 router.post('/products/category/filter/:id', (req, res, next) => {
+
+    req.session.returnTo = req.originalUrl;
+
     var num1 = req.body.number;
     var sr = [];
 
@@ -389,6 +395,8 @@ router.get('/products/subCategory/:id', function (req, res, next) {
 //Subcategorywise Products filtering.
 router.post('/products/subCategory/filter/:id', (req, res, next) => {
     
+    req.session.returnTo = req.originalUrl;
+
     var num1 = req.body.number;
     var sr = [];
 
@@ -590,7 +598,7 @@ function brandFilterPage(req, res, obj){
 
 
 // Brand wise Products load
-router.get('/products/brands/:id', function (req, res, next) {
+router.get('/products/brand/:id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
 
@@ -601,6 +609,9 @@ router.get('/products/brands/:id', function (req, res, next) {
 
 //Brand wise Products filtering
 router.post('/products/brands/filter/:id', (req, res, next) => {
+
+    req.session.returnTo = req.originalUrl;
+
     var num1 = req.body.number;
     var sr = [];
 
@@ -751,14 +762,11 @@ router.post('/products/brands/filter/:id', (req, res, next) => {
 
 });
 
-
-
-
 //Single product load
 router.get('/product/:id', function (req, res, next) {
-  
+
     req.session.returnTo = req.originalUrl;
-    
+
     Product.findOne({
             _id: req.params.id
         })
@@ -880,6 +888,44 @@ router.post('/remove', function (req, res, next) {
 });
 
 
+//Add to SessionCart 
+router.get('/add-to-cart/:id', function(req, res, next){
+    var productId = req.params.id;
+    var sessionCart = new SessionCart(req.session.sessionCart ? req.session.sessionCart: {});
+
+    Product.findById(productId, function(err, product){
+        if(err) {
+            return res.redirect('/');
+        }
+        sessionCart.add(product, product.id);
+        req.session.sessionCart = sessionCart;
+        console.log(req.session.sessionCart);
+        res.redirect('/product/'+productId);
+    });
+});
+
+
+//Shopping cart view
+router.get('/shopping-cart', function(req, res, next){
+    if(!req.session.sessionCart){
+        return res.render('main/shoppingCart', { products: null });
+    }else{
+        var sessionCart = new SessionCart(req.session.sessionCart);
+        var products = sessionCart.generateArray();
+        res.render('main/shoppingCart', { products, totalPrice: sessionCart.totalPrice } );
+    }
+
+});
+
+//Procced to checkout
+router.get('/procced-checkout', function(req, res, next){
+    if(!req.session.sessionCart){
+        return res.redirect('/shopping-cart');
+    }
+    var cart = new SessionCart(req.session.sessionCart);
+    res.render('main/checkoutPage', {totalPrice: cart.totalPrice});
+});
+
 //Post review to product
 router.post('/add-review', passportConfig.isAuthenticated, function (req, res, next) {
     User.findOne({
@@ -911,6 +957,8 @@ router.post('/add-review', passportConfig.isAuthenticated, function (req, res, n
 
     });
 });
+
+
 
 //Payment Ready Page
 router.get('/paymentReady', function(req, res, next){

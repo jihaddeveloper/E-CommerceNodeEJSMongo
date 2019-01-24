@@ -2,8 +2,6 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h3 class="text-center"> Welcome here, Everest Computers Ltd.</h3>
-        <p class="text-center">Find all your desired computer related products from ECL.</p>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <form class="form-inline" method="POST" action="/search">
@@ -19,29 +17,9 @@
 
 <div class="container" style="width:100%; min-height: 700px">
             
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-3">
                 <h1><strong>Categories</strong></h1>
-                <div class="col-xs-6">
-                    <div class="dropdown">                
-                        <a id="dLabel" role="button" data-toggle="dropdown" class=" btn btn-sm btn-success" data-target="hash" href="hash" aria-expanded="true">Categories<span class="caret"></span></a>
-                        <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                            <% for(var i = 0; i < categories.length; i++) { %>
-                                <li class="dropdown-submenu pull-right1"><a tabindex="-1" href="/products/<%= categories[i].id %>"><%= categories[i].name %></a>
-                                    <ul class="dropdown-menu">
-                                        <% for(var j = 0; j < S_categories[i].length; j++) { %>
-                                            <li class="dropdown-submenu pull-right2"><a tabindex="-1" data-target="EMPLOYEE" href="/products/subCategory/<%= S_categories[i][j].id %>"><%= S_categories[i][j].name %></a>
-                                                <ul class="dropdown-menu pull-right2">
-                                                    <li><a href="#" data-list-option="all" data-func="list-functions">ABC Brand</a></li>
-                                                </ul>
-                                            </li>
-                                        <% } %>
-                                    </ul>
-                                </li>
-                            <% } %>
-                        </ul>
-                    </div>
-                </div>
         </div>
         <div class="col-md-6">
             <h1><strong>Promotion</strong></h1>
@@ -50,7 +28,7 @@
             <h1><strong>Cart View</strong></h1>
         </div>
         
-    </div>
+    </div> -->
     
     <div class="row" id="slidder">
             <h1><strong>Slidder</strong></h1>
@@ -92,6 +70,7 @@
     
     <div class="row" id="dealsOfDayProducts">
         <h1><strong>Today's Deals</strong></h1>
+        <% if( products ) { %>
         <% for ( var i = 0; i < products.length; i++ ) { %>
             <div class="col-md-4">
                     <div class="thumbnail">
@@ -101,12 +80,14 @@
                                 <%= products[i].name %>
                             </h3>
                             <p>
-                                <%= products[i].subcategory.category.name %>
+                                <%= products[i].categoryName %>
                             </p>
-                            <p>
-                                <%= products[i].subcategory.name %>
-                            </p>
-                            <p><%= products[i].brand.name %></p>
+                            <% if(products[i].subcategoryName) { %>
+                                <p>
+                                    <%= products[i].subcategoryName %>
+                                </p>
+                            <% } %>
+                            <p><%= products[i].brandName %></p>
                             <p>$
                                 <%= products[i].productPrice.listPrice %>.00
                             </p>
@@ -114,10 +95,12 @@
                         <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
                 </div> 
             </div>
+        <% } %>
         <% } %>
     </div>
     <div class="row" id="exclusiveProduct">
         <h1><strong>Exclusive Products</strong></h1>
+        <% if(products) { %>
         <% for ( var i = 0; i < products.length; i++ ) { %>
             <div class="col-md-4">
                     <div class="thumbnail">
@@ -127,12 +110,14 @@
                                 <%= products[i].name %>
                             </h3>
                             <p>
-                                <%= products[i].subcategory.category.name %>
+                                <%= products[i].categoryName %>
                             </p>
-                            <p>
-                                <%= products[i].subcategory.name %>
-                            </p>
-                            <p><%= products[i].brand.name %></p>
+                            <% if(products[i].subcategoryName) { %>
+                                <p>
+                                    <%= products[i].subcategoryName %>
+                                </p>
+                            <% } %>
+                            <p><%= products[i].brandName %></p>
                             <p>$
                                 <%= products[i].productPrice.listPrice %>.00
                             </p>
@@ -141,9 +126,11 @@
                 </div> 
             </div>
         <% } %>
+        <% } %>
     </div>
     <div class="row" id="trendingProduct">
         <h1><strong>Trending Products</strong></h1>
+        <% if(products) { %>
         <% for ( var i = 0; i < products.length; i++ ) { %>
             <div class="col-md-4">
                     <div class="thumbnail">
@@ -153,12 +140,14 @@
                                 <%= products[i].name %>
                             </h3>
                             <p>
-                                <%= products[i].subcategory.category.name %>
+                                <%= products[i].categoryName %>
                             </p>
-                            <p>
-                                <%= products[i].subcategory.name %>
-                            </p>
-                            <p><%= products[i].brand.name %></p>
+                            <% if(products[i].subcategoryName) { %>
+                                <p>
+                                    <%= products[i].subcategoryName %>
+                                </p>
+                            <% } %>
+                            <p><%= products[i].brandName %></p>
                             <p>$
                                 <%= products[i].productPrice.listPrice %>.00
                             </p>
@@ -166,11 +155,13 @@
                         <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
                 </div> 
             </div>
+        <% } %>
         <% } %>
     </div>
 
     <div class="row" id="searchResults">
         <h1><strong>All Products</strong></h1>
+        <% if(products) { %>
         <% for ( var i = 0; i < products.length; i++ ) { %>
         <div class="col-md-4">
                 <div class="thumbnail">
@@ -180,12 +171,14 @@
                             <%= products[i].name %>
                         </h3>
                         <p>
-                            <%= products[i].subcategory.category.name %>
+                            <%= products[i].categoryName %>
                         </p>
+                        <% if(products[i].subcategoryName) { %>
                         <p>
-                            <%= products[i].subcategory.name %>
+                            <%= products[i].subcategoryName %>
                         </p>
-                        <p><%= products[i].brand.name %></p>
+                        <% } %>
+                        <p><%= products[i].brandName %></p>
                         <p>$
                             <%= products[i].productPrice.listPrice %>.00
                         </p>
@@ -193,6 +186,7 @@
                     <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
             </div> 
         </div>
+        <% } %>
         <% } %>
 
         <ul class="pagination text-center">

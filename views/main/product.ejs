@@ -2,7 +2,9 @@
 
 <div class="container">
     <!-- Portfolio Item Row -->
+    <% if(product) { %>
     <div class="row">
+        
         <div class="col-md-6">
             <img class="img-fluid img-responsive" src="data:image/png;base64, <%= product.image %>" style="width:450px;">
         </div>
@@ -15,11 +17,13 @@
                     </strong>
                 </h3>
                 <h4><b>Category Name: </b>
-                    <%= product.subcategory.category.name %>
+                    <%= product.categoryName %>
                 </h4>
+                <% if(product.subcategoryName) { %>
                 <h4><b>Subcategory Name: </b>
-                    <%= product.subcategory.name %>
+                    <%= product.subcategoryName %>
                 </h4>
+                <% } %>
                 <h4><b>Unite Price: </b>
                     $<%= product.productPrice.listPrice %>.00
                 </h4>
@@ -50,6 +54,8 @@
                     <% } else { %>
                     <a href="/login" class="btn btn-primary btn-md">Add to Cart</a>
                     <% } %>
+
+                    <!-- <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary btn-md">Add to Seesion Cart</a> -->
                 </form>
 
                 <br>
@@ -109,7 +115,7 @@
                     </div>
                     <div class="col-md-3 col-md-6">
                         <strong>
-                            <%= product.brand.name %></strong>
+                            <%= product.brandName %></strong>
                     </div>
                 </div>
                 <hr>
@@ -122,6 +128,7 @@
                             <%= product.model %></strong>
                     </div>
                 </div>
+                <% if(features) { %>
                 <% for ( var i = 0; i < features.length; i++) { %>
                 <hr>
                 <div class="row">
@@ -135,7 +142,9 @@
                     </div>
                 </div>
                 <% } %>
+                <% } %>
             </li>
         </div>
     </div>
+    <% } %>
 </div>

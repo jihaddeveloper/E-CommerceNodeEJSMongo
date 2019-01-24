@@ -32,6 +32,10 @@ var Product = require('./models/product');
 var Discount = require('./models/discount');
 var PaymentMethod = require('./models/paymentMethod');
 var Supplier = require('./models/supplier');
+var SessionCart = require('./models/sessionCart');
+var Feature = require('./models/feature');
+var Live = require('./models/live');
+var Inventory = require('./models/live');
 
 
 
@@ -63,24 +67,23 @@ app.use(session({
     saveUninitialized: false,
     secret: secret.secretKey,
     store: new MongoStore({
+        mongooseConnection: secret.database,
         url: secret.database,
         autoReconnect: true
     })
 }));
 
-//Make Seesion avaiable to every page
-app.use(function(req, res, next){
-    res.locals.session = req.session;
-    next();
-});
+//Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 //Flash Masseges
 app.use(flash());
 
 
-//Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 
 //View engine
@@ -100,49 +103,21 @@ app.use(function (req, res, next) {
 app.use(cartLength);
 
 
-
-
-//Category and SubCategory load
+//Category load
 app.use(function (req, res, next) {
     var sub_arr = [];
-    Category.find().sort({created: -1}).exec(function (err, categories) {
-        if (err) return next(err);
-        var cat=[];
-        
-        var count=1;
-        var pro = new Promise(function (resolve, reject) {
-            categories.map((rs) => {
-                var arr = [];
-                
-                SubCategory.find({
-                    category: rs._id
-                }, function (err, docs) {
-                    if (err) {
-                        res.send(err);
-                    } else {
-                        cat.push(rs)
-                        docs.map((result) => {
-                            arr.push({
-                                name: result.name,
-                                id: result._id
-                            })
-                        })
-                    }
-                    sub_arr.push(arr);
-                    if(sub_arr.length === categories.length){
-                        resolve()
-                    }
-                })
-               
-            })
-            
-        })
-        pro.then(() => {
-            res.locals.S_categories = sub_arr;
-            res.locals.categories = cat;
-        })
+    Category.find()
+    .populate('subCategories')
+    .populate('brands')
+    .populate({
+        path: "subCategories",
+        populate: {
+            path: "brands"
+        }
+    }).exec(function(err, categories){
+        res.locals.categories = categories;
         next();
-    });
+    })
 });
 
 
@@ -166,24 +141,41 @@ app.use(function (req, res, next) {
 
 //Cart Items Modal view
 app.use(function (req, res, next) {
-    if(req.user){
+    if (req.user) {
         var id = req.user._id;
         Cart.findOne({
-            owner: id
-        })
-        .populate('items.item')
-        .exec(function (err, userCart) {
-            if (err) return next(err);
-            res.locals.userCart = userCart;
-            res.locals.userCartTotalAmount = userCart.total;
-            next();
-        });    
-    }else{
+                owner: id
+            })
+            .populate('items.item')
+            .exec(function (err, userCart) {
+                if (err) return next(err);
+                res.locals.userCart = userCart;
+                res.locals.userCartTotalAmount = userCart.total;
+                next();
+            });
+    } else {
         res.locals.userCart = null;
         res.locals.userCartTotalAmount = 0;
         next();
     }
 });
+
+//Make Seesion avaiable to every page
+app.use(function (req, res, next) {
+    res.locals.login = req.isAuthenticated();
+    res.locals.session = req.session;
+    next();
+});
+
+// //Session cart items modal view
+// app.use(function(req, res, next){
+//     if(!req.session.sessionCart){
+//         res.locals.sessionCartModal = null;
+//     }else{
+//         var newsessionCart = new SessionCart(req.session.sessionCart);
+//         res.locals.sessionCartModal = newsessionCart.generateArray();
+//     }
+// });
 
 
 //Controllers Import
@@ -202,5 +194,5 @@ app.use('/api', apiCon);
 
 app.listen(secret.port, function (err) {
     if (err) throw err;
-    console.log('Server is Running on http://127.0.0.1:3000/');
+    console.log('Server is Running on http://127.0.0.1:5000/');
 })

@@ -1,0 +1,30 @@
+<% if(sessionCartModal) { %>
+    <h3>Items</h3>
+    <br>
+    <div class="list-group">
+        <% for( var i=0; i < sessionCartModal.length; i++) { %>
+        <span class="list-group-item">
+            <div class="row">
+                <div class="col-md-4">
+                    <span><strong><%= sessionCartModal[i].item.name %></strong></span>
+                </div>
+                <div class="col-md-4">
+                    <p class="list-group-item-heading">
+                        
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p>Qunantity:
+                        <%= sessionCartModal[i].quantity %> 
+                    </p>
+                    <p>Price:
+                        $<%= sessionCartModal[i].price %>
+                    </p>
+                </div>
+            </div>
+        </span>
+        <% } %>
+    </div>
+    <% } else { %>
+        <h3>No item added</h3>
+    <% } %>

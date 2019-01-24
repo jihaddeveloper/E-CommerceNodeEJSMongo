@@ -14,8 +14,10 @@
                                 <img src="data:image/png;base64, <%= data[i].image %>">
                                 <div class="caption">
                                     <h3><%= data[i].name %></h3>
-                                    <p><%= data[i].subcategory.category.name %></p>
-                                    <p><%= data[i].subcategory.name %></p>
+                                    <p><%= data[i].categoryName %></p>
+                                    <% if(data[i].subcategoryName) { %>
+                                        <p><%= data[i].subcategoryName %></p>
+                                    <% } %>
                                     <p>$<%= data[i].productPrice.listPrice %>.00</p>
                                 </div>
                             </div>

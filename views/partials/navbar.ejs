@@ -17,17 +17,30 @@
                 <a id="dLabel" role="button" data-toggle="dropdown" class=" btn btn-lg btn-primary" data-target="hash" href="hash" aria-expanded="true">Categories<span class="caret"></span></a>
                 <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                     <% for(var i = 0; i < categories.length; i++) { %>
-                        <li class="dropdown-submenu pull-right1"><a tabindex="-1" href="/products/<%= categories[i].id %>"><%= categories[i].name %></a>
-                            <ul class="dropdown-menu">
-                                <% for(var j = 0; j < S_categories[i].length; j++) { %>
-                                    <li class="dropdown-submenu pull-right2"><a tabindex="-1" data-target="EMPLOYEE" href="/products/subCategory/<%= S_categories[i][j].id %>"><%= S_categories[i][j].name %></a>
+                        <% if(categories[i].subCategories.length != 0) { %>
+                        <li class="dropdown-submenu pull-right1"><a tabindex="-1" href="/products/<%= categories[i].id %>"><%= categories[i].name %></a>  
+                            <ul class="dropdown-menu"> 
+                                <% for(var j = 0; j < categories[i].subCategories.length; j++) { %>
+                                    <li class="dropdown-submenu pull-right2"><a tabindex="-1" data-target="" href="/products/subCategory/<%= categories[i].subCategories[j].id %>"><%= categories[i].subCategories[j].name %></a>
                                         <ul class="dropdown-menu pull-right2">
-                                            <li><a href="#" data-list-option="all" data-func="list-functions">ABC Brand</a></li>
+                                                <% for(var k = 0; k < categories[i].subCategories[j].brands.length; k++) { %>
+                                                    <li ><a  data-target="" href="/products/brand/<%= categories[i].subCategories[j].brands[k].id %>"><%= categories[i].subCategories[j].brands[k].name %></a>
+                                                    </li>
+                                                <% } %>
                                         </ul>
                                     </li>
                                 <% } %>
                             </ul>
                         </li>
+                        <% }else{ %>   
+                            <li class="dropdown-submenu pull-right1"><a tabindex="-1" data-target="" href="/products/<%= categories[i].id %>"> <%= categories[i].name %></a>
+                                <ul class="dropdown-menu">
+                                    <% for(var k = 0; k < categories[i].brands.length; k++) { %>
+                                        <li ><a  data-target="" href="/products/brand/<%= categories[i].brands[k].id %>"><%= categories[i].brands[k].name %></a>
+                                    <% } %>
+                                </ul>
+                            </li> 
+                        <% } %>
                     <% } %>
                 </ul>
             </div>
@@ -50,16 +63,16 @@
 
           <li>
             <span class="badge">
-              <a href="#" class="glyphicon glyphicon-shopping-cart" data-toggle="modal" data-target="#cartModal">
-                <span class="badge">
-                  <%= cartItems %> Items
-                </span>
-                <br>
-                <span class="badge">
-                  Total: $<%= userCartTotalAmount %>
-                </span>
-            </a>
-          </span>
+                <a href="#" class="glyphicon glyphicon-shopping-cart" data-toggle="modal" data-target="#cartModal">
+                    <span class="badge">
+                        <%= cartItems %> Items
+                    </span>
+                    <br>
+                    <span class="badge">
+                        Total: $<%= userCartTotalAmount %>
+                    </span>
+                </a>
+            </span>
           </li>
 
           <% } else { %>
@@ -86,6 +99,24 @@
           </li>
           <% } %>
           
+
+          <!-- Session Cart View -->
+          <!-- <li>
+                <span class="badge">
+                    <p>Session Cart</p>
+                        <a href="#" class="glyphicon glyphicon-shopping-cart" data-toggle="modal" data-target="#sessionCartModal">
+                            <% if(session.sessionCart) { %>
+                            <span class="badge">
+                                <%= session.sessionCart.totalQuantity  %> Items
+                            </span>
+                            <br>
+                            <span class="badge">
+                                Total: $<%= session.sessionCart.totalPrice %> 
+                            </span>
+                            <% } %>
+                        </a>
+                 </span>
+          </li> -->
 
     </ul>
 
@@ -141,3 +172,26 @@
         </div>
 </div>
 <!-- Short Cart View Modal -->
+
+<!-- Short Session Cart View Modal -->
+<div class="modal fade" id="sessionCartModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Cart Items</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+              <a type="button" class="btn btn-primary" href="/shopping-cart">Cart Details</a>
+              <a type="button" class="btn btn-primary" href="">Checkout</a>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+</div>
+<!-- Short Session Cart View Modal -->

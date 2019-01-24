@@ -5,6 +5,9 @@ const keyword = require('keyword');
 
 var BrandSchema = new Schema({
     name: { type: Text, es_type: 'text', unique: true },
+    category: { type: Schema.Types.ObjectId, ref: 'Category' },
+    subcategory: { type: Schema.Types.ObjectId, ref: 'SubCategory' },
+    feature: { type:Array },
     created: { type: Date, default: Date.now }
 });
 

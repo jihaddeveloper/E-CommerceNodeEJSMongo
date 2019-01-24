@@ -11,8 +11,7 @@ const SubCategory = require('../models/subCategory');
 var ProductSchema = new Schema({
 
     created: { type: Date, default: Date.now },
-    serial: { type: String, default: '' },
-    name: { type: String },
+    name: { type: Text },
     
     //for proper searching
     categoryName: { type: String, default: '' },
@@ -22,10 +21,13 @@ var ProductSchema = new Schema({
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
     subcategory: { type: Schema.Types.ObjectId, ref: 'SubCategory' },
     brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
-    image: String,
+    features: { type: Array },
+
+    
     model: { type: String, required: false },
     warranty: { type: String, required: false },
-    features: { type: Array, required: false },
+    image: { type: String },
+
     quantity: {
         stock: { type: Number, default: ''},
         storeLive: { type: Number, default: '' }
@@ -41,6 +43,8 @@ var ProductSchema = new Schema({
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     supplier: {},
     uploader: {},
+    inventory : { type: Schema.Types.ObjectId, ref: 'Inventory' },
+    live: { type: Schema.Types.ObjectId, ref: 'Live' }
     //pinned: { type: String, required: false },
     //home: { type: String, required: false },
     //toObject: { virtuals: true },
