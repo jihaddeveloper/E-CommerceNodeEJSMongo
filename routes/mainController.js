@@ -9,7 +9,7 @@ const User = require('../models/user');
 const Order = require('../models/order');
 
 //SessionCart Model
-var SessionCart = require('../models/sessionCart');
+// var SessionCart = require('../models/sessionCart');
 
 //Product Filtering
 var unique = require("array-unique");
@@ -21,7 +21,6 @@ const stripe = require('stripe')('sk_test_v6upa8MEdWolNaz3cThw8uoT');
 //Product synchronize and indexing
 var stream = Product.synchronize();
 var count = 0;
-
 
 stream.on('data', function () {
     count++;
@@ -43,7 +42,7 @@ function paginate(req, res, next) {
     var page = req.params.page;
 
 
-    Product.find()
+    Product.find({isActive: true})
         .skip(perPage * page - page)
         .limit(perPage)
         .populate({
@@ -170,7 +169,7 @@ router.get('/products/:id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
 
-    var obj= {category: req.params.id };
+    var obj= {category: req.params.id, isActive: true };
     categoryfilterpage(req, res, obj);
 });
 
@@ -387,7 +386,7 @@ router.get('/products/subCategory/:id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
     
-    var obj= {subcategory: req.params.id };
+    var obj= {subcategory: req.params.id, isActive: true };
     subCategoryFilterPage(req, res, obj)
 
 });
@@ -597,12 +596,21 @@ function brandFilterPage(req, res, obj){
 }
 
 
-// Brand wise Products load
-router.get('/products/brand/:id', function (req, res, next) {
+// Cat, subCat, Brand wise Products load
+router.get('/products/:category_id/:subcategory_id/:brand_id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
 
-    var obj= {brand: req.params.id };
+    var obj= {category: req.params.category_id,subcategory: req.params.subcategory_id,brand: req.params.brand_id, isActive: true };
+    brandFilterPage(req, res, obj)
+});
+
+// Cat, Brand wise Products load
+router.get('/products/:category_id/:brand_id', function (req, res, next) {
+
+    req.session.returnTo = req.originalUrl;
+
+    var obj= {category: req.params.category_id,brand: req.params.brand_id, isActive: true };
     brandFilterPage(req, res, obj)
 });
 
@@ -888,34 +896,9 @@ router.post('/remove', function (req, res, next) {
 });
 
 
-//Add to SessionCart 
-router.get('/add-to-cart/:id', function(req, res, next){
-    var productId = req.params.id;
-    var sessionCart = new SessionCart(req.session.sessionCart ? req.session.sessionCart: {});
-
-    Product.findById(productId, function(err, product){
-        if(err) {
-            return res.redirect('/');
-        }
-        sessionCart.add(product, product.id);
-        req.session.sessionCart = sessionCart;
-        console.log(req.session.sessionCart);
-        res.redirect('/product/'+productId);
-    });
-});
-
 
 //Shopping cart view
-router.get('/shopping-cart', function(req, res, next){
-    if(!req.session.sessionCart){
-        return res.render('main/shoppingCart', { products: null });
-    }else{
-        var sessionCart = new SessionCart(req.session.sessionCart);
-        var products = sessionCart.generateArray();
-        res.render('main/shoppingCart', { products, totalPrice: sessionCart.totalPrice } );
-    }
 
-});
 
 //Procced to checkout
 router.get('/procced-checkout', function(req, res, next){

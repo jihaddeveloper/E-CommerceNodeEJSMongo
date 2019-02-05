@@ -50,6 +50,14 @@ $(function(){
     });
 });
 
+//For clear cart
+$(function(){
+    $('a.clearcart').on('click', function(){
+        if(!confirm('Confirm clear cart'))
+            return false;
+        });
+});
+//For clear cart
 
 //product quantity inecrease
 $(document).on('click', '#plus', function(e){

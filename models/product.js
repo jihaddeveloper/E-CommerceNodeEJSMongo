@@ -41,14 +41,9 @@ var ProductSchema = new Schema({
     shippingInfo: {type:String, default: ''},
     description: { type: String, default: ''},
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
-    supplier: {},
-    uploader: {},
-    inventory : { type: Schema.Types.ObjectId, ref: 'Inventory' },
-    live: { type: Schema.Types.ObjectId, ref: 'Live' }
-    //pinned: { type: String, required: false },
-    //home: { type: String, required: false },
-    //toObject: { virtuals: true },
-    //toJSON: { virtuals: true }
+    live: { type: Schema.Types.ObjectId, ref: 'Live' },
+    unitPrice: { type: Number },
+    isActive:{ type: Boolean, required: false },
 });
 
 

@@ -60,7 +60,7 @@ app.use(cookieParser());
 //Session Configuration
 app.use(session({
     cookie: {
-        maxAge: 24 * 60 * 60000
+        maxAge: 1 * 60 * 60000
         // hours*mins*miliseconds
     },
     resave: false,
@@ -84,8 +84,6 @@ app.use(flash());
 
 
 
-
-
 //View engine
 app.set('views', path.join(__dirname, 'views'));
 app.engine('ejs', ejsMate);
@@ -98,6 +96,14 @@ app.use(function (req, res, next) {
     res.locals.user = req.user;
     next();
 });
+
+app.get('*', function(req, res, next){
+    res.locals.cart = req.session.cart;
+    res.locals.totalCartItem = req.session.totalCartItem;
+    res.locals.totalCartPrice = req.session.totalCartPrice;
+    next();
+});
+
 
 //Cart length
 app.use(cartLength);
@@ -164,33 +170,36 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
     res.locals.login = req.isAuthenticated();
     res.locals.session = req.session;
+    res.locals.cart = req.session.cart;
     next();
 });
 
-// //Session cart items modal view
-// app.use(function(req, res, next){
-//     if(!req.session.sessionCart){
-//         res.locals.sessionCartModal = null;
-//     }else{
-//         var newsessionCart = new SessionCart(req.session.sessionCart);
-//         res.locals.sessionCartModal = newsessionCart.generateArray();
-//     }
-// });
 
+// //Cart Timeout
+// setInterval(function(req,session,cart){
+//     delete req.session.cart;
+//   }, 1 * 60 * 1000); 
+
+//Cart Timeout
+// app.use(setTimeout(function(req,res, next){
+//     delete req.session.cart;
+// },3000));
 
 //Controllers Import
 var mainCon = require('./routes/mainController');
 var userCon = require('./routes/userController');
 var adminCon = require('./routes/adminController');
 var apiCon = require('./api/api');
-
+var cartCon = require('./routes/cartController');
+var orderCon = require('./routes/orderController');
 
 //Routes
 app.use(mainCon);
 app.use(userCon);
 app.use(adminCon);
 app.use('/api', apiCon);
-
+app.use(cartCon);
+app.use(orderCon);
 
 app.listen(secret.port, function (err) {
     if (err) throw err;

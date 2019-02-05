@@ -64,7 +64,9 @@
                                             <p><%= products[0][i].subcategoryName %></p>
                                         <% } %>
                                         <p><%= products[0][i].brandName %></p>
-                                        <p>$<%= products[0][i].productPrice.listPrice %>.00</p>
+                                        <% if(products[0][i].unitPrice) { %>
+                                            <p>$<%= products[0][i].unitPrice %>.00</p>
+                                        <% } %>
                                     </div>
                                 </div>
                             </a>

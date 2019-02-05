@@ -28,3 +28,39 @@
     <% } else { %>
         <h3>No item added</h3>
     <% } %>
+
+
+
+
+//checkout
+<% layout('layoutPage') -%>
+
+<div class="container" style="width:100%; min-height: 700px">
+    <h1 class="page-title">Session Cart Items</h1>
+    <table class="table table-striped alignmiddle">
+        <tr>
+            <th>Title</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th></th>
+            <th>Subtotal</th>
+        </tr>
+
+        <% if(cart) { %>
+        <% for(var i = 0; i < cart.length; i++) { %>
+
+            <tr>
+                <td><%= cart[i].title %></td>
+                <td><%= cart[i].quantity %></td>
+                <td><%= cart[i].price %></td>
+                <td>
+                    <a href="/cart/update/<%= product.name %>?action=add">+</a>&nbsp;
+                    <a href="/cart/update/<%= product.name %>?action=remove">-</a>&nbsp;
+                    <a href="/cart/update/<%= product.name %>?action=clear">Clear</a>&nbsp;
+                </td>
+                <td></td>
+            </tr>
+        <% } %>
+        <% } %>
+    </table>
+</div>

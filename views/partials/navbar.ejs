@@ -24,7 +24,7 @@
                                     <li class="dropdown-submenu pull-right2"><a tabindex="-1" data-target="" href="/products/subCategory/<%= categories[i].subCategories[j].id %>"><%= categories[i].subCategories[j].name %></a>
                                         <ul class="dropdown-menu pull-right2">
                                                 <% for(var k = 0; k < categories[i].subCategories[j].brands.length; k++) { %>
-                                                    <li ><a  data-target="" href="/products/brand/<%= categories[i].subCategories[j].brands[k].id %>"><%= categories[i].subCategories[j].brands[k].name %></a>
+                                                    <li ><a  data-target="" href="/products/<%= categories[i].id %>/<%= categories[i].subCategories[j].id %>/<%= categories[i].subCategories[j].brands[k].id %>"><%= categories[i].subCategories[j].brands[k].name %></a>
                                                     </li>
                                                 <% } %>
                                         </ul>
@@ -36,7 +36,7 @@
                             <li class="dropdown-submenu pull-right1"><a tabindex="-1" data-target="" href="/products/<%= categories[i].id %>"> <%= categories[i].name %></a>
                                 <ul class="dropdown-menu">
                                     <% for(var k = 0; k < categories[i].brands.length; k++) { %>
-                                        <li ><a  data-target="" href="/products/brand/<%= categories[i].brands[k].id %>"><%= categories[i].brands[k].name %></a>
+                                        <li ><a  data-target="" href="/products/<%= categories[i].id %>/<%= categories[i].brands[k].id %>"><%= categories[i].brands[k].name %></a>
                                     <% } %>
                                 </ul>
                             </li> 
@@ -86,7 +86,7 @@
             </ul>
           </li>
 
-          <li>
+          <!-- <li>
             <span class="badge">
               <a href="/login" class="glyphicon glyphicon-shopping-cart">
                 <span class="badge">0 Items</span>
@@ -96,27 +96,28 @@
                   Total: $ 0.00
               </span>
           </span>
-          </li>
+          </li> -->
           <% } %>
           
 
           <!-- Session Cart View -->
-          <!-- <li>
+          <li>
                 <span class="badge">
                     <p>Session Cart</p>
                         <a href="#" class="glyphicon glyphicon-shopping-cart" data-toggle="modal" data-target="#sessionCartModal">
-                            <% if(session.sessionCart) { %>
+                            <% if(cart) { %>
                             <span class="badge">
-                                <%= session.sessionCart.totalQuantity  %> Items
+                                <%= cart.length %> Items
                             </span>
                             <br>
-                            <span class="badge">
-                                Total: $<%= session.sessionCart.totalPrice %> 
-                            </span>
-                            <% } %>
+                            <% } else { %>
+                                <span class="badge">
+                                    0 Items 
+                                </span>
+                            <% } %>   
                         </a>
                  </span>
-          </li> -->
+          </li>
 
     </ul>
 
@@ -184,11 +185,40 @@
               </button>
             </div>
             <div class="modal-body">
-                
+                    <h3>Items</h3>
+                    <br>
+                    <% if(cart) { %>
+                    <% for (var i = 0; i < cart.length; i++)  { %>
+                      <div class="list-group">
+                          <span class="list-group-item">
+                              <div class="row">
+                                    <div class="col-md-4">
+                                        <span><img class="product-image" style="width: 100%" src="data:image/png;base64, <%= cart[i].image %>"></span>
+                                    </div>
+                                  <div class="col-md-3">
+                                      <p class="list-group-item-heading">Product name:
+                                          <%= cart[i].title %>
+                                      </p>
+                                  </div>
+                                  <div class="col-md-2">
+                                      <p>Qunantity:
+                                          <%= cart[i].quantity %>
+                                      </p>
+                                  </div>
+                                  <div class="col-md-2">
+                                        <p>Unit Price:
+                                            <%= cart[i].unitPrice %>
+                                        </p>
+                                  </div>
+                              </div>
+                          </span>
+                      </div>
+                      <% } %>
+                      <% } %>
             </div>
             <div class="modal-footer">
-              <a type="button" class="btn btn-primary" href="/shopping-cart">Cart Details</a>
-              <a type="button" class="btn btn-primary" href="">Checkout</a>
+              <a type="button" class="btn btn-primary" href="/checkout">Cart Details</a>
+              <a type="button" class="btn btn-primary" href="/checkout">Checkout</a>
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
           </div>

@@ -25,37 +25,37 @@
                 </h4>
                 <% } %>
                 <h4><b>Unite Price: </b>
-                    $<%= product.productPrice.listPrice %>.00
+                    $<%= product.unitPrice %>.00
                 </h4>
                 <h4><b>Description: </b>
                     <%= product.description %>
                 </h4>
 
                 <form method="POST" action="/product/'+ product_id">
-                    <div class="btn-group" role="group" aria-label="...">
+                    <!-- <div class="btn-group" role="group" aria-label="...">
                         <p>
                             <input type="hidden" name="quantity" id="quantity" value="1">
                             <button type="button" class="btn btn-default" id="minus" name="">-</button>
                             <button type="button" class="btn btn-default" id="total" name="">1</button>
                             <button type="button" class="btn btn-default" id="plus" name="">+</button>
                         </p>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
-                        <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.productPrice.listPrice %>">
+                        <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.unitPrice %>">
 
                         <p><input type="" class="form-control" readonly name="item" id="item" value="<%= product.name %>"></p>
-                        <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.productPrice.listPrice %>"></p>
+                        <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.unitPrice %>"></p>
                     </div>
 
-                    <% if (user) { %>
+                    <!-- <% if (user) { %>
                     <button type="submit" class="btn btn-primary btn-md">Add to Cart</button>
                     <% } else { %>
                     <a href="/login" class="btn btn-primary btn-md">Add to Cart</a>
-                    <% } %>
+                    <% } %> -->
 
-                    <!-- <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary btn-md">Add to Seesion Cart</a> -->
+                    <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary btn-md">Add to Seesion Cart</a>
                 </form>
 
                 <br>
@@ -105,7 +105,7 @@
                     </div>
                     <div class="col-md-3 col-md-6">
                         <strong>
-                            <%= product.productPrice.listPrice %></strong>
+                            <%= product.unitPrice %></strong>
                     </div>
                 </div>
                 <hr>

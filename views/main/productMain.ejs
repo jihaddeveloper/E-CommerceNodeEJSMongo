@@ -89,7 +89,7 @@
                             <% } %>
                             <p><%= products[i].brandName %></p>
                             <p>$
-                                <%= products[i].productPrice.listPrice %>.00
+                                <%= products[i].unitPrice %>.00
                             </p>
                         </div>
                         <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
@@ -119,7 +119,7 @@
                             <% } %>
                             <p><%= products[i].brandName %></p>
                             <p>$
-                                <%= products[i].productPrice.listPrice %>.00
+                                <%= products[i].unitPrice %>.00
                             </p>
                         </div>
                         <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
@@ -149,7 +149,7 @@
                             <% } %>
                             <p><%= products[i].brandName %></p>
                             <p>$
-                                <%= products[i].productPrice.listPrice %>.00
+                                <%= products[i].unitPrice %>.00
                             </p>
                         </div>
                         <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
@@ -180,7 +180,7 @@
                         <% } %>
                         <p><%= products[i].brandName %></p>
                         <p>$
-                            <%= products[i].productPrice.listPrice %>.00
+                            <%= products[i].unitPrice %>.00
                         </p>
                     </div>
                     <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
