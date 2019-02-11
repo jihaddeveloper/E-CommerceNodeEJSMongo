@@ -26,6 +26,10 @@
       <!-- Custom javascript -->
       <script src="/js/custom.js"></script>
 
+      <!-- Stripe Payment -->
+      <script src="/js/stripe.js"></script>
+
+
       <!-- For Password matching in signup form -->
       <script>
         var check = function() {
@@ -40,3 +44,13 @@
         }
       </script>
       <!-- For Password matching in signup form-->
+
+      <!-- To add shipping charge -->
+      <script>
+        var setTotal = function(){
+          var shpiCharge = parseFloat(document.getElementById('division').value);
+          var totalAmount = parseFloat(document.getElementById('totalAmount').innerHTML);
+          document.getElementById('finalTotalAmount').innerHTML = (totalAmount + shpiCharge).toString();
+        }
+      </script>
+      <!-- To add shipping charge -->

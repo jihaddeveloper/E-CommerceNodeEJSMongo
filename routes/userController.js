@@ -10,29 +10,23 @@ const Category = require('../models/category');
 const Review = require('../models/review');
 const Joi = require('joi');
 const randomString = require('randomstring');
+const CustomerOrder = require('../models/customerOrder');
 
 //Mail Sender
 const mailer = require('../misc/mailer');
 
 //Profile page
 router.get('/profile', passportConfig.isAuthenticated, function(req, res, next){
-    User.findOne({ _id: req.user._id })
-         .populate("history.item")
-         .exec(function(err, user) {
+    
+    CustomerOrder.find({user: req.user})
+    .exec(function(err, orders){
         if(err) return next(err);
-        res.render('accounts/profile', { user: user });
+        res.render('accounts/profile', { user: req.user, orders: orders });
+        console.log(orders);
     });
+    
 });
 
-
-//validation schema
- 
-const userSchema = Joi.object().keys({
-    email: Joi.string().email().required(),
-    name: Joi.string().required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{6,30}$/).required(),
-    confirmationPassword: Joi.any().valid(Joi.ref('password')).required()
-  })
 
 //User signup form
 router.get('/signup', function(req, res, next){
@@ -117,16 +111,16 @@ router.post('/signup', function(req, res, next){
             });
         },
         function(user){
-            var cart = new Cart();
+            // var cart = new Cart();
 
-            cart.owner = user._id;
-            cart.save(function(err){
-                if(err) return next(err);
-                // req.logIn(user, function(err){
-                //     if(err) return next(err);
-                //     req.logout();
-                // });
-            });
+            // cart.owner = user._id;
+            // cart.save(function(err){
+            //     if(err) return next(err);
+            //     // req.logIn(user, function(err){
+            //     //     if(err) return next(err);
+            //     //     req.logout();
+            //     // });
+            // });
         }
 
     ]);   
@@ -166,20 +160,24 @@ router.get('/login', function(req, res, next){
 });
 
 //User login
-router.post('/login',
-    passport.authenticate('local-login', {  
+router.post('/login',passport.authenticate('local-login', {  
         // successRedirect: '/profile',
         failureRedirect: '/login',
         failureFlash: true
     }), function(req, res, next){
-        res.redirect(req.session.returnTo || '/profile');
-        delete req.session.returnTo;
+        if(req.session.returnTo){
+            res.redirect(req.session.returnTo);
+            delete req.session.returnTo;
+        }else{
+            res.redirect('/profile');
+        }   
 });
 
 //User logout
 router.get('/logout', function(req, res, next) {
     req.logout();
     delete req.session.returnTo;
+    delete req.session.cart;
     res.redirect('/');
 });
 

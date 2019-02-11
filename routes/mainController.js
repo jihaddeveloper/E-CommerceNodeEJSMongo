@@ -596,7 +596,7 @@ function brandFilterPage(req, res, obj){
 }
 
 
-// Cat, subCat, Brand wise Products load
+// Category, SubCategory, Brand wise Products load
 router.get('/products/:category_id/:subcategory_id/:brand_id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
@@ -605,7 +605,7 @@ router.get('/products/:category_id/:subcategory_id/:brand_id', function (req, re
     brandFilterPage(req, res, obj)
 });
 
-// Cat, Brand wise Products load
+// Category, Brand wise Products load
 router.get('/products/:category_id/:brand_id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
@@ -791,7 +791,8 @@ router.get('/product/:id', function (req, res, next) {
             if (err) return next(err);
             res.render('main/product', {
                 product: product,
-                features: product.features
+                features: product.features,
+                message: '', errors: req.flash('errors')
             });
         });
 
@@ -841,9 +842,9 @@ router.get('/search', function (req, res, next) {
         paginate(req, res, next);
     }
 });
+//Custom Search
 
-
-//Cart view
+//Cart view (Database)
 router.get('/cart', function (req, res, next) {
     Cart.findOne({
             owner: req.user._id
@@ -859,41 +860,41 @@ router.get('/cart', function (req, res, next) {
         });
 });
 
-//Product added to cart
-router.post('/product/:product_id', function (req, res, next) {
-    Cart.findOne({
-        owner: req.user._id
-    }, function (err, cart) {
-        cart.items.push({
-            item: req.body.product_id,
-            price: parseFloat(req.body.priceValue),
-            quantity: parseInt(req.body.quantity)
-        });
+//Product added to cart (Database)
+// router.post('/product/:product_id', function (req, res, next) {
+//     Cart.findOne({
+//         owner: req.user._id
+//     }, function (err, cart) {
+//         cart.items.push({
+//             item: req.body.product_id,
+//             price: parseFloat(req.body.priceValue),
+//             quantity: parseInt(req.body.quantity)
+//         });
 
-        cart.total = (cart.total + parseFloat(req.body.priceValue)).toFixed(2);
+//         cart.total = (cart.total + parseFloat(req.body.priceValue)).toFixed(2);
 
-        cart.save(function (err) {
-            if (err) return next(err);
-            return res.redirect('/product/' + req.body.product_id);
-        });
-    });
-});
+//         cart.save(function (err) {
+//             if (err) return next(err);
+//             return res.redirect('/product/' + req.body.product_id);
+//         });
+//     });
+// });
 
 //Product remove from cart
-router.post('/remove', function (req, res, next) {
-    Cart.findOne({
-        owner: req.user._id
-    }, function (err, foundCart) {
-        foundCart.items.pull(String(req.body.item));
-        foundCart.total = (foundCart.total - parseFloat(req.body.price)).toFixed(2);
+// router.post('/remove', function (req, res, next) {
+//     Cart.findOne({
+//         owner: req.user._id
+//     }, function (err, foundCart) {
+//         foundCart.items.pull(String(req.body.item));
+//         foundCart.total = (foundCart.total - parseFloat(req.body.price)).toFixed(2);
 
-        foundCart.save(function (err, found) {
-            if (err) return next(err);
-            req.flash('remove', 'Successfully removed');
-            res.redirect('/cart');
-        });
-    });
-});
+//         foundCart.save(function (err, found) {
+//             if (err) return next(err);
+//             req.flash('remove', 'Successfully removed');
+//             res.redirect('/cart');
+//         });
+//     });
+// });
 
 
 
@@ -939,13 +940,6 @@ router.post('/add-review', passportConfig.isAuthenticated, function (req, res, n
         });
 
     });
-});
-
-
-
-//Payment Ready Page
-router.get('/paymentReady', function(req, res, next){
-
 });
 
 

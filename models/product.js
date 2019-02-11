@@ -17,13 +17,12 @@ var ProductSchema = new Schema({
     categoryName: { type: String, default: '' },
     subCategoryName: { type: String, default: '' },
     brandName: { type: String, default: '' },
-
+   
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
     subcategory: { type: Schema.Types.ObjectId, ref: 'SubCategory' },
     brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
     features: { type: Array },
 
-    
     model: { type: String, required: false },
     warranty: { type: String, required: false },
     image: { type: String },
@@ -42,6 +41,7 @@ var ProductSchema = new Schema({
     description: { type: String, default: ''},
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     live: { type: Schema.Types.ObjectId, ref: 'Live' },
+    blockQuantity: { type: Number, default: 0 },
     unitPrice: { type: Number },
     isActive:{ type: Boolean, required: false },
 });

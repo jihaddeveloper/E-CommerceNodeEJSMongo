@@ -94,53 +94,53 @@ $(document).on('click', '#minus', function(e){
 });
 
 
-//Stripe Payment
-Stripe.setPublishableKey('pk_test_B9EPqOse0u83mA81X2MgxPRL');
+//Stripe Payment Key
+// Stripe.setPublishableKey('pk_test_B9EPqOse0u83mA81X2MgxPRL');
 
 
-function stripeResponseHandler(status, response) {
-    // Grab the form:
-    var $form = $('#payment-form');
+// function stripeResponseHandler(status, response) {
+//     // Grab the form:
+//     var $form = $('#payment-form');
   
-    if (response.error) { // Problem!
+//     if (response.error) { // Problem!
   
-      // Show the errors on the form:
-      $form.find('.payment-errors').text(response.error.message);
-      $form.find('button').prop('disabled', false); // Re-enable submission
+//       // Show the errors on the form:
+//       $form.find('.payment-errors').text(response.error.message);
+//       $form.find('button').prop('disabled', false); // Re-enable submission
   
-    } else { // Token was created!
+//     } else { // Token was created!
   
-      // Get the token ID:
-      var token = response.id;
+//       // Get the token ID:
+//       var token = response.id;
   
-      // Insert the token ID into the form so it gets submitted to the server:
-      $form.append($('<input type="hidden" name="stripeToken">').val(token));
+//       // Insert the token ID into the form so it gets submitted to the server:
+//       $form.append($('<input type="hidden" name="stripeToken">').val(token));
   
-      // Submit the form:
-      $form.get(0).submit();
+//       // Submit the form:
+//       $form.get(0).submit();
       
-      // For this demo, we're simply showing the token:
-      //alert("Token: " + token);
-    }
-  };
+//       // For this demo, we're simply showing the token:
+//       //alert("Token: " + token);
+//     }
+//   };
 
-  jQuery(function($){
+//   jQuery(function($){
 
-    //Stripe Payment
-    Stripe.setPublishableKey('pk_test_B9EPqOse0u83mA81X2MgxPRL');
+//     //Stripe Payment
+//     Stripe.setPublishableKey('pk_test_B9EPqOse0u83mA81X2MgxPRL');
 
-    var $form = $('#payment-form');
-    $form.submit(function(event) {
-        // Disable the submit button to prevent repeated clicks:
-        $form.find('button').prop('disabled', true);
+//     var $form = $('#payment-form');
+//     $form.submit(function(event) {
+//         // Disable the submit button to prevent repeated clicks:
+//         $form.find('button').prop('disabled', true);
 
-        // Request a token from Stripe:
-        Stripe.card.createToken($form, stripeResponseHandler);
+//         // Request a token from Stripe:
+//         Stripe.card.createToken($form, stripeResponseHandler);
 
-        // Prevent the form from being submitted:
-        return false;
-    });
-});
+//         // Prevent the form from being submitted:
+//         return false;
+//     });
+// });
 //Stripe Payment
 
 

@@ -88,5 +88,7 @@ exports.isAuthenticated = function(req, res, next) {
     if(req.isAuthenticated()) {
         return next();
     }
+    //For returning to same page
+    req.session.returnTo = req.originalUrl;
     res.redirect('/login');
 }

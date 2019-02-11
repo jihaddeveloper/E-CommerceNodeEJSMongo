@@ -192,6 +192,7 @@ var adminCon = require('./routes/adminController');
 var apiCon = require('./api/api');
 var cartCon = require('./routes/cartController');
 var orderCon = require('./routes/orderController');
+var stripeCon = require('./routes/stripePaymentController');
 
 //Routes
 app.use(mainCon);
@@ -200,6 +201,7 @@ app.use(adminCon);
 app.use('/api', apiCon);
 app.use(cartCon);
 app.use(orderCon);
+app.use(stripeCon);
 
 app.listen(secret.port, function (err) {
     if (err) throw err;

@@ -1,6 +1,25 @@
 <% layout('layoutPage') -%>
 
 <div class="container">
+
+<% if (errors.length > 0) { %>
+<div class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <%= errors %>
+</div>
+<% } %>
+
+<% if (message.length > 0) { %>
+<div class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <%= message %>
+</div>
+<% } %>
+
     <!-- Portfolio Item Row -->
     <% if(product) { %>
     <div class="row">
@@ -45,8 +64,8 @@
                         <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
                         <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.unitPrice %>">
 
-                        <p><input type="" class="form-control" readonly name="item" id="item" value="<%= product.name %>"></p>
-                        <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.unitPrice %>"></p>
+                        <!-- <p><input type="" class="form-control" readonly name="item" id="item" value="<%= product.name %>"></p> -->
+                        <!-- <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.unitPrice %>"></p> -->
                     </div>
 
                     <!-- <% if (user) { %>
@@ -55,14 +74,20 @@
                     <a href="/login" class="btn btn-primary btn-md">Add to Cart</a>
                     <% } %> -->
 
-                    <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary btn-md">Add to Seesion Cart</a>
+                    
                 </form>
 
                 <br>
 
-                <div class="text-right">
-                    <a class="btn btn-primary" href="#reviews-anchor" id="open-review-box">Leave a Review</a>
+                <div class="row">
+                    
+                        <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary btn-md">Add Cart</a>
+                    
+                    
+                        <!-- <a class="btn btn-primary" href="#reviews-anchor" id="open-review-box">Leave a Review</a> -->
+                    
                 </div>
+                
 
                 <div class="row" id="post-review-box" style="display:none;">
                     <div class="col-md-12">
