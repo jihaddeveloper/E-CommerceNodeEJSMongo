@@ -48,9 +48,16 @@
       <!-- To add shipping charge -->
       <script>
         var setTotal = function(){
-          var shpiCharge = parseFloat(document.getElementById('division').value);
+          var shipArea = document.getElementById('city').value;
           var totalAmount = parseFloat(document.getElementById('totalAmount').innerHTML);
-          document.getElementById('finalTotalAmount').innerHTML = (totalAmount + shpiCharge).toString();
+          if(totalAmount < 3000 && shipArea === 'Dhaka'){
+            document.getElementById('shipCharge').value = 40;
+            document.getElementById('finalTotalAmount').value = (totalAmount + 40).toString();
+          }else{
+            document.getElementById('shipCharge').value = 0;
+            document.getElementById('finalTotalAmount').value = (totalAmount + 0).toString();
+          }
+          
         }
       </script>
       <!-- To add shipping charge -->

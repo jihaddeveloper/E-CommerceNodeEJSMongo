@@ -5,7 +5,14 @@ const Schema = mongoose.Schema;
 var CustomerOrderSchema = new Schema({
     created: { type: Date,default: Date.now },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    cart: { type: Object },
+    cart: [{
+        product:{ type: Schema.Types.ObjectId, ref: 'Customer' },
+        quantity:{ type: Number },
+        unitPrice: { type: Number },
+        price:{ type: Number },
+    }
+    ],
+    // cart: { type: Object },
     // cart:[
     //     {
     //         product:{ type: Schema.Types.ObjectId, ref: 'Product' },
@@ -18,10 +25,9 @@ var CustomerOrderSchema = new Schema({
     phone: { type: Number },
     address: { type: String },
     city: { type: String },
-    division: { type: String },
     paymentMethod: { type: String },
     paymentId: { type: String },
-    shippingCost: { type: Number },
+    shippingCharge: { type: Number },
     totalAmount: { type: Number },
     currentStatus:{ type: String, default: 'New Order' },
     history:{ type: Array },

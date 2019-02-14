@@ -49,6 +49,7 @@ mongoose.connect(secret.database, function (err) {
 });
 
 //Middelwire
+//Set Static folder
 app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -59,10 +60,11 @@ app.use(cookieParser());
 
 //Session Configuration
 app.use(session({
-    cookie: {
-        maxAge: 1 * 60 * 60000
-        // hours*mins*miliseconds
-    },
+    // cookie: {
+    //     // hours*mins*miliseconds
+    //     maxAge: 10 * 60000
+        
+    // }
     resave: false,
     saveUninitialized: false,
     secret: secret.secretKey,
@@ -72,6 +74,39 @@ app.use(session({
         autoReconnect: true
     })
 }));
+
+
+//Product return to live
+// app.use(function(req, res, next){
+
+//     if(req.session.cookie.maxAge === null){
+        
+//         console.log(req.session);
+
+//         //Product return to live
+//         var cart = req.session.cart;
+//         if(cart){
+//             for(var i = 0; i < cart.length; i++){
+//                 //Increment the live frontQuantity
+//                 Live.findOneAndUpdate({product_id: cart[i].product},
+//                     {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
+//                         if(err) return next(err);
+    
+//                         console.log(newLive);
+//                 });
+    
+//             }
+//         }
+    
+//         //Remove old url
+//         delete req.session.returnTo;
+        
+//         //Remove cart
+//         delete req.session.cart;
+//     }
+//     next();
+// }
+// );
 
 //Passport middleware
 app.use(passport.initialize());
@@ -205,5 +240,5 @@ app.use(stripeCon);
 
 app.listen(secret.port, function (err) {
     if (err) throw err;
-    console.log('Server is Running on http://127.0.0.1:5000/');
+    console.log('Server is Running on http://127.0.0.1:3000/');
 })

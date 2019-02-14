@@ -11,6 +11,7 @@ const Review = require('../models/review');
 const Joi = require('joi');
 const randomString = require('randomstring');
 const CustomerOrder = require('../models/customerOrder');
+const Live = require('../models/live');
 
 //Mail Sender
 const mailer = require('../misc/mailer');
@@ -22,7 +23,7 @@ router.get('/profile', passportConfig.isAuthenticated, function(req, res, next){
     .exec(function(err, orders){
         if(err) return next(err);
         res.render('accounts/profile', { user: req.user, orders: orders });
-        console.log(orders);
+        //console.log(orders);
     });
     
 });
@@ -176,8 +177,28 @@ router.post('/login',passport.authenticate('local-login', {
 //User logout
 router.get('/logout', function(req, res, next) {
     req.logout();
+    
+    //Product return to live
+    var cart = req.session.cart;
+    if(cart){
+        for(var i = 0; i < cart.length; i++){
+            //Increment the live frontQuantity
+            Live.findOneAndUpdate({product_id: cart[i].product},
+                {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
+                    if(err) return next(err);
+
+                    console.log(newLive);
+            });
+
+        }
+    }
+
+    //Remove old url
     delete req.session.returnTo;
+    
+    //Remove cart
     delete req.session.cart;
+    
     res.redirect('/');
 });
 

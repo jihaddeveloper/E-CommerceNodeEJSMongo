@@ -61,17 +61,6 @@ ProductSchema
     }
     return rating;
 });
-//Deep Populate plugin
-ProductSchema.plugin(deepPopulate);
-
-//Search product plugin
-// ProductSchema.plugin(mongoosastic, { 
-//     hosts: [
-//         'localhost:9200' 
-//     ]
-// });
-
-
 
 //Mongosastic plugin
 ProductSchema.plugin(mongoosastic);

@@ -11,6 +11,7 @@ var LiveSchema = new Schema({
     unitPrice: {type: Number},
     inventory:[{ type: Schema.Types.ObjectId, ref: 'Inventory' }],
     admin: { type: Schema.Types.ObjectId, ref: 'users' },
+    frontQuantity: { type: Number, default: 0 },
     blockQuantity: { type: Number, default: 0 },
     created: { type: Date, default: Date.now }
 });

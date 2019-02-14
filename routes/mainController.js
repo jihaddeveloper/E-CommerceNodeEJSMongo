@@ -195,12 +195,12 @@ router.post('/products/category/filter/:id', (req, res, next) => {
         var array_range = req.body.price.split("-");
         sr.push({
             $and: [{
-                    price: {
+                unitPrice: {
                         $gt: parseInt(array_range[0], 10)
                     }
                 },
                 {
-                    price: {
+                    unitPrice: {
                         $lt: parseInt(array_range[1], 10)
                     }
                 }
@@ -413,12 +413,12 @@ router.post('/products/subCategory/filter/:id', (req, res, next) => {
         var array_range = req.body.price.split("-");
         sr.push({
             $and: [{
-                    price: {
+                    unitPrice: {
                         $gt: parseInt(array_range[0], 10)
                     }
                 },
                 {
-                    price: {
+                    unitPrice: {
                         $lt: parseInt(array_range[1], 10)
                     }
                 }
@@ -634,12 +634,12 @@ router.post('/products/brands/filter/:id', (req, res, next) => {
         var array_range = req.body.price.split("-");
         sr.push({
             $and: [{
-                    price: {
+                unitPrice: {
                         $gt: parseInt(array_range[0], 10)
                     }
                 },
                 {
-                    price: {
+                    unitPrice: {
                         $lt: parseInt(array_range[1], 10)
                     }
                 }
