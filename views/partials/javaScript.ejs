@@ -53,9 +53,18 @@
           if(totalAmount < 3000 && shipArea === 'Dhaka'){
             document.getElementById('shipCharge').value = 40;
             document.getElementById('finalTotalAmount').value = (totalAmount + 40).toString();
+            document.getElementById('message').style.color = 'red';
+            document.getElementById('message').innerHTML = 'Total Amount is bellow 3000.00tk, so 40.00tk delivery charge will be added';
+          }else if(totalAmount > 3000 && shipArea === 'Dhaka'){
+            document.getElementById('shipCharge').value = 0;
+            document.getElementById('finalTotalAmount').value = (totalAmount + 0).toString();
+            document.getElementById('message').style.color = 'green';
+            document.getElementById('message').innerHTML = 'Total Amount is over 3000.00tk, so no delivery charge will be added';
           }else{
             document.getElementById('shipCharge').value = 0;
             document.getElementById('finalTotalAmount').value = (totalAmount + 0).toString();
+            document.getElementById('message').style.color = 'red';
+            document.getElementById('message').innerHTML = 'Standard Curirer Charge will be applied for Product delivery to other city outside of Dhaka';
           }
           
         }
