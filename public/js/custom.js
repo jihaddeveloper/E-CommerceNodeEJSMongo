@@ -7,7 +7,6 @@ window.setInterval(function () {
 //Product return to live, time checking
 
 //TotalAmount set the Payment Option
-
 $(function () {
   var totalAmount = parseFloat(document.getElementById('totalAmount').innerHTML);
   if (totalAmount > 10000) {
@@ -17,7 +16,6 @@ $(function () {
   }
 
 });
-
 //TotalAmount set the Payment Option
 
 
