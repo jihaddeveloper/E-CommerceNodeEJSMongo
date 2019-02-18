@@ -8,8 +8,8 @@
             <p style="color: red">N.B. Standard Curirer Charge will be applied for Product delivery to other city outside of Dhaka</p>
             <h1>Checkout</h1>
             <% if(totalCartPrice) { %>
-            <h4>Total Amount: </h4>
-            <h4 id="totalAmount"><%= totalCartPrice %>.00 TK</h4>
+            <h4>Total Amount: TK</h4>
+            <h4 id="totalAmount"><%= totalCartPrice %></h4>
             <% } %>
             <form action="/payment" method="POST" id="stripe-checkout-form">
                 <div class="row">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-xs-12">
                             <div class="form-group">
-                                <input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone" required>
+                                <input type="tel" id="phone" name="phone" class="form-control" maxlength="14" minlength="11" placeholder="Please supply a valid phone number in the form 01XXXXXXXXX or +8801XXXXXXXXX" required>
                             </div>
                     </div>
                     <div class="col-xs-12">
@@ -48,12 +48,19 @@
                     <input id="finalTotalAmount" name="finalTotalAmount" readonly> <p id="message"></p>
                     <h2>Payment Method</h2>
                     <div class="col-xs-12">
-                        <div class="form-group">
-                            <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                        <div id="payment1" class="form-group">
+                            <select class="form-control" id="paymentMethod" name="paymentMethod">
                                     <option>Online Payment</option>
                                     <option>Cash On Delivery</option>
                             </select>
                         </div>
+                    </div>
+                    <div  class="col-xs-12">
+                            <div id="payment2" class="form-group">
+                                <select class="form-control" id="paymentMethod" name="paymentMethod">
+                                        <option>Online Payment</option>
+                                </select>
+                            </div>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Place Order</button>

@@ -950,79 +950,79 @@ router.post('/paymentReady', function(req, res, next){
 
 
 //Payment Route
-router.post('/payment', function (req, res, next) {
-    var stripeToken = req.body.stripeToken;
-    var currentCharges = Math.round(req.body.stripeMoney * 100);
+// router.post('/payment', function (req, res, next) {
+//     var stripeToken = req.body.stripeToken;
+//     var currentCharges = Math.round(req.body.stripeMoney * 100);
 
-    stripe.customers.create({
-        source: stripeToken,
-    }).then(function (customer) {
-        return stripe.charges.create({
-            amount: currentCharges,
-            currency: 'usd',
-            customer: customer.id
-        });
-    }).then(function (charge) {
-        async.waterfall([
-            function (callback) {
-                Cart.findOne({
-                    owner: req.user._id
-                }, function (err, cart) {
-                    callback(err, cart);
-                });
-            },
-            function (cart, callback) {
+//     stripe.customers.create({
+//         source: stripeToken,
+//     }).then(function (customer) {
+//         return stripe.charges.create({
+//             amount: currentCharges,
+//             currency: 'usd',
+//             customer: customer.id
+//         });
+//     }).then(function (charge) {
+//         async.waterfall([
+//             function (callback) {
+//                 Cart.findOne({
+//                     owner: req.user._id
+//                 }, function (err, cart) {
+//                     callback(err, cart);
+//                 });
+//             },
+//             function (cart, callback) {
                 
-                User.findOne({ _id: req.user._id }, 
-                    function (err, user) {
-                    if (user) {
+//                 User.findOne({ _id: req.user._id }, 
+//                     function (err, user) {
+//                     if (user) {
                        
-                        for (var i = 0; i < cart.items.length; i++) {
-                            user.history.push({
-                                item: cart.items[i].item,
-                                paid: cart.items[i].price
-                            });
-                        }
-                        user.save(function (err, user) {
-                            if (err) return next(err);
-                            callback(err, user);
-                        });
+//                         for (var i = 0; i < cart.items.length; i++) {
+//                             user.history.push({
+//                                 item: cart.items[i].item,
+//                                 paid: cart.items[i].price
+//                             });
+//                         }
+//                         user.save(function (err, user) {
+//                             if (err) return next(err);
+//                             callback(err, user);
+//                         });
 
 
-                        //Order Saving
-                        var newOrder = new Order();
+//                         //Order Saving
+//                         var newOrder = new Order();
 
-                        newOrder.owner = req.user._id;
-                        newOrder.paid = req.body.grandTotalPrice;
+//                         newOrder.owner = req.user._id;
+//                         newOrder.paid = req.body.grandTotalPrice;
 
-                        for (var i = 0; i < cart.items.length; i++) {
-                            newOrder.items.push({
-                                item: cart.items[i].item,
-                                paid: cart.items[i].price
-                            });
-                        }
-                        newOrder.save(function(err,order){
-                            if(err) return next(err);
-                        });
-                    }
-                });
-            },
-            function (user) {
-                Cart.update({
-                    owner: user._id
-                }, {
-                    $set: {
-                        items: [],
-                        total: 0
-                    }
-                }, function (err, updated) {
-                    if (updated) {
-                        res.redirect('/profile');
-                    }
-                });
-            }
-        ]);
-    });
-});
+//                         for (var i = 0; i < cart.items.length; i++) {
+//                             newOrder.items.push({
+//                                 item: cart.items[i].item,
+//                                 paid: cart.items[i].price
+//                             });
+//                         }
+//                         newOrder.save(function(err,order){
+//                             if(err) return next(err);
+//                         });
+//                     }
+//                 });
+//             },
+//             function (user) {
+//                 Cart.update({
+//                     owner: user._id
+//                 }, {
+//                     $set: {
+//                         items: [],
+//                         total: 0
+//                     }
+//                 }, function (err, updated) {
+//                     if (updated) {
+//                         res.redirect('/profile');
+//                     }
+//                 });
+//             }
+//         ]);
+//     });
+// });
 
 module.exports = router;

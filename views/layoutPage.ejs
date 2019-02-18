@@ -59,7 +59,7 @@
         <!-- Cart View -->
         <% if(cart) { %>
           <h1 class="page-title">Cart Items</h1>
-          <table class="table table-striped alignmiddle">
+          <table id="tab" class="table table-striped alignmiddle">
               <tr>
                   <th>Image</th>
                   <th>Title</th>
@@ -76,20 +76,20 @@
                   <td><img class="product-image" style="width: 20%; height: 20%;" src="data:image/png;base64, <%= cart[i].image %>"></td>
                   <td><%= cart[i].title %></td>
                   <td><%= cart[i].quantity %></td>
-                  <td><%= cart[i].unitPrice %></td>
+                  <td>TK<%= cart[i].unitPrice %></td>
                   <td>
-                      <a href="/cart/update/<%= cart[i].title %>?action=increase"><b>(+)</b></a>&nbsp;
+                      <a  class="btn" onclick="add1('<%= cart[i].product %>')"><b>(+)</b></a>&nbsp;
                       <br>
                       <a href="/cart/update/<%= cart[i].title %>?action=decrease"><b>(-)</b></a>&nbsp;
                       <br>
                       <a href="/cart/update/<%= cart[i].title %>?action=remove">(x)</a>&nbsp;
                   </td>
-                  <td><%= subtotal %></td>
+                  <td>TK<%= subtotal %></td>
               </tr>
               
           <% } %>
-              <tr>
-                  <td colspan="5" align="right"><b>Total: <%= total %></b></td>
+              <!-- <tr>
+                  <td colspan="5" align="right"><b>Total: <%= total %>.00TK</b></td>
               </tr>
               <tr>
                   <td colspan="5" align="right">
@@ -103,7 +103,7 @@
                   <td colspan="5" align="right">
                       <a class="btn btn-primary" href="/stripe-payment">Confirm Order</a>
                   </td>
-              </tr>
+              </tr> -->
           </table>
           <% } else { %>
               <h3 class="text-center">Your Cart is empty</h3>

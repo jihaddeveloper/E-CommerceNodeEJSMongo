@@ -21,18 +21,18 @@
                     <td><img class="product-image" style="width: 20%; height: 20%;" src="data:image/png;base64, <%= cart[i].image %>"></td>
                     <td><%= cart[i].title %></td>
                     <td><%= cart[i].quantity %></td>
-                    <td><%= cart[i].unitPrice %></td>
+                    <td><%= cart[i].unitPrice %>.00TK</td>
                     <td>
                         <a href="/cart/update/<%= cart[i].title %>?action=increase"><b>+</b></a>&nbsp;
                         <a href="/cart/update/<%= cart[i].title %>?action=decrease"><b>-</b></a>&nbsp;
                         <a href="/cart/update/<%= cart[i].title %>?action=remove">Remove</a>&nbsp;
                     </td>
-                    <td><%= subtotal %></td>
+                    <td><%= subtotal %>.00TK</td>
                 </tr>
                 
             <% } %>
                 <tr>
-                    <td colspan="5" align="right"><b>Total: <%= total %></b></td>
+                    <td colspan="5" align="right"><b>Total: <%= total %>.00TK</b></td>
                 </tr>
             </table>
             <% } else { %>

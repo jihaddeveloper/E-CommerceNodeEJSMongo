@@ -209,8 +209,9 @@ router.get('/cart/update/:product', function(req, res, next){
             switch(action){
                 case "increase":
                     // Live.findOne({product_id: cart[i].product}).exec(function(err, live){
+                    //     if(live.frontQuantity >= 0){}
                     // });
-                    if(cart[i].quantity < 2){
+                    if(cart[i].quantity < 5){
                             cart[i].quantity++;
                             cart[i].price = parseFloat(cart[i].price) + parseFloat(cart[i].price);
                             req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) + parseFloat(cart[i].unitPrice);
@@ -284,6 +285,7 @@ router.get('/clear', function(req, res, next){
         }
     }
 
+
     delete req.session.cart;
     res.redirect('/checkout');
 });
@@ -323,6 +325,76 @@ router.get('/return-to-live',function(req, res, next){
     // next();
 }
 next();
+});
+
+
+//Cart Update everypage
+router.get('/cart/update/every/:product', function(req, res, next){
+    var product = req.params.product;
+    var cart = req.session.cart;
+    var action = req.query.action;
+
+    for(var i = 0; i < cart.length; i++){
+        if(cart[i].title == product) {
+            switch(action){
+                case "increase":
+                    // Live.findOne({product_id: cart[i].product}).exec(function(err, live){
+                    // });
+                    if(cart[i].quantity < 5){
+                            cart[i].quantity++;
+                            cart[i].price = parseFloat(cart[i].price) + parseFloat(cart[i].price);
+                            req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) + parseFloat(cart[i].unitPrice);
+                            //console.log(req.session.totalCartPrice);
+                            //Decrement the live frontQuantity
+                            Live.findOneAndUpdate({product_id: cart[i].product},
+                                {$inc: { frontQuantity: -1 }}, {new: true},function(err, newLive){
+                                    if(err) return next(err);
+    
+                                    //console.log(newLive);
+                            });
+                        }
+                        //console.log(cart);
+                    break;
+                case "decrease":
+                    if(cart[i].quantity > 1){
+                        cart[i].quantity--;
+                        cart[i].price = parseFloat(cart[i].price) - parseFloat(cart[i].price);
+                        req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) - parseFloat(cart[i].unitPrice);
+                        //Increment the live frontQuantity
+                        Live.findOneAndUpdate({product_id: cart[i].product},
+                            {$inc: { frontQuantity: 1 }}, {new: true},function(err, newLive){
+                                if(err) return next(err);
+
+                                console.log(newLive);
+                        });
+                    }
+                    console.log(req.session.totalCartPrice);
+                    break;
+                case "remove":
+                    //Increment the live frontQuantity
+                    Live.findOneAndUpdate({product_id: cart[i].product},
+                        {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
+                            if(err) return next(err);
+
+                            console.log(newLive);
+                    });
+                    req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) - parseFloat(cart[i].price);
+                    cart.splice(i, 1);
+                    if(cart.length == 0){
+                        delete req.session.cart;
+                        req.session.totalCartPrice = 0;
+                    }
+                    console.log(req.session.totalCartPrice);
+                    break;
+                default:
+                    console.log('Cart update error');
+                    break;
+            }
+            break;
+        }
+    }
+    res.send(req.session);
+    // res.redirect('/checkout');
 });
 
 //Export router
