@@ -1,29 +1,29 @@
 <% layout('layoutPage') -%>
 
-<div class="container-fluid">
+<div class="container">
 
-<% if (errors.length > 0) { %>
-<div class="alert alert-danger alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <%= errors %>
-</div>
-<% } %>
+    <% if (errors.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <%= errors %>
+    </div>
+    <% } %>
 
-<% if (message.length > 0) { %>
-<div class="alert alert-danger alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <%= message %>
-</div>
-<% } %>
+    <% if (message.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <%= message %>
+    </div>
+    <% } %>
 
     <!-- Portfolio Item Row -->
     <% if(product) { %>
     <div class="row">
-        
+
         <div class="col-md-6">
             <img class="img-fluid img-responsive" src="data:image/png;base64, <%= product.image %>" style="width:450px;">
         </div>
@@ -31,7 +31,8 @@
 
         <div class="col-md-6">
             <div class="well well-sm" style="background-color:#f4f7ff;">
-                <h3><strong>
+                <h3>
+                    <strong>
                         <%= product.name %>
                     </strong>
                 </h3>
@@ -44,67 +45,18 @@
                 </h4>
                 <% } %>
                 <h4><b>Unit Price: </b>
-                    TK<%= product.unitPrice %>
+                    TK
+                    <%= product.unitPrice %>
                 </h4>
                 <h4><b>Description: </b>
                     <%= product.description %>
                 </h4>
-
-                <form method="POST" action="/product/'+ product_id">
-                    <!-- <div class="btn-group" role="group" aria-label="...">
-                        <p>
-                            <input type="hidden" name="quantity" id="quantity" value="1">
-                            <button type="button" class="btn btn-default" id="minus" name="">-</button>
-                            <button type="button" class="btn btn-default" id="total" name="">1</button>
-                            <button type="button" class="btn btn-default" id="plus" name="">+</button>
-                        </p>
-                    </div> -->
-
-                    <div class="form-group">
-                        <input type="hidden" name="product_id" id="product_id" value="<%= product._id %>">
-                        <input type="hidden" name="priceHidden" id="priceHidden" value="<%= product.unitPrice %>">
-
-                        <!-- <p><input type="" class="form-control" readonly name="item" id="item" value="<%= product.name %>"></p> -->
-                        <!-- <p><input type="" class="form-control" readonly name="priceValue" id="priceValue" value="<%= product.unitPrice %>"></p> -->
-                    </div>
-
-                    <!-- <% if (user) { %>
-                    <button type="submit" class="btn btn-primary btn-md">Add to Cart</button>
-                    <% } else { %>
-                    <a href="/login" class="btn btn-primary btn-md">Add to Cart</a>
-                    <% } %> -->
-
-                    
-                </form>
-
                 <br>
-
-                <div class="row">
-                    
-                        <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary btn-md">Add Cart</a>
-                    
-                    
-                        <!-- <a class="btn btn-primary" href="#reviews-anchor" id="open-review-box">Leave a Review</a> -->
-                    
+                <br>
+                <div class="addtocart">
+                    <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary btn-md">Add Cart</a>
                 </div>
                 
-
-                <div class="row" id="post-review-box" style="display:none;">
-                    <div class="col-md-12">
-                        <form accept-charset="UTF-8" action="" method="post">
-                            <input id="ratings-hidden" name="rating" type="hidden">
-                            <textarea class="form-control animated" cols="50" id="new-review" name="comment"
-                                placeholder="Enter your review here..." rows="5"></textarea>
-
-                            <div class="text-right">
-                                <div class="stars starrr" data-rating="0"></div>
-                                <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">Cancel</a>
-                                <button class="btn btn-info btn-md" type="">Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
             </div>
 
         </div>
@@ -129,8 +81,9 @@
                         <strong>Price</strong>
                     </div>
                     <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= product.unitPrice %></strong>
+                        <strong>TK
+                            <%= product.unitPrice %>
+                        </strong>
                     </div>
                 </div>
                 <hr>
@@ -150,7 +103,8 @@
                     </div>
                     <div class="col-md-3 col-md-6">
                         <strong>
-                            <%= product.model %></strong>
+                            <%= product.model %>
+                        </strong>
                     </div>
                 </div>
                 <% if(features) { %>
@@ -159,11 +113,13 @@
                 <div class="row">
                     <div class="col-md-3 col-md-6">
                         <strong>
-                            <%= features[i].label %></strong>
+                            <%= features[i].label %>
+                        </strong>
                     </div>
                     <div class="col-md-3 col-md-6">
                         <strong>
-                            <%= features[i].value %></strong>
+                            <%= features[i].value %>
+                        </strong>
                     </div>
                 </div>
                 <% } %>

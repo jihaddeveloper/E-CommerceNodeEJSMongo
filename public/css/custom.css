@@ -110,3 +110,11 @@
 .center-text { text-align: center; }
 .error-message { font-size: 11px; }
 
+
+/*modal-footer*/
+.mf{
+    padding: 15px;
+    text-align: right;
+}
+
+/*home*/

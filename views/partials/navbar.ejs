@@ -12,7 +12,9 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+
         <li class="active"><a href="#"><i class="fa fa-building"></i> About</a></li>
+
         <li><a href="#"><i class="fa fa-phone"></i> Contact</a></li>
 
         <li class="dropdown">
@@ -47,10 +49,6 @@
         </ul>
         </li>
 
-   
-
-
-
         <li>
             <form class="navbar-form" role="search" method="POST" action="/search">
             <div class="input-group">
@@ -65,61 +63,68 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
+        
           <li><a href="#"><i class="fa fa-twitter color-twitter"></i></a></li>
           <li><a href="#"><i class="fa fa-facebook color-facebook"></i></a></li>
           <li><a href="#"><i class="fa fa-linkedin color-linkedin"></i></a></li>
+
           <li class="dropdown">
               <a href="#" class="dropdown-toggle glyphicon glyphicon-shopping-cart" data-toggle="dropdown">
                   <% if(cart) { %>
                   <span class="badge">
-                      <%= cart.length %> Items
+                      <%= cart.length %>
                   </span>
                   <br>
                   <% } else { %>
                       <span class="badge">
-                          0 Items 
+                          0 
                       </span>
                   <% } %>   
               </a>
-              <ul class="dropdown-menu login-panel" style="min-width:450px; padding: 10px 0;">
+              <ul class="dropdown-menu login-panel" style="min-width:550px; padding: 10px 0;">
                   
                   <li>
                     <div>
-                      <h3>Items</h3>
-                      <% if(cart) { %>
-                      <% for (var i = 0; i < cart.length; i++)  { %>
-                      <div class="list-group">
-                        <span class="list-group-item">
-                            <div class="row">
-                                  <div class="col-md-4">
-                                      <span><img class="product-image" style="width: 50%" src="data:image/png;base64, <%= cart[i].image %>"></span>
-                                  </div>
-                                <div class="col-md-3">
-                                    <p class="list-group-item-heading">Product name:
-                                        <%= cart[i].title %>
-                                    </p>
-                                </div>
-                                <div class="col-md-2">
-                                    <p>Qunantity:
-                                        <%= cart[i].quantity %>
-                                    </p>
-                                </div>
-                                <div class="col-md-2">
-                                      <p>Unit Price:
-                                          <%= cart[i].unitPrice %>.00TK
-                                      </p>
-                                </div>
-                            </div>
-                        </span>
-                      </div>
-                      <% } %>
-                      <% } %>
-
-                      <div class="modal-footer">
                         <% if(cart) { %>
-                        <a type="button" class="btn btn-primary" href="/checkout">Cart Details</a>
-                        <a type="button" class="btn btn-primary" href="/stripe-payment">Checkout</a>
-                        <% } %>
+                          <table class="table table-striped alignmiddle">
+                              <tr>
+                                  <th>Image</th>
+                                  <th>Title</th>
+                                  <th>Quantity</th>
+                                  <th>Unit Price</th>
+                                  <th>Actions</th>
+                                  <th>Subtotal</th>
+                              </tr>
+                              <% var total = 0; %>
+                              <% for(var i = 0; i < cart.length; i++) { %>
+                              <% var subtotal = parseFloat(cart[i].unitPrice * cart[i].quantity) %>
+                              <% var total = (total) + (subtotal) %>
+                              <tr>
+                                  <td><img class="product-image" style="width: 20%; height: 20%;" src="data:image/png;base64, <%= cart[i].image %>"></td>
+                                  <td><%= cart[i].title %></td>
+                                  <td><%= cart[i].quantity %></td>
+                                  <td><%= cart[i].unitPrice %></td>
+                                  <td>
+                                      <li style="display:inline;"><a href="/cart/update/<%= cart[i].title %>?action=increase"><b>(+)</b></a>&nbsp;</li>
+                                      <li style="display:inline;"><a href="/cart/update/<%= cart[i].title %>?action=decrease"><b>(-)</b></a>&nbsp;</li>
+                                      <li style="display:inline;"> <a href="/cart/update/<%= cart[i].title %>?action=remove">(x)</a>&nbsp;</li>            
+                                  </td>
+                                  <td><%= subtotal %></td>
+                              </tr>
+                              
+                          <% } %>
+                              <tr>
+                                  <td colspan="6" style="text-align:right;"><b>Total: <%= total %></b></td>
+                              </tr>
+                          </table>
+                          <% } else { %>
+                              <h3 class="text-center">Your Cart is empty</h3>
+                          <% } %>
+            
+                        <div class="mf">
+                            <% if(cart) { %>
+                            <a type="button" class="btn btn-primary" href="/checkout">Cart Details</a>
+                            <% } %>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                       </div>
                     </div>                     
@@ -135,8 +140,6 @@
               <ul class="dropdown-menu">
                 <li><a href="/profile">Profile</a></li>
                 <li><a href="/logout">Logout</a></li>
-                <li><a href=""></a></li>
-                <li><a href=""></a></li>
               </ul>
             </li> 
       
@@ -147,7 +150,6 @@
                       <li><a href="/signup">Signup</a></li>
                       <li><a href="/login">Login</a></li>
                       <li><a href="/verify">Verify Email</a></li>
-                      <li><a href=""></a></li>
                     </ul>
                   </li>   
             <% } %>          

@@ -8,9 +8,6 @@ const User = require('../models/user');
 
 const Order = require('../models/order');
 
-//SessionCart Model
-// var SessionCart = require('../models/sessionCart');
-
 //Product Filtering
 var unique = require("array-unique");
 
@@ -54,11 +51,13 @@ function paginate(req, res, next) {
         .populate('brand')
         .exec(function (err, products) {
             if (err) return next(err);
+            //console.log(products);
             Product.count().exec(function (err, count) {
                 if (err) return next(err);
                 res.render('main/productMain', {
                     products: products,
-                    pages: count / perPage
+                    pages: count / perPage,
+                    message: '', errors: req.flash('errors')
                 });
             });
         });
@@ -67,6 +66,10 @@ function paginate(req, res, next) {
 
 //Home Route
 router.get('/', function (req, res, next) {
+
+    //For returning to same page
+    req.session.returnTo = req.originalUrl;
+
     paginate(req, res, next);
 });
 
@@ -84,6 +87,35 @@ router.get('/page/:page', function (req, res, next) {
 //About Route
 router.get('/about', function (req, res, next) {
     res.render('main/about');
+});
+
+
+//Single product load
+router.get('/product/:id', function (req, res, next) {
+
+    req.session.returnTo = req.originalUrl;
+
+    Product.findOne({
+            _id: req.params.id
+        })
+        .populate({
+            path: "subcategory",
+            populate: {
+                path: "category"
+            }
+        })
+        .populate('brand')
+        .populate('reviews.review')
+        .exec(function (err, product) {
+
+            if (err) return next(err);
+            res.render('main/product', {
+                product: product,
+                features: product.features,
+                message: '', errors: req.flash('errors')
+            });
+        });
+
 });
 
 
@@ -770,33 +802,7 @@ router.post('/products/brands/filter/:id', (req, res, next) => {
 
 });
 
-//Single product load
-router.get('/product/:id', function (req, res, next) {
 
-    req.session.returnTo = req.originalUrl;
-
-    Product.findOne({
-            _id: req.params.id
-        })
-        .populate({
-            path: "subcategory",
-            populate: {
-                path: "category"
-            }
-        })
-        .populate('brand')
-        .populate('reviews.review')
-        .exec(function (err, product) {
-
-            if (err) return next(err);
-            res.render('main/product', {
-                product: product,
-                features: product.features,
-                message: '', errors: req.flash('errors')
-            });
-        });
-
-});
 
 
 //Custom Search 
@@ -860,45 +866,6 @@ router.get('/cart', function (req, res, next) {
         });
 });
 
-//Product added to cart (Database)
-// router.post('/product/:product_id', function (req, res, next) {
-//     Cart.findOne({
-//         owner: req.user._id
-//     }, function (err, cart) {
-//         cart.items.push({
-//             item: req.body.product_id,
-//             price: parseFloat(req.body.priceValue),
-//             quantity: parseInt(req.body.quantity)
-//         });
-
-//         cart.total = (cart.total + parseFloat(req.body.priceValue)).toFixed(2);
-
-//         cart.save(function (err) {
-//             if (err) return next(err);
-//             return res.redirect('/product/' + req.body.product_id);
-//         });
-//     });
-// });
-
-//Product remove from cart
-// router.post('/remove', function (req, res, next) {
-//     Cart.findOne({
-//         owner: req.user._id
-//     }, function (err, foundCart) {
-//         foundCart.items.pull(String(req.body.item));
-//         foundCart.total = (foundCart.total - parseFloat(req.body.price)).toFixed(2);
-
-//         foundCart.save(function (err, found) {
-//             if (err) return next(err);
-//             req.flash('remove', 'Successfully removed');
-//             res.redirect('/cart');
-//         });
-//     });
-// });
-
-
-
-//Shopping cart view
 
 
 //Procced to checkout
@@ -910,119 +877,10 @@ router.get('/procced-checkout', function(req, res, next){
     res.render('main/checkoutPage', {totalPrice: cart.totalPrice});
 });
 
-//Post review to product
-router.post('/add-review', passportConfig.isAuthenticated, function (req, res, next) {
-    User.findOne({
-        _id: req.user._id
-    }, function (err, user) {
-        if (err) return next(err);
-
-        Product.findOne({
-            _id: req.body.product_id
-        }, function (err, product) {
-            if (err) return next(err);
-
-            let review = new Review();
-
-            review.owner = req.user._id;
-            if (req.body.title) review.title = req.body.title;
-            if (req.body.description) review.description = req.body.description;
-            review.rating = req.body.rating;
-
-            product.reviews.push(review._id);
-            product.save();
-
-            review.save(function (err, newReview) {
-                if (err) return next(err);
-                req.flash('success', 'Successfully added Review');
-                return res.redirect('/add-review');
-            });
-        });
-
-    });
-});
-
 
 //Payment Ready Page
 router.post('/paymentReady', function(req, res, next){
     
 });
-
-
-//Payment Route
-// router.post('/payment', function (req, res, next) {
-//     var stripeToken = req.body.stripeToken;
-//     var currentCharges = Math.round(req.body.stripeMoney * 100);
-
-//     stripe.customers.create({
-//         source: stripeToken,
-//     }).then(function (customer) {
-//         return stripe.charges.create({
-//             amount: currentCharges,
-//             currency: 'usd',
-//             customer: customer.id
-//         });
-//     }).then(function (charge) {
-//         async.waterfall([
-//             function (callback) {
-//                 Cart.findOne({
-//                     owner: req.user._id
-//                 }, function (err, cart) {
-//                     callback(err, cart);
-//                 });
-//             },
-//             function (cart, callback) {
-                
-//                 User.findOne({ _id: req.user._id }, 
-//                     function (err, user) {
-//                     if (user) {
-                       
-//                         for (var i = 0; i < cart.items.length; i++) {
-//                             user.history.push({
-//                                 item: cart.items[i].item,
-//                                 paid: cart.items[i].price
-//                             });
-//                         }
-//                         user.save(function (err, user) {
-//                             if (err) return next(err);
-//                             callback(err, user);
-//                         });
-
-
-//                         //Order Saving
-//                         var newOrder = new Order();
-
-//                         newOrder.owner = req.user._id;
-//                         newOrder.paid = req.body.grandTotalPrice;
-
-//                         for (var i = 0; i < cart.items.length; i++) {
-//                             newOrder.items.push({
-//                                 item: cart.items[i].item,
-//                                 paid: cart.items[i].price
-//                             });
-//                         }
-//                         newOrder.save(function(err,order){
-//                             if(err) return next(err);
-//                         });
-//                     }
-//                 });
-//             },
-//             function (user) {
-//                 Cart.update({
-//                     owner: user._id
-//                 }, {
-//                     $set: {
-//                         items: [],
-//                         total: 0
-//                     }
-//                 }, function (err, updated) {
-//                     if (updated) {
-//                         res.redirect('/profile');
-//                     }
-//                 });
-//             }
-//         ]);
-//     });
-// });
 
 module.exports = router;

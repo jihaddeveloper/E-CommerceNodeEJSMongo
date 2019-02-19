@@ -1,6 +1,6 @@
 <% layout('layoutPage') -%>
 
-<div class="container" style="width:100%; min-height: 700px">
+<div class="container">
         
         <% if(cart) { %>
         <h1 class="page-title">Cart Items</h1>
@@ -23,30 +23,22 @@
                 <td><%= cart[i].quantity %></td>
                 <td><%= cart[i].unitPrice %></td>
                 <td>
-                    <a href="/cart/update/<%= cart[i].title %>?action=increase"><b>(+)</b></a>&nbsp;
-                    <br>
-                    <a href="/cart/update/<%= cart[i].title %>?action=decrease"><b>(-)</b></a>&nbsp;
-                    <br>
-                    <a href="/cart/update/<%= cart[i].title %>?action=remove">(x)</a>&nbsp;
+                    <li style="display:inline;"><a href="/cart/update/<%= cart[i].title %>?action=increase"><b>(+)</b></a>&nbsp;</li>
+                    <li style="display:inline;"><a href="/cart/update/<%= cart[i].title %>?action=decrease"><b>(-)</b></a>&nbsp;</li>
+                    <li style="display:inline;"> <a href="/cart/update/<%= cart[i].title %>?action=remove">(x)</a>&nbsp;</li>            
                 </td>
                 <td><%= subtotal %></td>
             </tr>
             
         <% } %>
             <tr>
-                <td colspan="5" align="right"><b>Total: <%= total %></b></td>
+                <td colspan="6" style="text-align:right;"><b>Total: <%= total %></b></td>
             </tr>
-            <tr>
-                <td colspan="5" align="right">
+            <tr>       
+                <td colspan="7" style="text-align:center">
                     <a class="clearcart btn btn-danger" href="/clear">Clear Cart</a>
-                </td>
-                <td colspan="5" align="right">
                     <a class="btn btn-success" href="/">Continue Shopping</a>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5" align="right">
-                    <a class="btn btn-primary" href="/stripe-payment">Confirm Order</a>
+                    <a class="btn btn-primary" href="/stripe-payment">Confirm Order</a>                             
                 </td>
             </tr>
         </table>
