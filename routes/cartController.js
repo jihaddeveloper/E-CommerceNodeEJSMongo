@@ -110,7 +110,9 @@ router.get('/add-to-cart/:product_id', function (req, res, next) {
                     if(req.session.returnTo){
                         res.redirect(req.session.returnTo);
                         delete req.session.returnTo;
-                    }else{
+                    }
+                    else
+                    {
                         res.redirect('/');
                     } 
     
@@ -134,7 +136,7 @@ router.get('/checkout', function(req, res, next){
         delete req.session.cart;
         res.redirect('/checkout');
     }else{
-        res.render('main/checkoutPage',{ cart: req.session.cart });
+        res.render('main/checkoutReadyPage',{ cart: req.session.cart });
     }
 });
 
@@ -152,9 +154,6 @@ router.get('/cart/update/:product', function(req, res, next){
                     //     if(live.frontQuantity >= 0){}
                     // });
 
-                    //Set the lifetime of cart
-                    req.session.cookie.maxAge = 20 * 60000 ;
-
                     if(cart[i].quantity < 5){
                             cart[i].quantity++;
                             cart[i].price = parseFloat(cart[i].price) + parseFloat(cart[i].price);
@@ -171,9 +170,6 @@ router.get('/cart/update/:product', function(req, res, next){
                         //console.log(cart);
                     break;
                 case "decrease":
-
-                    //Set the lifetime of cart
-                    req.session.cookie.maxAge = 20 * 60000 ;
                     
                     if(cart[i].quantity > 1){
                         cart[i].quantity--;
@@ -191,9 +187,6 @@ router.get('/cart/update/:product', function(req, res, next){
                     break;
                 case "remove":
 
-                    //Set the lifetime of cart
-                    req.session.cookie.maxAge = 20 * 60000 ;
-
                     //Increment the live frontQuantity
                     Live.findOneAndUpdate({product_id: cart[i].product},
                         {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
@@ -207,7 +200,7 @@ router.get('/cart/update/:product', function(req, res, next){
                         delete req.session.cart;
                         req.session.totalCartPrice = 0;
                     }
-                    console.log(req.session.totalCartPrice);
+                    //console.log(req.session.totalCartPrice);
                     break;
                 default:
                     console.log('Cart update error');

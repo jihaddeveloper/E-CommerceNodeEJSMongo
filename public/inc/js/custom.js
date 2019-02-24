@@ -10,9 +10,13 @@ window.setInterval(function () {
 $(function () {
   var totalAmount = parseFloat(document.getElementById('totalAmount').innerHTML);
   if (totalAmount > 10000) {
-    $('#payment1').children().attr('disabled', true);
+    $('#payment1').children().hide();
+    document.getElementById('hints').style.color = 'red';
+    document.getElementById('hints').innerHTML = 'Cash on Delivery is not applicable for amount more than 10000Tk.';
   } else {
-    $('#payment2').children().attr('disabled', true);
+    $('#payment2').children().hide();
+    document.getElementById('hints').style.color = 'red';
+    document.getElementById('hints').innerHTML = 'Cash on Delivery & Online Pay both are applicable for amount 10000Tk or less.';
   }
 
 });

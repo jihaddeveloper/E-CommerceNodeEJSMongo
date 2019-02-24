@@ -1,11 +1,108 @@
 <% layout('layoutPage') -%>
 
-<div class="container" style="width:100%; min-height: 700px">
+<div class="container">
+    <div class="row align-items-center">
+        <center>
+            <h1>Checkout</h1>
+            <p style="color: red">N.B. Standard Curirer Charge will be applied for Product delivery to other city outside of
+                        Dhaka</p>
+        </center>
+        
+    </div>
+    
     <div class="row">
+
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <center>
+            <h4>Total Amount: TK</h4>
+            <% if(totalCartPrice) { %>
+            <h4 id="totalAmount">
+                <%= totalCartPrice %>
+            </h4>
+            <% } %>
+            </center>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <form action="/payment" method="POST" id="stripe-checkout-form">
+                <div class="row">
+                    <h4>Shipping Address</h4>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Name" required>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" class="form-control" pattern=".{11,14}"
+                                placeholder="Please supply a valid phone number" required title="Enter a valid phone number">
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <textarea type="text" id="address" name="address" class="form-control" rows="3" placeholder="Address"
+                                required></textarea>
+                        </div>
+                    </div>
+                    
+                </div>
+
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                
+            <div class="form-group">
+                <label for="city">Select City</label>
+                <select class="form-control" id="city" name="city" onchange="setTotal()" aria-placeholder="Select City"
+                    required>
+                    <option value="Dhaka">Dhaka</option>
+                    <option value="Chittagong">Chittagong</option>
+                    <option value="Khulna">Khulna</option>
+                    <option value="Sylhet">Sylhet</option>
+                    <option value="Rangpur">Rangpur</option>
+                </select>
+            </div>
+            <h4>Shipping Charge</h4>
+            <input id="shipCharge" name="shipCharge" readonly>
+            <p id="message"></p>
+            <h4>With Shipping Charge, Grand-Total: </h4>
+            <input id="finalTotalAmount" name="finalTotalAmount" readonly>
+            <p id="message"></p>
+
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <h4>Payment Method</h4>
+            <p id="hints"></p>
+            <div>
+                <div id="payment1" class="form-group">
+                    <p id="hints"></p>
+                    <select class="form-control" id="paymentMethod" name="paymentMethod">
+                        <option>Online Payment</option>
+                        <option>Cash On Delivery</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div id="payment2" class="form-group">
+                    <p id="hints"></p>
+                    <select class="form-control" id="paymentMethod" name="paymentMethod">
+                        <option>Online Payment</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary pull-right" style="text-align:center">Place Order</button>
+            </form>
+        </div>
+
+    </div>
+
+    
+</div>
+
+<!-- <div class="row">
         <div class="col-sm-6 col-md- 4 col-md-offset-4 col-sm-offset-3">
             <br>
             <br>
-            <p style="color: red">N.B. Standard Curirer Charge will be applied for Product delivery to other city outside of Dhaka</p>
+            
             <h1>Checkout</h1>
             <% if(totalCartPrice) { %>
             <h4>Total Amount: TK</h4>
@@ -21,7 +118,7 @@
                     </div>
                     <div class="col-xs-12">
                             <div class="form-group">
-                                <input type="tel" id="phone" name="phone" class="form-control" maxlength="14" minlength="11" placeholder="Please supply a valid phone number in the form 01XXXXXXXXX or +8801XXXXXXXXX" required>
+                                <input type="tel" id="phone" name="phone" class="form-control" pattern=".{11,14}" placeholder="Please supply a valid phone number" required title="Enter a valid phone number">
                             </div>
                     </div>
                     <div class="col-xs-12">
@@ -32,7 +129,7 @@
                     <div class="col-xs-12">
                             <div class="form-group">
                                 <label for="city">Select City</label>
-                                <select class="form-control" id="city" name="city" onchange="setTotal()" required>
+                                <select class="form-control" id="city" name="city" onchange="setTotal()" aria-placeholder="Select City" required>
                                         <option value="Dhaka">Dhaka</option>
                                         <option value="Chittagong">Chittagong</option>
                                         <option value="Khulna">Khulna</option>
@@ -47,8 +144,10 @@
                     <h2>With Shipping Charge, Grand-Total: </h2>
                     <input id="finalTotalAmount" name="finalTotalAmount" readonly> <p id="message"></p>
                     <h2>Payment Method</h2>
+                    <p id="hints"></p>
                     <div class="col-xs-12">
                         <div id="payment1" class="form-group">
+                            <p id="hints"></p>
                             <select class="form-control" id="paymentMethod" name="paymentMethod">
                                     <option>Online Payment</option>
                                     <option>Cash On Delivery</option>
@@ -57,6 +156,7 @@
                     </div>
                     <div  class="col-xs-12">
                             <div id="payment2" class="form-group">
+                                <p id="hints"></p>
                                 <select class="form-control" id="paymentMethod" name="paymentMethod">
                                         <option>Online Payment</option>
                                 </select>
@@ -67,4 +167,4 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->

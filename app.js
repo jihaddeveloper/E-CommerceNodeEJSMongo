@@ -76,38 +76,6 @@ app.use(session({
 }));
 
 
-//Product return to live
-// app.use(function(req, res, next){
-
-//     if(req.session.cookie.maxAge === null){
-        
-//         console.log(req.session);
-
-//         //Product return to live
-//         var cart = req.session.cart;
-//         if(cart){
-//             for(var i = 0; i < cart.length; i++){
-//                 //Increment the live frontQuantity
-//                 Live.findOneAndUpdate({product_id: cart[i].product},
-//                     {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
-//                         if(err) return next(err);
-    
-//                         console.log(newLive);
-//                 });
-    
-//             }
-//         }
-    
-//         //Remove old url
-//         delete req.session.returnTo;
-        
-//         //Remove cart
-//         delete req.session.cart;
-//     }
-//     next();
-// }
-// );
-
 //Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -210,15 +178,7 @@ app.use(function (req, res, next) {
 });
 
 
-// //Cart Timeout
-// setInterval(function(req,session,cart){
-//     delete req.session.cart;
-//   }, 1 * 60 * 1000); 
 
-//Cart Timeout
-// app.use(setTimeout(function(req,res, next){
-//     delete req.session.cart;
-// },3000));
 
 //Controllers Import
 var mainCon = require('./routes/mainController');

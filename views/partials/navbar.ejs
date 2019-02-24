@@ -1,5 +1,6 @@
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid navbar-border">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+  <div class="container navbar-border">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
         <span class="sr-only">Toggle navigation</span>
@@ -10,151 +11,184 @@
       <a class="navbar-brand" href="/"><i class="fa fa-home"></i> ECL eCommerce</a>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-
-        <li class="active"><a href="#"><i class="fa fa-building"></i> About</a></li>
-
-        <li><a href="#"><i class="fa fa-phone"></i> Contact</a></li>
-
+    <div class="collapse navbar-collapse ac" id="bs-example-navbar-collapse-1" style="background-color: #ccc">
+      <ul class="nav navbar-nav navbar-left">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Categories <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">All Categories <span class="caret"></span></a>
           <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
             <% for(var i = 0; i < categories.length; i++) { %>
-                <% if(categories[i].subCategories.length != 0) { %>
-                <li class="dropdown-submenu pull-right1"><a tabindex="-1" href="/products/<%= categories[i].id %>"><%= categories[i].name %></a>  
-                    <ul class="dropdown-menu"> 
-                        <% for(var j = 0; j < categories[i].subCategories.length; j++) { %>
-                            <li class="dropdown-submenu pull-right2"><a tabindex="-1" data-target="" href="/products/subCategory/<%= categories[i].subCategories[j].id %>"><%= categories[i].subCategories[j].name %></a>
-                                <ul class="dropdown-menu pull-right2">
-                                        <% for(var k = 0; k < categories[i].subCategories[j].brands.length; k++) { %>
-                                            <li ><a  data-target="" href="/products/<%= categories[i].id %>/<%= categories[i].subCategories[j].id %>/<%= categories[i].subCategories[j].brands[k].id %>"><%= categories[i].subCategories[j].brands[k].name %></a>
-                                            </li>
-                                        <% } %>
-                                </ul>
-                            </li>
-                        <% } %>
-                    </ul>
-                </li>
-                <% }else{ %>   
-                    <li class="dropdown-submenu pull-right1"><a tabindex="-1" data-target="" href="/products/<%= categories[i].id %>"> <%= categories[i].name %></a>
-                        <ul class="dropdown-menu">
-                            <% for(var k = 0; k < categories[i].brands.length; k++) { %>
-                                <li ><a  data-target="" href="/products/<%= categories[i].id %>/<%= categories[i].brands[k].id %>"><%= categories[i].brands[k].name %></a>
-                            <% } %>
-                        </ul>
-                    </li> 
-                <% } %>
-            <% } %>
-        </ul>
-        </li>
-
-        <li>
-            <form class="navbar-form" role="search" method="POST" action="/search">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="search" name="q">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                </div>
-            </div>
-            </form>    
-        </li>
-       
-      </ul>
-      
-      <ul class="nav navbar-nav navbar-right">
-        
-          <li><a href="#"><i class="fa fa-twitter color-twitter"></i></a></li>
-          <li><a href="#"><i class="fa fa-facebook color-facebook"></i></a></li>
-          <li><a href="#"><i class="fa fa-linkedin color-linkedin"></i></a></li>
-
-          <li class="dropdown">
-              <a href="#" class="dropdown-toggle glyphicon glyphicon-shopping-cart" data-toggle="dropdown">
-                  <% if(cart) { %>
-                  <span class="badge">
-                      <%= cart.length %>
-                  </span>
-                  <br>
-                  <% } else { %>
-                      <span class="badge">
-                          0 
-                      </span>
-                  <% } %>   
-              </a>
-              <ul class="dropdown-menu login-panel" style="min-width:550px; padding: 10px 0;">
-                  
-                  <li>
-                    <div>
-                        <% if(cart) { %>
-                          <table class="table table-striped alignmiddle">
-                              <tr>
-                                  <th>Image</th>
-                                  <th>Title</th>
-                                  <th>Quantity</th>
-                                  <th>Unit Price</th>
-                                  <th>Actions</th>
-                                  <th>Subtotal</th>
-                              </tr>
-                              <% var total = 0; %>
-                              <% for(var i = 0; i < cart.length; i++) { %>
-                              <% var subtotal = parseFloat(cart[i].unitPrice * cart[i].quantity) %>
-                              <% var total = (total) + (subtotal) %>
-                              <tr>
-                                  <td><img class="product-image" style="width: 20%; height: 20%;" src="data:image/png;base64, <%= cart[i].image %>"></td>
-                                  <td><%= cart[i].title %></td>
-                                  <td><%= cart[i].quantity %></td>
-                                  <td><%= cart[i].unitPrice %></td>
-                                  <td>
-                                      <li style="display:inline;"><a href="/cart/update/<%= cart[i].title %>?action=increase"><b>(+)</b></a>&nbsp;</li>
-                                      <li style="display:inline;"><a href="/cart/update/<%= cart[i].title %>?action=decrease"><b>(-)</b></a>&nbsp;</li>
-                                      <li style="display:inline;"> <a href="/cart/update/<%= cart[i].title %>?action=remove">(x)</a>&nbsp;</li>            
-                                  </td>
-                                  <td><%= subtotal %></td>
-                              </tr>
-                              
-                          <% } %>
-                              <tr>
-                                  <td colspan="6" style="text-align:right;"><b>Total: <%= total %></b></td>
-                              </tr>
-                          </table>
-                          <% } else { %>
-                              <h3 class="text-center">Your Cart is empty</h3>
-                          <% } %>
-            
-                        <div class="mf">
-                            <% if(cart) { %>
-                            <a type="button" class="btn btn-primary" href="/checkout">Cart Details</a>
-                            <% } %>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                      </div>
-                    </div>                     
-                      
-                  </li>                
-              </ul>       
-          </li>
-
-          <% if(user) { %>
-
-            <li> <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <%= user.profile.name %></a>
+            <% if(categories[i].subCategories.length != 0) { %>
+            <li class="dropdown-submenu pull-right1"><a tabindex="-1" href="/products/<%= categories[i].id %>">
+                <%= categories[i].name %></a>
               <ul class="dropdown-menu">
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/logout">Logout</a></li>
+                <% for(var j = 0; j < categories[i].subCategories.length; j++) { %>
+                <li class="dropdown-submenu pull-right2"><a tabindex="-1" data-target="" href="/products/subCategory/<%= categories[i].subCategories[j].id %>">
+                    <%= categories[i].subCategories[j].name %></a>
+                  <ul class="dropdown-menu pull-right2">
+                    <% for(var k = 0; k < categories[i].subCategories[j].brands.length; k++) { %>
+                    <li><a data-target="" href="/products/<%= categories[i].id %>/<%= categories[i].subCategories[j].id %>/<%= categories[i].subCategories[j].brands[k].id %>">
+                        <%= categories[i].subCategories[j].brands[k].name %></a>
+                    </li>
+                    <% } %>
+                  </ul>
+                </li>
+                <% } %>
               </ul>
-            </li> 
-      
-            <% } else { %>             
-        
-                  <li> <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i> Signup/Login</a>
-                    <ul class="dropdown-menu">
-                      <li><a href="/signup">Signup</a></li>
-                      <li><a href="/login">Login</a></li>
-                      <li><a href="/verify">Verify Email</a></li>
-                    </ul>
-                  </li>   
-            <% } %>          
+            </li>
+            <% }else{ %>
+            <li class="dropdown-submenu pull-right1"><a tabindex="-1" data-target="" href="/products/<%= categories[i].id %>">
+                <%= categories[i].name %></a>
+              <ul class="dropdown-menu">
+                <% for(var k = 0; k < categories[i].brands.length; k++) { %>
+                <li><a data-target="" href="/products/<%= categories[i].id %>/<%= categories[i].brands[k].id %>">
+                    <%= categories[i].brands[k].name %></a>
+                  <% } %>
+              </ul>
+            </li>
+            <% } %>
+            <% } %>
+          </ul>
+        </li>
+        <li>
+          <form class="navbar-form" role="search" method="POST" action="/search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="search" name="q">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </form>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><i class="fa fa-twitter color-twitter"></i></a></li>
+        <li><a href="#"><i class="fa fa-facebook color-facebook"></i></a></li>
+        <li><a href="#"><i class="fa fa-linkedin color-linkedin"></i></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle glyphicon glyphicon-shopping-cart" data-toggle="dropdown">
+            <% if(cart) { %>
+            <span class="badge">
+              <%= cart.length %>
+            </span>
+            <br>
+            <% } else { %>
+            <span class="badge">
+              0
+            </span>
+            <% } %>
+          </a>
+          <ul class="dropdown-menu login-panel" style="min-width:550px; padding: 10px 0;">
+            <li>
+              <div>
+                <% if(cart) { %>
+                <table class="table table-striped alignmiddle">
+                  <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <!-- <th>Actions</th> -->
+                    <th>Subtotal</th>
+                  </tr>
+                  <% var total = 0; %>
+                  <% for(var i = 0; i < cart.length; i++) { %>
+                  <% var subtotal = parseFloat(cart[i].unitPrice * cart[i].quantity) %>
+                  <% var total = (total) + (subtotal) %>
+                  <tr>
+                    <td><img class="product-image" style="width: 20%; height: 20%;" src="data:image/png;base64, <%= cart[i].image %>"></td>
+                    <td>
+                      <%= cart[i].title %>
+                    </td>
+                    <td>
+                      <%= cart[i].quantity %>
+                    </td>
+                    <td>
+                      <%= cart[i].unitPrice %>
+                    </td>
+                    <td>
+                      <!-- <li style="display:inline;"><a href="/cart/update/<%= cart[i].title %>?action=increase"><b>(+)</b></a>&nbsp;</li>
+                              <li style="display:inline;"><a href="/cart/update/<%= cart[i].title %>?action=decrease"><b>(-)</b></a>&nbsp;</li>
+                              <li style="display:inline;"> <a href="/cart/update/<%= cart[i].title %>?action=remove">(x)</a>&nbsp;</li> -->
+                    </td>
+                    <td>
+                      <%= subtotal %>
+                    </td>
+                  </tr>
+                  <% } %>
+                  <tr>
+                    <td colspan="6" style="text-align:right;">
+                      <b>Total:
+                        <%= total %></b>
+                    </td>
+                  </tr>
+                </table>
+                <% } else { %>
+                <h3 class="text-center">Your Cart is empty</h3>
+                <% } %>
+
+                <div class="mf">
+                  <% if(cart) { %>
+                  <a type="button" class="btn btn-primary" href="/checkout">Cart Details</a>
+                  <% } %>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+
+        <% if(user) { %>
+        <li> <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <%= user.profile.name %></a>
+          <ul class="dropdown-menu">
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </li>
+        <% } else { %>
+        <li> <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i> Signup/Login</a>
+          <ul class="dropdown-menu">
+            <li><a href="/signup">Signup</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/verify">Verify Email</a></li>
+          </ul>
+        </li>
+        <% } %>
       </ul>
     </div>
+    <ul class="nav navbar-nav">
+      <% for(var i = 0; i < categories.length; i++) { %>
+        <% if(categories[i].subCategories.length != 0) { %>
+        <li class="dropdown"><a type="button" data-toggle="dropdown" aria-haspopup="true" href="/products/<%= categories[i].id %>">
+            <%= categories[i].name %><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <% for(var j = 0; j < categories[i].subCategories.length; j++) { %>
+            <li class="dropdown-submenu pull-right2"><a tabindex="-1" data-target="" href="/products/subCategory/<%= categories[i].subCategories[j].id %>">
+                <%= categories[i].subCategories[j].name %></a>
+              <ul class="dropdown-menu pull-right2">
+                <% for(var k = 0; k < categories[i].subCategories[j].brands.length; k++) { %>
+                <li><a data-target="" href="/products/<%= categories[i].id %>/<%= categories[i].subCategories[j].id %>/<%= categories[i].subCategories[j].brands[k].id %>">
+                    <%= categories[i].subCategories[j].brands[k].name %></a>
+                </li>
+                <% } %>
+              </ul>
+            </li>
+            <% } %>
+          </ul>
+        </li>
+        <% }else{ %>
+        <li class="dropdown"><a type="button" data-toggle="dropdown" aria-haspopup="true" href="/products/<%= categories[i].id %>">
+            <%= categories[i].name %><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <% for(var k = 0; k < categories[i].brands.length; k++) { %>
+            <li><a data-target="" href="/products/<%= categories[i].id %>/<%= categories[i].brands[k].id %>">
+                <%= categories[i].brands[k].name %></a>
+              <% } %>
+          </ul>
+        </li>
+        <% } %>
+        <% } %>
+    </ul>
   </div>
 </nav>
-

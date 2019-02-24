@@ -4,24 +4,22 @@
 <head>
 
   <title>ECL E-Commerce</title>
-  <link rel="stylesheet" href="/css/custom.css">
-  <!-- New Multilevel Dropdown -->
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="stylesheet" href="/inc/css/custom.css">
+  <link rel="stylesheet" href="/inc/css/bootstrap.min.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
 
 
   <!-- home -->
 
 </head>
-
+<% include ./partials/navbar %>
 <body>
-  <% include ./partials/navbar %>
-
-  <%- body -%>
+ <div class="container" style="padding:100px 0;">
+    <%- body -%>
+ </div>
+    
 
   <% include ./partials/footer %>
-
   <% include ./partials/javaScript %>
 </body>
-
 </html>

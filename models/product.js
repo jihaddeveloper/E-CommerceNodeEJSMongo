@@ -11,39 +11,50 @@ const SubCategory = require('../models/subCategory');
 var ProductSchema = new Schema({
 
     created: { type: Date, default: Date.now },
-    name: { type: Text },
     
-    //for proper searching
-    categoryName: { type: String, default: '' },
-    subCategoryName: { type: String, default: '' },
-    brandName: { type: String, default: '' },
-   
+   //product info
+    name: { type: Text },
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
     subcategory: { type: Schema.Types.ObjectId, ref: 'SubCategory' },
     brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
     features: { type: Array },
-
+    description: { type: String, default: ''},
     model: { type: String, required: false },
     warranty: { type: String, required: false },
     image: { type: String },
 
-    quantity: {
-        stock: { type: Number, default: ''},
-        storeLive: { type: Number, default: '' }
-    },
-    productPrice: {
-        listPrice: { type: Number},
-        purchasePrice: { type: Number}
-    },
-    discount: { type: Schema.Types.ObjectId, ref: 'Discount' },
-    isActive: Boolean,
-    shippingInfo: {type:String, default: ''},
-    description: { type: String, default: ''},
-    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
-    live: { type: Schema.Types.ObjectId, ref: 'Live' },
-    blockQuantity: { type: Number, default: 0 },
-    unitPrice: { type: Number },
+
+    //for proper searching
+    categoryName: { type: String, default: '' },
+    subCategoryName: { type: String, default: '' },
+    brandName: { type: String, default: '' },
+
+    //is live or not
     isActive:{ type: Boolean, required: false },
+
+    //to send live
+    live: { 
+        quantity: {type:Number,default:0},
+        serial: {type: Array,default:[]},
+        admin: { type: Schema.Types.ObjectId, ref: 'users' },
+        created: { type: Date, default: Date.now },
+    },
+    
+    //for live-stock check
+    frontQuantity: {type:Number, default:0},
+
+    //sell price
+    unitPrice: { type: Number },
+    
+
+    //shipping Info
+    shippingInfo: {type:String, default: ''},
+    shippingInfo: {type:String, default: ''},
+    
+    //unused
+    status: { type: Boolean, required: false },
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+    discount: { type: Schema.Types.ObjectId, ref: 'Discount' }
 });
 
 
