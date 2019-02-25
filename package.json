@@ -4,7 +4,7 @@
   "description": "This is a NodeJS E-Commerce Web Application",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "test": "node app.js"
   },
   "repository": {
     "type": "git",
