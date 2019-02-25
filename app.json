@@ -1,0 +1,12 @@
+{
+  "name": "E-CommerceNodeEJSMongo",
+  "description": "This app is a basic e-com.",
+  "keywords": [
+    "node",
+    "express",
+    "static"
+  ],
+  "repository": "https://github.com/jihaddeveloper/E-CommerceNodeEJSMongo.git",
+  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "image": "heroku/nodejs",
+}
