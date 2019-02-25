@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoosastic = require('mongoosastic');
+
 const Schema = mongoose.Schema;
 const Text = require('../node_modules/text/lib/text');
 const nested = require('nested');
@@ -73,8 +73,7 @@ ProductSchema
     return rating;
 });
 
-//Mongosastic plugin
-ProductSchema.plugin(mongoosastic);
+
 
 
 module.exports = mongoose.model('Product', ProductSchema, 'products');

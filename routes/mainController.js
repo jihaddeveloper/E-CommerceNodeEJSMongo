@@ -15,23 +15,6 @@ var unique = require("array-unique");
 const stripe = require('stripe')('sk_test_v6upa8MEdWolNaz3cThw8uoT');
 
 
-//Product synchronize and indexing
-var stream = Product.synchronize();
-var count = 0;
-
-stream.on('data', function () {
-    count++;
-})
-
-stream.on('close', function () {
-    console.log('Indexed ' + count + ' documents');
-})
-
-stream.on('err', function () {
-    console.log(err);
-})
-
-
 //Pagination function
 function paginate(req, res, next) {
     //Paginate product page

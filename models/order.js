@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const mongoosastic = require('mongoosastic');
 const Schema = mongoose.Schema;
 const Text = require('text/lib/text');
 
@@ -33,6 +32,5 @@ var OrderSchema = new Schema({
     finalGrandTotal: { type: Number, default: '' }
 });
 
-OrderSchema.plugin(mongoosastic);
 
 module.exports = mongoose.model('Order', OrderSchema, 'orders');

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const mongoosastic = require('mongoosastic');
 const Schema = mongoose.Schema;
 
 var CustomerOrderSchema = new Schema({
@@ -34,6 +33,6 @@ var CustomerOrderSchema = new Schema({
     lastModified:{ type: Date, default: Date.now},
 });
 
-CustomerOrderSchema.plugin(mongoosastic);
+
 
 module.exports = mongoose.model('CustomerOrder', CustomerOrderSchema, 'customerOrders');

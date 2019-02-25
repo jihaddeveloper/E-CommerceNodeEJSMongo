@@ -8,7 +8,6 @@ const secretConfig = require('../config/secret');
 const Product = require('../models/product');
 const Category = require('../models/category');
 const Review = require('../models/review');
-const Joi = require('joi');
 const randomString = require('randomstring');
 const CustomerOrder = require('../models/customerOrder');
 const Live = require('../models/live');
