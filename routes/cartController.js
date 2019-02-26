@@ -17,10 +17,10 @@ router.get('/add-to-cart/:product_id', function (req, res, next) {
     .exec(function(err, foundProduct){
         if(err) console.log(err);
 
-        Live.findOne({product_id: product_id}).exec(function(err, live){
-            if(err) console.log(err);
+        // Live.findOne({product_id: product_id}).exec(function(err, live){
+        //     if(err) console.log(err);
 
-            if(live.frontQuantity === 0){
+            if(foundProduct.frontQuantity === 0){
                 //Show some message to customer that the product is out of stock
                 req.flash('errors', 'This Product is out of stock');
                 if(req.session.returnTo){
@@ -31,7 +31,7 @@ router.get('/add-to-cart/:product_id', function (req, res, next) {
                 } 
             }else{
 
-                if(live.frontQuantity > 0){
+                if(foundProduct.frontQuantity > 0){
                     if(!req.session.cart){
                         req.session.cart = [];
     
@@ -48,8 +48,8 @@ router.get('/add-to-cart/:product_id', function (req, res, next) {
                         });
                         req.session.totalCartPrice = parseFloat(foundProduct.unitPrice);
                         //Decrement the live frontQuantity
-                        Live.findOneAndUpdate({product_id: foundProduct._id},
-                            {$inc: { frontQuantity: -1 }}, {new: true},function(err, newLive){
+                        Product.findOneAndUpdate({_id: foundProduct._id},
+                            {$inc: { frontQuantity: -1 }}, {new: true},function(err, newProduct){
                                 if(err) return next(err);
     
                                 //console.log(newLive);
@@ -70,11 +70,10 @@ router.get('/add-to-cart/:product_id', function (req, res, next) {
                                 cart[i].price = parseFloat(cart[i].price) + parseFloat(foundProduct.unitPrice);
                                 req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) + parseFloat(foundProduct.unitPrice);
                                 //Decrement the live frontQuantity
-                                Live.findOneAndUpdate({product_id: foundProduct._id},
-                                    {$inc: { frontQuantity: -1 }}, {new: true},function(err, newLive){
+                                Product.findOneAndUpdate({_id: foundProduct._id},
+                                    {$inc: { frontQuantity: -1 }}, {new: true},function(err, newProduct){
                                         if(err) return next(err);
     
-                                        console.log(newLive);
                                 });
                                 newItem = false;
                                 break;
@@ -98,11 +97,10 @@ router.get('/add-to-cart/:product_id', function (req, res, next) {
                             });
                             req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) + parseFloat(foundProduct.unitPrice);
                             //Decrement the live frontQuantity
-                            Live.findOneAndUpdate({product_id: foundProduct._id},
-                                {$inc: { frontQuantity: -1 }}, {new: true},function(err, newLive){
+                            Product.findOneAndUpdate({_id: foundProduct._id},
+                                {$inc: { frontQuantity: -1 }}, {new: true},function(err, newProduct){
                                     if(err) return next(err);
     
-                                    console.log(newLive);
                             });
                         }
                     }
@@ -123,7 +121,7 @@ router.get('/add-to-cart/:product_id', function (req, res, next) {
                 }
             }
 
-        });
+        // });
 
     });
 });
@@ -150,21 +148,21 @@ router.get('/cart/update/:product', function(req, res, next){
         if(cart[i].title == product) {
             switch(action){
                 case "increase":
-                    // Live.findOne({product_id: cart[i].product}).exec(function(err, live){
-                    //     if(live.frontQuantity >= 0){}
+                    // Product.findOne({_id: cart[i].product}).exec(function(err, foundProduct){
+                    //     if(foundProduct.frontQuantity >= 0){}
                     // });
 
                     if(cart[i].quantity < 5){
                             cart[i].quantity++;
                             cart[i].price = parseFloat(cart[i].price) + parseFloat(cart[i].price);
                             req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) + parseFloat(cart[i].unitPrice);
-                            //console.log(req.session.totalCartPrice);
+                            console.log(req.session.totalCartPrice);
                             //Decrement the live frontQuantity
-                            Live.findOneAndUpdate({product_id: cart[i].product},
-                                {$inc: { frontQuantity: -1 }}, {new: true},function(err, newLive){
+                            Product.findOneAndUpdate({_id: cart[i].product},
+                                {$inc: { frontQuantity: -1 }}, {new: true},function(err, newProduct){
                                     if(err) return next(err);
     
-                                    //console.log(newLive);
+                                    //console.log(newProduct);
                             });
                         }
                         //console.log(cart);
@@ -176,11 +174,11 @@ router.get('/cart/update/:product', function(req, res, next){
                         cart[i].price = parseFloat(cart[i].price) - parseFloat(cart[i].price);
                         req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) - parseFloat(cart[i].unitPrice);
                         //Increment the live frontQuantity
-                        Live.findOneAndUpdate({product_id: cart[i].product},
-                            {$inc: { frontQuantity: 1 }}, {new: true},function(err, newLive){
+                        Product.findOneAndUpdate({_id: cart[i].product},
+                            {$inc: { frontQuantity: 1 }}, {new: true},function(err, newProduct){
                                 if(err) return next(err);
 
-                                //console.log(newLive);
+                                //console.log(newProduct);
                         });
                     }
                     console.log(req.session.totalCartPrice);
@@ -188,11 +186,11 @@ router.get('/cart/update/:product', function(req, res, next){
                 case "remove":
 
                     //Increment the live frontQuantity
-                    Live.findOneAndUpdate({product_id: cart[i].product},
-                        {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
+                    Product.findOneAndUpdate({_id: cart[i].product},
+                        {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newProduct){
                             if(err) return next(err);
 
-                            //console.log(newLive);
+                            //console.log(newProduct);
                     });
                     req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) - parseFloat(cart[i].price);
                     cart.splice(i, 1);
@@ -220,11 +218,11 @@ router.get('/clear', function(req, res, next){
     if(cart){
         for(var i = 0; i < cart.length; i++){
             //Increment the live frontQuantity
-            Live.findOneAndUpdate({product_id: cart[i].product},
-                {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
+            Product.findOneAndUpdate({_id: cart[i].product},
+                {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newProduct){
                     if(err) return next(err);
 
-                    //console.log(newLive);
+                    //console.log(newProduct);
             });
 
         }
@@ -250,11 +248,11 @@ router.get('/return-to-live',function(req, res, next){
         for(var i = 0; i < cart.length; i++){
             
             //Increment the live frontQuantity
-            Live.findOneAndUpdate({product_id: cart[i].product},
-                {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
+            Product.findOneAndUpdate({_id: cart[i].product},
+                {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newProduct){
                     if(err) res.send(err);
 
-                    console.log(newLive);
+                    console.log(newProduct);
             });
 
             //Remove cart
@@ -295,11 +293,11 @@ router.get('/cart/update/every/:product', function(req, res, next){
                             req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) + parseFloat(cart[i].unitPrice);
                             //console.log(req.session.totalCartPrice);
                             //Decrement the live frontQuantity
-                            Live.findOneAndUpdate({product_id: cart[i].product},
-                                {$inc: { frontQuantity: -1 }}, {new: true},function(err, newLive){
+                            Product.findOneAndUpdate({_id: cart[i].product},
+                                {$inc: { frontQuantity: -1 }}, {new: true},function(err, newProduct){
                                     if(err) return next(err);
     
-                                    //console.log(newLive);
+                                    //console.log(newProduct);
                             });
                         }
                         //console.log(cart);
@@ -310,22 +308,22 @@ router.get('/cart/update/every/:product', function(req, res, next){
                         cart[i].price = parseFloat(cart[i].price) - parseFloat(cart[i].price);
                         req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) - parseFloat(cart[i].unitPrice);
                         //Increment the live frontQuantity
-                        Live.findOneAndUpdate({product_id: cart[i].product},
-                            {$inc: { frontQuantity: 1 }}, {new: true},function(err, newLive){
+                        Product.findOneAndUpdate({_id: cart[i].product},
+                            {$inc: { frontQuantity: 1 }}, {new: true},function(err, newProduct){
                                 if(err) return next(err);
 
-                                console.log(newLive);
+                                console.log(newProduct);
                         });
                     }
                     console.log(req.session.totalCartPrice);
                     break;
                 case "remove":
                     //Increment the live frontQuantity
-                    Live.findOneAndUpdate({product_id: cart[i].product},
-                        {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
+                    Product.findOneAndUpdate({product_id: cart[i].product},
+                        {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newProduct){
                             if(err) return next(err);
 
-                            console.log(newLive);
+                            console.log(newProduct);
                     });
                     req.session.totalCartPrice = parseFloat(req.session.totalCartPrice) - parseFloat(cart[i].price);
                     cart.splice(i, 1);

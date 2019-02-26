@@ -22,11 +22,12 @@ var ProductSchema = new Schema({
     model: { type: String, required: false },
     warranty: { type: String, required: false },
     image: { type: String },
+    weight: { type: String },
 
 
     //for proper searching
     categoryName: { type: String, default: '' },
-    subCategoryName: { type: String, default: '' },
+    subcategoryName: { type: String, default: '' },
     brandName: { type: String, default: '' },
 
     //is live or not
@@ -48,7 +49,6 @@ var ProductSchema = new Schema({
     
 
     //shipping Info
-    shippingInfo: {type:String, default: ''},
     shippingInfo: {type:String, default: ''},
     
     //unused
