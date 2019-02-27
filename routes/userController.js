@@ -156,7 +156,7 @@ router.post('/verify', async(req, res, next)=>{
 //User login form
 router.get('/login', function(req, res, next){
     if(req.user) return res.redirect('/');
-    res.render('accounts/login', { message: req.flash('loginMessage'), errors: '' });
+    res.render('accounts/login', { message: '', errors: req.flash('loginMessage') });
 });
 
 //User login

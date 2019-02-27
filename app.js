@@ -148,26 +148,6 @@ app.use(function (req, res, next) {
     });
 });
 
-//Cart Items Modal view
-app.use(function (req, res, next) {
-    if (req.user) {
-        var id = req.user._id;
-        Cart.findOne({
-                owner: id
-            })
-            .populate('items.item')
-            .exec(function (err, userCart) {
-                if (err) return next(err);
-                res.locals.userCart = userCart;
-                res.locals.userCartTotalAmount = userCart.total;
-                next();
-            });
-    } else {
-        res.locals.userCart = null;
-        res.locals.userCartTotalAmount = 0;
-        next();
-    }
-});
 
 //Make Seesion avaiable to every page
 app.use(function (req, res, next) {
