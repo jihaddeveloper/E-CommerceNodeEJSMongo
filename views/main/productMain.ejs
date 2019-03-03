@@ -63,159 +63,132 @@
 
 <div class="container">
     <div class="row" id="dealsOfDayProducts">
-        <Center><h1><strong>Today's Deals</strong></h1></Center>
+        <Center>
+            <h1><strong>Today's Deals</strong></h1>
+        </Center>
         <% if( products ) { %>
         <% for ( var i = 0; i < products.length; i++ ) { %>
         <div class="col-md-4">
             <div class="thumbnail">
-                <%if (products[i].image) {%>
-                <img src="data:image/png;base64, <%= products[i].image %>" height="100" width="100">
-                <% } %>
-                <div class="caption">
-                    <h3>
-                        <%= products[i].name %>
-                    </h3>
-                    <p>
-                        <%= products[i].categoryName %>
-                    </p>
-                    <% if(products[i].subcategoryName) { %>
-                    <p>
-                        <%= products[i].subcategoryName %>
-                    </p>
+                <a role="button" href="/product/<%= products[i]._id %>">
+                    <%if (products[i].image) {%>
+                    <img src="data:image/png;base64, <%= products[i].image %>" height="50%" width="50%">
                     <% } %>
-                    <p>
-                        <%= products[i].brandName %>
-                    </p>
-                    <p>TK
-                        <%= products[i].unitPrice %>
-                    </p>
-                </div>
-                <a href="/add-to-cart/<%= products[i]._id %>"  class="btn btn-primary btn-md">Add Cart</a>
-                <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
+                    <div class="caption">
+                        <h3>
+                            <%= products[i].name %>
+                        </h3>
+                        <p>
+                            <%= products[i].categoryName %>
+                        </p>
+                        <% if(products[i].subcategoryName) { %>
+                        <p>
+                            <%= products[i].subcategoryName %>
+                        </p>
+                        <% } %>
+                        <p>
+                            <%= products[i].brandName %>
+                        </p>
+                        <p>TK
+                            <%= products[i].unitPrice %>
+                        </p>
+                    </div>
+                </a>
+                <a href="/add-to-cart/<%= products[i]._id %>" class="btn btn-primary btn-md">Add Cart</a>
             </div>
         </div>
         <% } %>
         <% } %>
     </div>
     <div class="row" id="exclusiveProduct">
-            <Center><h1><strong>Exclusive Products</strong></h1></Center>
-        <% if(products) { %>
+        <Center>
+            <h1><strong>Exclusive Products</strong></h1>
+        </Center>
+        <% if( products ) { %>
         <% for ( var i = 0; i < products.length; i++ ) { %>
         <div class="col-md-4">
             <div class="thumbnail">
-                <%if (products[i].image) {%>
-                <img src="data:image/png;base64, <%= products[i].image %>" height="100" width="100">
-                <% } %>
-                <div class="caption">
-                    <h3>
-                        <%= products[i].name %>
-                    </h3>
-                    <p>
-                        <%= products[i].categoryName %>
-                    </p>
-                    <% if(products[i].subcategoryName) { %>
-                    <p>
-                        <%= products[i].subcategoryName %>
-                    </p>
+                <a role="button" href="/product/<%= products[i]._id %>">
+                    <%if (products[i].image) {%>
+                    <img src="data:image/png;base64, <%= products[i].image %>" height="50%" width="50%">
                     <% } %>
-                    <p>
-                        <%= products[i].brandName %>
-                    </p>
-                    <p>TK
-                        <%= products[i].unitPrice %>
-                    </p>
-                </div>
+                    <div class="caption">
+                        <h3>
+                            <%= products[i].name %>
+                        </h3>
+                        <p>
+                            <%= products[i].categoryName %>
+                        </p>
+                        <% if(products[i].subcategoryName) { %>
+                        <p>
+                            <%= products[i].subcategoryName %>
+                        </p>
+                        <% } %>
+                        <p>
+                            <%= products[i].brandName %>
+                        </p>
+                        <p>TK
+                            <%= products[i].unitPrice %>
+                        </p>
+                    </div>
+                </a>
                 <a href="/add-to-cart/<%= products[i]._id %>" class="btn btn-primary btn-md">Add Cart</a>
-                <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
             </div>
         </div>
         <% } %>
         <% } %>
     </div>
     <div class="row" id="trendingProduct">
-            <Center><h1><strong>Trending Products</strong></h1></Center>
-        <% if(products) { %>
+        <Center>
+            <h1><strong>Trending Products</strong></h1>
+        </Center>
+        <% if( products ) { %>
         <% for ( var i = 0; i < products.length; i++ ) { %>
         <div class="col-md-4">
             <div class="thumbnail">
-                <%if (products[i].image) {%>
-                <img src="data:image/png;base64, <%= products[i].image %>" height="100" width="100">
-                <% } %>
-                <div class="caption">
-                    <h3>
-                        <%= products[i].name %>
-                    </h3>
-                    <p>
-                        <%= products[i].categoryName %>
-                    </p>
-                    <% if(products[i].subcategoryName) { %>
-                    <p>
-                        <%= products[i].subcategoryName %>
-                    </p>
+                <a role="button" href="/product/<%= products[i]._id %>">
+                    <%if (products[i].image) {%>
+                    <img src="data:image/png;base64, <%= products[i].image %>" height="50%" width="50%">
                     <% } %>
-                    <p>
-                        <%= products[i].brandName %>
-                    </p>
-                    <p>TK
-                        <%= products[i].unitPrice %>
-                    </p>
-                </div>
+                    <div class="caption">
+                        <h3>
+                            <%= products[i].name %>
+                        </h3>
+                        <p>
+                            <%= products[i].categoryName %>
+                        </p>
+                        <% if(products[i].subcategoryName) { %>
+                        <p>
+                            <%= products[i].subcategoryName %>
+                        </p>
+                        <% } %>
+                        <p>
+                            <%= products[i].brandName %>
+                        </p>
+                        <p>TK
+                            <%= products[i].unitPrice %>
+                        </p>
+                    </div>
+                </a>
                 <a href="/add-to-cart/<%= products[i]._id %>" class="btn btn-primary btn-md">Add Cart</a>
-                <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
             </div>
         </div>
         <% } %>
         <% } %>
     </div>
 
-    <div class="row" id="searchResults">
-            <Center><h1><strong>All Products</strong></h1></Center>
-        <% if(products) { %>
-        <% for ( var i = 0; i < products.length; i++ ) { %>
-        <div class="col-md-4">
-            <div class="thumbnail">
-                <%if (products[i].image) {%>
-                <img src="data:image/png;base64, <%= products[i].image %>" height="100" width="100">
-                <% } %>
-                <div class="caption">
-                    <h3>
-                        <%= products[i].name %>
-                    </h3>
-                    <p>
-                        <%= products[i].categoryName %>
-                    </p>
-                    <% if(products[i].subcategoryName) { %>
-                    <p>
-                        <%= products[i].subcategoryName %>
-                    </p>
-                    <% } %>
-                    <p>
-                        <%= products[i].brandName %>
-                    </p>
-                    <p>TK
-                        <%= products[i].unitPrice %>
-                    </p>
-                </div>
-                <a href="/add-to-cart/<%= products[i]._id %>" class="btn btn-primary btn-md">Add Cart</a>
-                <a role="button" class="btn btn-primary btn-md" href="/product/<%= products[i]._id %>">Details</a>
-            </div>
-        </div>
+    <ul class="pagination text-center">
+        <li>
+            <% for(var i = 1; i <= pages; i++ ) { %>
+            <% if(i === 1) { %>
+        <li><a href="/">
+                <%= i %></a></li>
+        <% } else { %>
+        <li><a href="/page/<%= i %>">
+                <%= i %></a></li>
         <% } %>
         <% } %>
+        </li>
+    </ul>
 
-        <ul class="pagination text-center">
-            <li>
-                <% for(var i = 1; i <= pages; i++ ) { %>
-                <% if(i === 1) { %>
-            <li><a href="/">
-                    <%= i %></a></li>
-            <% } else { %>
-            <li><a href="/page/<%= i %>">
-                    <%= i %></a></li>
-            <% } %>
-            <% } %>
-            </li>
-        </ul>
-
-    </div>
 </div>

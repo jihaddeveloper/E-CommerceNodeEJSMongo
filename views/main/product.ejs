@@ -107,6 +107,17 @@
                         </strong>
                     </div>
                 </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3 col-md-6 ">
+                        <strong>Weight</strong>
+                    </div>
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= product.weight %> KG
+                        </strong>
+                    </div>
+                </div>
                 <% if(features) { %>
                 <% for ( var i = 0; i < features.length; i++) { %>
                 <hr>
@@ -124,6 +135,17 @@
                 </div>
                 <% } %>
                 <% } %>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3 col-md-6 ">
+                        <strong>Warranty</strong>
+                    </div>
+                    <div class="col-md-3 col-md-6">
+                        <strong>
+                            <%= product.warranty %>
+                        </strong>
+                    </div>
+                </div>
             </li>
         </div>
     </div>

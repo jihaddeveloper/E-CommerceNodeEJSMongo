@@ -18,11 +18,13 @@ const stripe = require('stripe')('sk_test_v6upa8MEdWolNaz3cThw8uoT');
 //Pagination function
 function paginate(req, res, next) {
     //Paginate product page
-    var perPage = 6;
+    var perPage = 3;
     var page = req.params.page;
 
 
-    Product.find({isActive: true})
+    Product.find({
+            isActive: true
+        })
         .skip(perPage * page - page)
         .limit(perPage)
         .populate({
@@ -40,7 +42,8 @@ function paginate(req, res, next) {
                 res.render('main/productMain', {
                     products: products,
                     pages: count / perPage,
-                    message: '', errors: req.flash('errors')
+                    message: '',
+                    errors: req.flash('errors')
                 });
             });
         });
@@ -95,7 +98,8 @@ router.get('/product/:id', function (req, res, next) {
             res.render('main/product', {
                 product: product,
                 features: product.features,
-                message: '', errors: req.flash('errors')
+                message: '',
+                errors: req.flash('errors')
             });
         });
 
@@ -131,7 +135,7 @@ get_array_of_obj = (unique_arr, feat) => {
 };
 
 //Category Filter Function
-function categoryfilterpage(req, res, obj){
+function categoryfilterpage(req, res, obj) {
 
     var resultArray = [];
     var array = [];
@@ -148,7 +152,7 @@ function categoryfilterpage(req, res, obj){
         })
         .populate('brand')
         .populate('subcategory.category')
-        .exec(function (err,docs) {
+        .exec(function (err, docs) {
 
             if (err) {
                 res.send(err);
@@ -165,7 +169,9 @@ function categoryfilterpage(req, res, obj){
                 for (var i = 0; i < docs.length; i += 3) {
                     resultArray.push(docs.slice(i, i + 3));
                 }
-              
+
+                console.log(resultArray.length);
+
                 res.render("main/category", {
                     title: "Products",
                     category: req.params.id,
@@ -184,7 +190,10 @@ router.get('/products/:id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
 
-    var obj= {category: req.params.id, isActive: true };
+    var obj = {
+        category: req.params.id,
+        isActive: true
+    };
     categoryfilterpage(req, res, obj);
 });
 
@@ -210,7 +219,7 @@ router.post('/products/category/filter/:id', (req, res, next) => {
         var array_range = req.body.price.split("-");
         sr.push({
             $and: [{
-                unitPrice: {
+                    unitPrice: {
                         $gt: parseInt(array_range[0], 10)
                     }
                 },
@@ -348,7 +357,7 @@ router.post('/products/category/filter/:id', (req, res, next) => {
 
 
 //SubCategory Filter Function
-function subCategoryFilterPage(req, res, obj){
+function subCategoryFilterPage(req, res, obj) {
 
     var resultArray = [];
     var array = [];
@@ -365,12 +374,12 @@ function subCategoryFilterPage(req, res, obj){
         })
         .populate('brand')
         .populate('subcategory.category')
-        .exec(function (err,docs) {
+        .exec(function (err, docs) {
 
             if (err) {
                 res.send(err);
             } else {
-                
+
                 for (var i = 0; i < docs.length; i++) {
                     for (var j = 0; j < docs[i].features.length; j++) {
                         array.push(docs[i].features[j].label);
@@ -383,7 +392,7 @@ function subCategoryFilterPage(req, res, obj){
                 for (var i = 0; i < docs.length; i += 3) {
                     resultArray.push(docs.slice(i, i + 3));
                 }
-              
+
                 res.render("main/subCategory", {
                     title: "Products",
                     subcategory: req.params.id,
@@ -400,15 +409,18 @@ function subCategoryFilterPage(req, res, obj){
 router.get('/products/subCategory/:id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
-    
-    var obj= {subcategory: req.params.id, isActive: true };
+
+    var obj = {
+        subcategory: req.params.id,
+        isActive: true
+    };
     subCategoryFilterPage(req, res, obj)
 
 });
 
 //Subcategorywise Products filtering.
 router.post('/products/subCategory/filter/:id', (req, res, next) => {
-    
+
     req.session.returnTo = req.originalUrl;
 
     var num1 = req.body.number;
@@ -565,7 +577,7 @@ router.post('/products/subCategory/filter/:id', (req, res, next) => {
 
 
 //Brand Filter Function
-function brandFilterPage(req, res, obj){
+function brandFilterPage(req, res, obj) {
 
     var resultArray = [];
     var array = [];
@@ -582,7 +594,7 @@ function brandFilterPage(req, res, obj){
         })
         .populate('brand')
         .populate('subcategory.category')
-        .exec(function (err,docs) {
+        .exec(function (err, docs) {
             if (err) {
                 res.send(err);
             } else {
@@ -598,7 +610,7 @@ function brandFilterPage(req, res, obj){
                 for (var i = 0; i < docs.length; i += 3) {
                     resultArray.push(docs.slice(i, i + 3));
                 }
-              
+
                 res.render("main/brand", {
                     title: "Products",
                     brand: req.params.id,
@@ -616,7 +628,12 @@ router.get('/products/:category_id/:subcategory_id/:brand_id', function (req, re
 
     req.session.returnTo = req.originalUrl;
 
-    var obj= {category: req.params.category_id,subcategory: req.params.subcategory_id,brand: req.params.brand_id, isActive: true };
+    var obj = {
+        category: req.params.category_id,
+        subcategory: req.params.subcategory_id,
+        brand: req.params.brand_id,
+        isActive: true
+    };
     brandFilterPage(req, res, obj)
 });
 
@@ -625,7 +642,11 @@ router.get('/products/:category_id/:brand_id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
 
-    var obj= {category: req.params.category_id,brand: req.params.brand_id, isActive: true };
+    var obj = {
+        category: req.params.category_id,
+        brand: req.params.brand_id,
+        isActive: true
+    };
     brandFilterPage(req, res, obj)
 });
 
@@ -649,7 +670,7 @@ router.post('/products/brands/filter/:id', (req, res, next) => {
         var array_range = req.body.price.split("-");
         sr.push({
             $and: [{
-                unitPrice: {
+                    unitPrice: {
                         $gt: parseInt(array_range[0], 10)
                     }
                 },
@@ -804,14 +825,25 @@ router.get('/search', function (req, res, next) {
     if (req.query.q) {
         const regex = new RegExp(escapeRegex(req.query.q), 'gi');
         Product.find({
-                $or: [ 
-                    { "name": regex },
-                    { "categoryName": regex },
-                    { "subCategoryName": regex },
-                    { "brandName": regex },
-                    { "model": regex },
-                    { "description": regex }
-            ],
+                $or: [{
+                        "name": regex
+                    },
+                    {
+                        "categoryName": regex
+                    },
+                    {
+                        "subCategoryName": regex
+                    },
+                    {
+                        "brandName": regex
+                    },
+                    {
+                        "model": regex
+                    },
+                    {
+                        "description": regex
+                    }
+                ],
             })
             .populate({
                 path: "subcategory",
@@ -852,18 +884,20 @@ router.get('/cart', function (req, res, next) {
 
 
 //Procced to checkout
-router.get('/procced-checkout', function(req, res, next){
-    if(!req.session.sessionCart){
+router.get('/procced-checkout', function (req, res, next) {
+    if (!req.session.sessionCart) {
         return res.redirect('/shopping-cart');
     }
     var cart = new SessionCart(req.session.sessionCart);
-    res.render('main/checkoutPage', {totalPrice: cart.totalPrice});
+    res.render('main/checkoutPage', {
+        totalPrice: cart.totalPrice
+    });
 });
 
 
 //Payment Ready Page
-router.post('/paymentReady', function(req, res, next){
-    
+router.post('/paymentReady', function (req, res, next) {
+
 });
 
 module.exports = router;
