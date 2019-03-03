@@ -18,7 +18,7 @@
           <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
             <% for(var i = 0; i < categories.length; i++) { %>
             <% if(categories[i].subCategories.length != 0) { %>
-            <li class="dropdown-submenu pull-right1"><a tabindex="-1" href="/products/<%= categories[i].id %>">
+            <li class="dropdown-submenu pull-right1"><a tabindex="-1" href="/products/category/<%= categories[i].id %>">
                 <%= categories[i].name %></a>
               <ul class="dropdown-menu">
                 <% for(var j = 0; j < categories[i].subCategories.length; j++) { %>
@@ -36,7 +36,7 @@
               </ul>
             </li>
             <% }else{ %>
-            <li class="dropdown-submenu pull-right1"><a tabindex="-1" data-target="" href="/products/<%= categories[i].id %>">
+            <li class="dropdown-submenu pull-right1"><a tabindex="-1" data-target="" href="/products/category/<%= categories[i].id %>">
                 <%= categories[i].name %></a>
               <ul class="dropdown-menu">
                 <% for(var k = 0; k < categories[i].brands.length; k++) { %>
@@ -96,7 +96,7 @@
                   <% var subtotal = parseFloat(cart[i].unitPrice * cart[i].quantity) %>
                   <% var total = (total) + (subtotal) %>
                   <tr>
-                    <td><img class="product-image" style="width: 20%; height: 20%;" src="data:image/png;base64, <%= cart[i].image %>"></td>
+                    <td><img class="product-image" style="width: 10%; height: 10%;" src="data:image/png;base64, <%= cart[i].image %>"></td>
                     <td>
                       <%= cart[i].title %>
                     </td>
@@ -160,7 +160,7 @@
     <ul class="nav navbar-nav">
       <% for(var i = 0; i < categories.length; i++) { %>
         <% if(categories[i].subCategories.length != 0) { %>
-        <li class="dropdown"><a type="button" data-toggle="dropdown" aria-haspopup="true" href="/products/<%= categories[i].id %>">
+        <li class="dropdown"><a type="button" data-toggle="dropdown" aria-haspopup="true" href="/products/category/<%= categories[i].id %>">
             <%= categories[i].name %><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <% for(var j = 0; j < categories[i].subCategories.length; j++) { %>
@@ -178,7 +178,7 @@
           </ul>
         </li>
         <% }else{ %>
-        <li class="dropdown"><a type="button" data-toggle="dropdown" aria-haspopup="true" href="/products/<%= categories[i].id %>">
+        <li class="dropdown"><a type="button" data-toggle="dropdown" aria-haspopup="true" href="/products/category/<%= categories[i].id %>">
             <%= categories[i].name %><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <% for(var k = 0; k < categories[i].brands.length; k++) { %>

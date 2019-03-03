@@ -170,7 +170,7 @@ function categoryfilterpage(req, res, obj) {
                     resultArray.push(docs.slice(i, i + 3));
                 }
 
-                console.log(resultArray.length);
+                console.log(docs.length);
 
                 res.render("main/category", {
                     title: "Products",
@@ -186,7 +186,7 @@ function categoryfilterpage(req, res, obj) {
 
 
 //Categorywise Products load
-router.get('/products/:id', function (req, res, next) {
+router.get('/products/category/:id', function (req, res, next) {
 
     req.session.returnTo = req.originalUrl;
 

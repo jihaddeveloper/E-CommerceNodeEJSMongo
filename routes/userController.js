@@ -52,14 +52,14 @@ router.post('/signup', function(req, res, next){
         
             User.findOne({ email: req.body.email }, function(err, existingUser){
                 if(existingUser){
-                    req.flash('errors', 'Account with that eamil address already exists');
+                    req.flash('errors', 'Account with that email address already exists');
                     return res.redirect('/signup');
                 }
                 else if(req.body.password2 != req.body.password){
                     req.flash( 'errors', 'Passwords do not match' );
                     return res.redirect('/signup');
                 }else if(req.body.password.length < 6){
-                    req.flash( 'errors', 'Password must between 6 to 20 characters' );
+                    req.flash( 'errors', 'Password must be between 6 to 20 characters' );
                     return res.redirect('/signup');
                 }
                 else{
