@@ -164,8 +164,8 @@ function categoryfilterpage(req, res, obj) {
                 }
                 unique_arr = unique(array);
                 var last = get_array_of_obj(unique_arr, feat);
-                for (var i = 0; i < docs.length; i += 3) {
-                    resultArray.push(docs.slice(i, i + 3));
+                for (var i = 0; i < docs.length; i ++) {
+                    resultArray.push(docs.slice(i, i + docs.length));
                 }
 
                 console.log(docs.length);
@@ -336,8 +336,8 @@ router.post('/products/category/filter/:id', (req, res, next) => {
                     unique_arr = unique(array);
                     var last = get_array_of_obj(unique_arr, feat);
 
-                    for (var i = 0; i < docs.length; i += 3) {
-                        resultArray.push(docs.slice(i, i + 3));
+                    for (var i = 0; i < docs.length; i ++) {
+                        resultArray.push(docs.slice(i, i + docs.length));
                     }
 
                     res.render("main/category", {
@@ -387,8 +387,8 @@ function subCategoryFilterPage(req, res, obj) {
                 }
                 unique_arr = unique(array);
                 var last = get_array_of_obj(unique_arr, feat);
-                for (var i = 0; i < docs.length; i += 3) {
-                    resultArray.push(docs.slice(i, i + 3));
+                for (var i = 0; i < docs.length; i ++) {
+                    resultArray.push(docs.slice(i, i + docs.length));
                 }
 
                 res.render("main/subCategory", {
@@ -557,8 +557,8 @@ router.post('/products/subCategory/filter/:id', (req, res, next) => {
                     unique_arr = unique(array);
                     var last = get_array_of_obj(unique_arr, feat);
 
-                    for (var i = 0; i < docs.length; i += 3) {
-                        resultArray.push(docs.slice(i, i + 3));
+                    for (var i = 0; i < docs.length; i ++) {
+                        resultArray.push(docs.slice(i, i + docs.length));
                     }
 
                     res.render("main/subCategory", {
@@ -605,8 +605,8 @@ function brandFilterPage(req, res, obj) {
                 }
                 unique_arr = unique(array);
                 var last = get_array_of_obj(unique_arr, feat);
-                for (var i = 0; i < docs.length; i += 3) {
-                    resultArray.push(docs.slice(i, i + 3));
+                for (var i = 0; i < docs.length; i ++) {
+                    resultArray.push(docs.slice(i, i + docs.length));
                 }
 
                 res.render("main/brand", {
@@ -787,8 +787,8 @@ router.post('/products/brands/filter/:id', (req, res, next) => {
                     unique_arr = unique(array);
                     var last = get_array_of_obj(unique_arr, feat);
 
-                    for (var i = 0; i < docs.length; i += 3) {
-                        resultArray.push(docs.slice(i, i + 3));
+                    for (var i = 0; i < docs.length; i ++) {
+                        resultArray.push(docs.slice(i, i + docs.length));
                     }
 
                     res.render("main/brand", {
