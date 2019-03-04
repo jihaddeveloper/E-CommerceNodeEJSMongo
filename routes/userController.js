@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const User = require('../models/user');
-const Cart = require('../models/cart');
 const async = require('async');
 const passport = require('passport');
 const passportConfig = require('../config/passport');
@@ -10,7 +9,7 @@ const Category = require('../models/category');
 const Review = require('../models/review');
 const randomString = require('randomstring');
 const CustomerOrder = require('../models/customerOrder');
-const Live = require('../models/live');
+const moment  = require('moment');
 
 //Mail Sender
 const mailer = require('../misc/mailer');
@@ -19,10 +18,10 @@ const mailer = require('../misc/mailer');
 router.get('/profile', passportConfig.isAuthenticated, function(req, res, next){
     
     CustomerOrder.find({user: req.user})
+    .populate('cart.product')
     .exec(function(err, orders){
         if(err) return next(err);
-        res.render('accounts/profile', { user: req.user, orders: orders });
-        //console.log(orders);
+        res.render('accounts/profile', { user: req.user, orders: orders, moment: moment });
     });
     
 });
@@ -95,7 +94,7 @@ router.post('/signup', function(req, res, next){
                         Token: <b>${ user.secretToken }<b/>
                         <br/>
                         Clicking on the following page:
-                        <a href="http://localhost:3000/verify">http://localhost:3000/verify<a/>
+                        <a href="https://ecle-com.herokuapp.com/verify">https://ecle-com.herokuapp.com/verify<a/>
                         <br/>
                         <br/>
                         Good Day.... `;
@@ -182,11 +181,11 @@ router.get('/logout', function(req, res, next) {
     if(cart){
         for(var i = 0; i < cart.length; i++){
             //Increment the live frontQuantity
-            Live.findOneAndUpdate({product_id: cart[i].product},
-                {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newLive){
+            Product.findOneAndUpdate({_id: cart[i].product},
+                {$inc: { frontQuantity: cart[i].quantity }}, {new: true},function(err, newProduct){
                     if(err) return next(err);
 
-                    console.log(newLive);
+                    //console.log(newProduct);
             });
 
         }

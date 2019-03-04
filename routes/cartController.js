@@ -2,10 +2,6 @@ const router = require('express').Router();
 
 //Product model import
 var Product = require('../models/product');
-var SessionCart = require('../models/sessionCart');
-
-//Live model import
-var Live = require('../models/live');
 
 
 //Product added to cart

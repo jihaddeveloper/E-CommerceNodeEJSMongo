@@ -17,25 +17,20 @@ const app = express();
 
 
 const secret = require('./config/secret');
-var cartLength = require('./middlewares/cartLengthMiddleware');
+
 
 //Models
 var Category = require('./models/category');
 var SubCategory = require('./models/subCategory');
 var Brand = require('./models/brand');
-var Order = require('./models/order');
 var Review = require('./models/review');
 var Tax = require('./models/tax');
 var User = require('./models/user');
-var Cart = require('./models/cart');
 var Product = require('./models/product');
 var Discount = require('./models/discount');
 var PaymentMethod = require('./models/paymentMethod');
 var Supplier = require('./models/supplier');
-var SessionCart = require('./models/sessionCart');
 var Feature = require('./models/feature');
-var Live = require('./models/live');
-var Inventory = require('./models/live');
 
 
 
@@ -106,10 +101,6 @@ app.get('*', function(req, res, next){
     res.locals.totalCartPrice = req.session.totalCartPrice;
     next();
 });
-
-
-//Cart length
-app.use(cartLength);
 
 
 //Category load

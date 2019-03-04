@@ -6,7 +6,6 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 var secret = require('../config/secret');
 var User = require('../models/user');
 var async = require('async');
-var Cart = require('../models/cart');
 
 //Serialize and deserialize
 passport.serializeUser(function(user, done) {

@@ -2,11 +2,9 @@ const router = require('express').Router();
 const async = require('async');
 const passportConfig = require('../config/passport');
 var Product = require('../models/product');
-var Cart = require('../models/cart');
 var Review = require('../models/review');
 const User = require('../models/user');
 
-const Order = require('../models/order');
 
 //Product Filtering
 var unique = require("array-unique");

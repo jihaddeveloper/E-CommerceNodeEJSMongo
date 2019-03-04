@@ -5,21 +5,12 @@ var CustomerOrderSchema = new Schema({
     created: { type: Date,default: Date.now },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     cart: [{
-        product:{ type: Schema.Types.ObjectId, ref: 'Customer' },
+        product:{ type: Schema.Types.ObjectId, ref: 'Product' },
         quantity:{ type: Number },
         unitPrice: { type: Number },
         price:{ type: Number },
     }
     ],
-    // cart: { type: Object },
-    // cart:[
-    //     {
-    //         product:{ type: Schema.Types.ObjectId, ref: 'Product' },
-    //         quntity: { type: Number },
-    //         price:{ type: Number },
-    //         unitPrice:{ type: Number }
-    //     }
-    // ],
     name: { type: String },
     phone: { type: Number },
     address: { type: String },

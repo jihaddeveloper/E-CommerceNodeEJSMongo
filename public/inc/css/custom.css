@@ -13,6 +13,10 @@
     color: #d17581;
 }
 
+/*order table style**/
+table, th  {  
+    text-align: center;
+  }
 
 /* new multilevel dropdown */
 /*
