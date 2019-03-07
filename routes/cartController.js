@@ -145,7 +145,7 @@ router.get('/cart/update/:product', function(req, res, next){
             switch(action){
                 case "increase":
                     // Product.findOne({_id: cart[i].product}).exec(function(err, foundProduct){
-                    //     if(foundProduct.frontQuantity >= 0){}
+                    //     if(foundProduct.frontQuantity > 0){}
                     // });
 
                     if(cart[i].quantity < 5){
