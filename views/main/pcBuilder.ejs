@@ -1,0 +1,277 @@
+<% layout('layoutPage') -%>
+
+<div class="container" style="margin-top: 100px; width:100%; min-height: 700px">
+
+    <% if (errors.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <%= errors %>
+    </div>
+    <% } %>
+
+    <% if (message.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <%= message %>
+    </div>
+    <% } %>
+    <p>Hello PC-Builder is here......</p>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Component</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><i class="fa fa-cogs" aria-hidden="true"></i> Mother Board</td>
+                                <td><a data-toggle="modal" href="#motherBoardModal" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-microchip" aria-hidden="true"></i> Processor</td>
+                                <td><a data-toggle="modal" href="#cpuModal" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-thermometer-half" aria-hidden="true"></i> Processor Cooler</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-sliders" aria-hidden="true"></i> RAM-1</td>
+                                <td><a data-toggle="modal" href="#ramModal" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td></i><i class="fa fa-sliders" aria-hidden="true"></i> RAM-2</td>
+                                <td><a data-toggle="modal" href="#ramModal" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-hdd-o" aria-hidden="true"></i> Storage-1</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-hdd-o" aria-hidden="true"></i> Storage-2</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-video-camera" aria-hidden="true"></i> Graphics Card</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-bolt" aria-hidden="true"></i> Power Supply</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-university" aria-hidden="true"></i> Casing</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-television" aria-hidden="true"></i> Monitor</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-keyboard-o" aria-hidden="true"></i> Keyboard</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-mouse-pointer" aria-hidden="true"></i> Mouse</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-caret-square-o-right" aria-hidden="true"></i> Optical Drive</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-bug" aria-hidden="true"></i> Anti Virus</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-cog" aria-hidden="true"></i> Operating System</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-plug" aria-hidden="true"></i> UPS</td>
+                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <% if(pcBuilder) { %>
+                    <table class="table table-bordered">
+                      <tr>
+                        <th class="text-center">Image</th>
+                        <th class="text-center">Title</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-center">Unit Price</th>
+                        <th class="text-center">Action</th>
+                      </tr>
+                      <% for(var i = 0; i < pcBuilder.length; i++) { %>
+                      <tr>
+                        <td><img class="img-fluid img-thumbnail" style="width: 10%; height: 10%;" src="data:image/png;base64, <%= pcBuilder[i].image %>"></td>
+                        <td>
+                          <%= pcBuilder[i].title %>
+                        </td>
+                        <td>
+                          <%= pcBuilder[i].quantity %>
+                        </td>
+                        <td>
+                          <%= pcBuilder[i].unitPrice %>TK
+                        </td>
+                        <td><a href="/pcBuilder/remove/<%= pcBuilder[i].product_id %>" class="btn btn-danger btn-sm">Remove</a></td>
+                      </tr>
+                      <% } %>
+                      <tr>
+                        <td colspan="6" style="text-align:right;">
+                          <b>Total:
+                            <%= pcBuilderTotalPrice %>TK</b>
+                        </td>
+                      </tr>
+                    </table>
+                    <% } else { %>
+                    <h3 class="text-center">Empty Quotation</h3>
+                    <% } %>
+        </div>
+    </div>
+    
+</div>
+
+<!--Mother Board  Modal -->
+<div class="modal fade" id="motherBoardModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">All Mother Board</h4>
+                </div>
+                <div class="modal-body">
+    
+                    <% if(allMotherBoard) { %>
+                    <table class="table table-striped alignmiddle">
+                        <tr>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Unit Price</th>
+                            <th>Action</th>
+                        </tr>
+                        <% for(var i = 0; i < allMotherBoard.length; i++) { %>
+                        <tr>
+                            <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allMotherBoard[i].image %>"></td>
+                            <td>
+                                <%= allMotherBoard[i].name %>
+                            </td>
+                            <td>
+                                <%= allMotherBoard[i].unitPrice %>TK
+                            </td>
+                            <td>
+                                <a href="/add-to-pcBuilder/<%= allMotherBoard[i]._id %>" class="btn btn-primary btn-sm">Add To List</a>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </table>
+                    <% } else { %>
+                    <h3 class="text-center">No Item found...</h3>
+                    <% } %>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--Mother Board  Modal -->
+
+<!--Processor  Modal -->
+<div class="modal fade" id="cpuModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">All Processor</h4>
+            </div>
+            <div class="modal-body">
+
+                <% if(allCPU) { %>
+                <table class="table table-striped alignmiddle">
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Unit Price</th>
+                        <th>Action</th>
+                    </tr>
+                    <% for(var i = 0; i < allCPU.length; i++) { %>
+                    <tr>
+                        <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allCPU[i].image %>"></td>
+                        <td>
+                            <%= allCPU[i].name %>
+                        </td>
+                        <td>
+                            <%= allCPU[i].unitPrice %>TK
+                        </td>
+                        <td>
+                            <a href="/add-to-pcBuilder/<%= allCPU[i]._id %>" class="btn btn-primary btn-sm">Add To List</a>
+                        </td>
+                    </tr>
+                    <% } %>
+                </table>
+                <% } else { %>
+                <h3 class="text-center">No Item found...</h3>
+                <% } %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--Processor  Modal -->
+
+<!--RAM  Modal -->
+<div class="modal fade" id="ramModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">All RAM</h4>
+            </div>
+            <div class="modal-body">
+
+                <% if(allRAM) { %>
+                <table class="table table-striped alignmiddle">
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Unit Price</th>
+                        <th>Action</th>
+                    </tr>
+                    <% for(var i = 0; i < allRAM.length; i++) { %>
+                    <tr>
+                        <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allRAM[i].image %>"></td>
+                        <td>
+                            <%= allRAM[i].name %>
+                        </td>
+                        <td>
+                            <%= allRAM[i].unitPrice %>TK
+                        </td>
+                        <td>
+                            <a href="/add-to-pcBuilder/<%= allRAM[i]._id %>" class="btn btn-primary btn-sm">Add To List</a>
+                        </td>
+                    </tr>
+                    <% } %>
+                </table>
+                <% } else { %>
+                <h3 class="text-center">No Item found...</h3>
+                <% } %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--RAM  Modal -->

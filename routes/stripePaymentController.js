@@ -20,6 +20,7 @@ router.get('/stripe-payment', passportConfig.isAuthenticated, function(req, res,
 
 //Stripe Payment
 router.post('/payment', passportConfig.isAuthenticated, function (req, res, next) {
+    
     //For returning to same page
     req.session.returnTo = req.originalUrl;
 

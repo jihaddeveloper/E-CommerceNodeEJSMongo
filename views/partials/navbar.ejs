@@ -62,6 +62,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="/pc-builder"><i class="fa fa-desktop color-desktop"></i> Build Your PC</a></li>
         <li><a href="#"><i class="fa fa-twitter color-twitter"></i></a></li>
         <li><a href="#"><i class="fa fa-facebook color-facebook"></i></a></li>
         <li><a href="#"><i class="fa fa-linkedin color-linkedin"></i></a></li>
@@ -139,7 +140,7 @@
         </li>
 
         <% if(user) { %>
-        <li> <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">
             <%= user.profile.name %></a>
           <ul class="dropdown-menu">
             <li><a href="/profile">Profile</a></li>
@@ -147,7 +148,7 @@
           </ul>
         </li>
         <% } else { %>
-        <li> <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i> Signup/Login</a>
+        <li> <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o" aria-hidden="true"></i> Signup/Login</a>
           <ul class="dropdown-menu">
             <li><a href="/signup">Signup</a></li>
             <li><a href="/login">Login</a></li>

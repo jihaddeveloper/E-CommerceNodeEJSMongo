@@ -145,11 +145,60 @@ app.use(function (req, res, next) {
     res.locals.login = req.isAuthenticated();
     res.locals.session = req.session;
     res.locals.cart = req.session.cart;
+    res.locals.pcBuilder = req.session.pcBuilder;
+    res.locals.pcBuilderTotalPrice = req.session.pcBuilderTotalPrice;
     next();
 });
 
 
+//PC Builder
 
+//Load All Mother Board
+app.use(function (req, res, next) {
+    Product.find({
+        category: "5c7664485db0ec00044cac7a",
+        subcategory: "5c85ee2fe8d2040004b4ea13",
+        isActive: true
+    }, function (err, allMotherBoard) {
+        if (err) return next(err);
+        //console.log(allCPU);
+        res.locals.allMotherBoard = allMotherBoard;
+        next();
+    });
+});
+
+
+//Load All Processor
+app.use(function (req, res, next) {
+    Product.find({
+        category: "5c7664485db0ec00044cac7a",
+        subcategory: "5c7664545db0ec00044cac7b",
+        isActive: true
+    }, function (err, allCPU) {
+        if (err) return next(err);
+        //console.log(allCPU);
+        res.locals.allCPU = allCPU;
+        next();
+    });
+});
+
+
+//Load All RAM
+app.use(function (req, res, next) {
+    Product.find({
+        category: "5c7664485db0ec00044cac7a",
+        subcategory: "5c85f0e5e8d2040004b4ea18",
+        isActive: true
+    }, function (err, allRAM) {
+        if (err) return next(err);
+        //console.log(allCPU);
+        res.locals.allRAM = allRAM;
+        next();
+    });
+});
+
+
+//PC Builder
 
 //Controllers Import
 var mainCon = require('./routes/mainController');
@@ -159,6 +208,7 @@ var apiCon = require('./api/api');
 var cartCon = require('./routes/cartController');
 var orderCon = require('./routes/orderController');
 var stripeCon = require('./routes/stripePaymentController');
+var pcBuilderCon = require('./routes/pcBuilderController');
 
 //Routes
 app.use(mainCon);
@@ -168,6 +218,7 @@ app.use('/api', apiCon);
 app.use(cartCon);
 app.use(orderCon);
 app.use(stripeCon);
+app.use(pcBuilderCon);
 
 app.listen(secret.port, function (err) {
     if (err) throw err;
