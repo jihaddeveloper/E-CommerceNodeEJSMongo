@@ -1,39 +1,54 @@
 <% layout('layoutPage') -%>
 
-<div class="container" style="margin-top: 100px">
-    <div class="well">
-        <div class="row">
-            <div class="col-md-12 mx-auto">
-                <div class="card card-body">
-                    <h3 class="text-center">Verify Email</h3>
+<div class="container" style="margin-top: 100px; height: 400px; width: 400px">
+  <div class="well">
+    <div class="row">
+      <div class="col-md-12 mx-auto">
+        <div class="card card-body">
+          <h3 class="text-center">Verify Email</h3>
 
-                    <% if (message.length > 0) { %>
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <%= message %>
-                        </div>
-                    <% } %>
+          <% if (message.length > 0) { %>
+          <div class="alert alert-success alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= message %>
+          </div>
+          <% } %> <% if (errors.length > 0) { %>
+          <div class="alert alert-danger alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= errors %>
+          </div>
+          <% } %>
 
-                    <% if (errors.length > 0) { %>
-                        <div class="alert alert-danger alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <%= errors %>
-                        </div>
-                    <% } %>
-
-                    <form method="POST" action="/verify">
-                        <div class="form-group">
-                            <label for="secretToken">Secret Token</label>
-                            <input type="text" name="secretToken" class="form-control" value="" placeholder="Secret Token" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Verify</button>
-                    </form>
-                </div>
+          <form method="POST" action="/verify">
+            <div class="form-group">
+              <label for="secretToken">Secret Token</label>
+              <input
+                type="text"
+                name="secretToken"
+                class="form-control"
+                value=""
+                placeholder="Secret Token"
+                required
+              />
             </div>
+            <button type="submit" class="btn btn-primary">Verify</button>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>

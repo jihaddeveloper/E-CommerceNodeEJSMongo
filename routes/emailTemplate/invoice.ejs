@@ -1,0 +1,106 @@
+<div class="row">
+  <div class="col-sm-12 left-col">
+    <div>
+      <br />
+      <br />
+      <div class="panel-body">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td><b> Order ID:</b></td>
+              <td><%= orderId %></td>
+              <td><b>Invoice No:</b></td>
+              <td><%= invoiceId %></td>
+            </tr>
+            <tr>
+              <td><b>Customer:</b></td>
+              <td><%= user.profile.name %></td>
+              <td><b>Stock Location:</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><b>E-Mail:</b></td>
+              <td><%= user.email %></td>
+              <td><b>Sales Person:</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><b>Telephone:</b></td>
+              <td><%= user.contact %></td>
+              <td><b>Entry By:</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><b>Payment Method:</b></td>
+              <td><%= paymentMethod %></td>
+              <td><b>Address:</b></td>
+              <td><%= shippingAddress %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel-body">
+        <div class="product">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <td class="text-left">S/L N</td>
+                  <td class="text-left">Product</td>
+                  <td class="text-right">Quantity</td>
+                  <td class="text-right">Unit Price</td>
+                  <td class="text-right">Sub Total</td>
+                </tr>
+              </thead>
+              <tbody>
+                <% if(cart) { %> <% for (var i = 0; i < cart.length; i++) { %>
+                <% var subtotal = parseFloat(cart[i].unitPrice *
+                cart[i].quantity) %> <% var total = (total) + (subtotal) %>
+
+                <tr>
+                  <td>
+                    <%= i+1 %>
+                  </td>
+                  <td>
+                    <%= cart[i].title %>
+                  </td>
+                  <td>
+                    <%= cart[i].quantity %>
+                  </td>
+                  <td>
+                    <%= cart[i].unitPrice %>
+                  </td>
+                  <td>
+                    <%= subtotal %>
+                  </td>
+                </tr>
+                <% } %>
+                <tr>
+                  <td colspan="6" style="text-align:right;">
+                    <b>Total: <%= totalCartPrice %></b>
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br /><br />
+        <div class="pull-right">
+          <p class="pull-right">_____________</p>
+          <br />
+          <p class="pull-right">Authorised Signature and Company Stamp</p>
+        </div>
+        <br /><br />
+        <div>
+          <p>Signature and Company Stamp</p>
+          <p>
+            Goods sold and received or accepted by the customers are not
+            returnable.
+          </p>
+          <p>Warranty will void of all products if sticker is removed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

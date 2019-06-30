@@ -1,52 +1,78 @@
 <% layout('layoutPage') -%>
 
-<div class="container" style="margin-top: 100px">
-    <div class="well">
-        <div class="row">
-            <div class="col-md-12 mx-auto">
-                <div class="card card-body">
-                    <h3 class="text-center">Login</h3>
+<div class="container" style="margin-top: 100px; height: 400px; width: 400px">
+  <div class="well">
+    <div class="row">
+      <div class="col-md-12 mx-auto">
+        <div class="card card-body">
+          <h3 class="text-center">Login</h3>
 
-                    <% if (errors.length > 0) { %>
-                        <div class="alert alert-danger alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <%= errors %>
-                        </div>
-                    <% } %>
+          <% if (errors.length > 0) { %>
+          <div class="alert alert-danger alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= errors %>
+          </div>
+          <% } %> <% if (message.length > 0) { %>
+          <div class="alert alert-success alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= message %>
+          </div>
+          <% } %>
 
-                    <% if (message.length > 0) { %>
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <%= message %>
-                        </div>
-                    <% } %>
-
-                    <form method="POST" action="/login">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" class="form-control" value="" placeholder="" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password  </label>
-                            <input type="password" name="password" class="form-control" value="" placeholder="" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
-                        <br>
-                        <br>
-                        <p>Be a Member here...</p>
-                        <a class="btn btn-primary" role="button" href="/signup">Signup</a>
-                        <br>
-                        <br>
-                        <a class="btn btn-block btn-social btn-facebook" href="/auth/facebook">
-                            <i class="fa fa-facebook"></i>Sign in with facebook
-                        </a>
-                    </form>
-                </div>
+          <form method="POST" action="/login">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                value=""
+                placeholder=""
+                required
+              />
             </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                value=""
+                placeholder=""
+                required
+              />
+              <p>Forgot your password ?</p>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br />
+            <br />
+            <p>Be a Member here...</p>
+            <a class="btn btn-primary" role="button" href="/signup">Signup</a>
+            <br />
+            <br />
+            <a
+              class="btn btn-block btn-social btn-facebook"
+              href="/auth/facebook"
+            >
+              <i class="fa fa-facebook"></i>Sign in with facebook
+            </a>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>

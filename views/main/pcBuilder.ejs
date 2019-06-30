@@ -52,11 +52,11 @@
                             </tr>
                             <tr>
                                 <td><i class="fa fa-hdd-o" aria-hidden="true"></i> Storage-1</td>
-                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                                <td><a data-toggle="modal" href="#hddModal" class="btn btn-primary btn-sm">Choose</a></td>
                             </tr>
                             <tr>
                                 <td><i class="fa fa-hdd-o" aria-hidden="true"></i> Storage-2</td>
-                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                                <td><a data-toggle="modal" href="#hddModal" class="btn btn-primary btn-sm">Choose</a></td>
                             </tr>
                             <tr>
                                 <td><i class="fa fa-video-camera" aria-hidden="true"></i> Graphics Card</td>
@@ -68,7 +68,7 @@
                             </tr>
                             <tr>
                                 <td><i class="fa fa-university" aria-hidden="true"></i> Casing</td>
-                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                                <td><a data-toggle="modal" href="#casingModal" class="btn btn-primary btn-sm">Choose</a></td>
                             </tr>
                             <tr>
                                 <td><i class="fa fa-television" aria-hidden="true"></i> Monitor</td>
@@ -76,7 +76,7 @@
                             </tr>
                             <tr>
                                 <td><i class="fa fa-keyboard-o" aria-hidden="true"></i> Keyboard</td>
-                                <td><a href="#" class="btn btn-primary btn-sm">Choose</a></td>
+                                <td><a data-toggle="modal" href="#keyboardModal" class="btn btn-primary btn-sm">Choose</a></td>
                             </tr>
                             <tr>
                                 <td><i class="fa fa-mouse-pointer" aria-hidden="true"></i> Mouse</td>
@@ -152,7 +152,7 @@
                 <div class="modal-body">
     
                     <% if(allMotherBoard) { %>
-                    <table class="table table-striped alignmiddle">
+                    <table class="table table-bordered">
                         <tr>
                             <th>Image</th>
                             <th>Title</th>
@@ -169,7 +169,8 @@
                                 <%= allMotherBoard[i].unitPrice %>TK
                             </td>
                             <td>
-                                <a href="/add-to-pcBuilder/<%= allMotherBoard[i]._id %>" class="btn btn-primary btn-sm">Add To List</a>
+                                <a href="/add-to-pcBuilder/<%= allMotherBoard[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
+                                <a href="/product/<%= allMotherBoard[i]._id %>" class="btn btn-primary btn-sm">Product Deatils</a>
                             </td>
                         </tr>
                         <% } %>
@@ -197,7 +198,7 @@
             <div class="modal-body">
 
                 <% if(allCPU) { %>
-                <table class="table table-striped alignmiddle">
+                <table class="table table-bordered">
                     <tr>
                         <th>Image</th>
                         <th>Title</th>
@@ -214,7 +215,8 @@
                             <%= allCPU[i].unitPrice %>TK
                         </td>
                         <td>
-                            <a href="/add-to-pcBuilder/<%= allCPU[i]._id %>" class="btn btn-primary btn-sm">Add To List</a>
+                            <a href="/add-to-pcBuilder/<%= allCPU[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
+                            <a href="/product/<%= allCPU[i]._id %>" class="btn btn-primary btn-sm">Product Deatils</a>
                         </td>
                     </tr>
                     <% } %>
@@ -242,7 +244,7 @@
             <div class="modal-body">
 
                 <% if(allRAM) { %>
-                <table class="table table-striped alignmiddle">
+                <table class="table table-bordered">
                     <tr>
                         <th>Image</th>
                         <th>Title</th>
@@ -259,7 +261,8 @@
                             <%= allRAM[i].unitPrice %>TK
                         </td>
                         <td>
-                            <a href="/add-to-pcBuilder/<%= allRAM[i]._id %>" class="btn btn-primary btn-sm">Add To List</a>
+                            <a href="/add-to-pcBuilder/<%= allRAM[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
+                            <a href="/product/<%= allRAM[i]._id %>" class="btn btn-primary btn-sm">Product Deatils</a>
                         </td>
                     </tr>
                     <% } %>
@@ -275,3 +278,141 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!--RAM  Modal -->
+
+<!--HDD  Modal -->
+<div class="modal fade" id="hddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">All HDD</h4>
+            </div>
+            <div class="modal-body">
+
+                <% if(allHDD) { %>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Unit Price</th>
+                        <th>Action</th>
+                    </tr>
+                    <% for(var i = 0; i < allHDD.length; i++) { %>
+                    <tr>
+                        <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allHDD[i].image %>"></td>
+                        <td>
+                            <%= allHDD[i].name %>
+                        </td>
+                        <td>
+                            <%= allHDD[i].unitPrice %>TK
+                        </td>
+                        <td>
+                            <a href="/add-to-pcBuilder/<%= allHDD[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
+                            <a href="/product/<%= allHDD[i]._id %>" class="btn btn-primary btn-sm">Product Deatils</a>
+                        </td>
+                    </tr>
+                    <% } %>
+                </table>
+                <% } else { %>
+                <h3 class="text-center">No Item found...</h3>
+                <% } %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--HDD  Modal -->
+
+<!-- Casing  Modal -->
+<div class="modal fade" id="casingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">All Casing</h4>
+            </div>
+            <div class="modal-body">
+
+                <% if(allCasing) { %>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Unit Price</th>
+                        <th>Action</th>
+                    </tr>
+                    <% for(var i = 0; i < allCasing.length; i++) { %>
+                    <tr>
+                        <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allCasing[i].image %>"></td>
+                        <td>
+                            <%= allCasing[i].name %>
+                        </td>
+                        <td>
+                            <%= allCasing[i].unitPrice %>TK
+                        </td>
+                        <td>
+                            <a href="/add-to-pcBuilder/<%= allCasing[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
+                            <a href="/product/<%= allCasing[i]._id %>" class="btn btn-primary btn-sm">Product Deatils</a>
+                        </td>
+                    </tr>
+                    <% } %>
+                </table>
+                <% } else { %>
+                <h3 class="text-center">No Item found...</h3>
+                <% } %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Casing  Modal -->
+
+<!-- Keyboard  Modal -->
+<div class="modal fade" id="keyboardModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">All Keyboard</h4>
+                </div>
+                <div class="modal-body">
+    
+                    <% if(allKeyboard) { %>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Unit Price</th>
+                            <th>Action</th>
+                        </tr>
+                        <% for(var i = 0; i < allKeyboard.length; i++) { %>
+                        <tr>
+                            <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allKeyboard[i].image %>"></td>
+                            <td>
+                                <%= allKeyboard[i].name %>
+                            </td>
+                            <td>
+                                <%= allKeyboard[i].unitPrice %>TK
+                            </td>
+                            <td>
+                                <a href="/add-to-pcBuilder/<%= allKeyboard[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
+                                <a href="/product/<%= allKeyboard[i]._id %>" class="btn btn-primary btn-sm">Product Deatils</a>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </table>
+                    <% } else { %>
+                    <h3 class="text-center">No Item found...</h3>
+                    <% } %>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- Keyboard  Modal -->

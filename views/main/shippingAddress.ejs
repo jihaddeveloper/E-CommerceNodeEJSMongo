@@ -1,0 +1,400 @@
+<% layout('layoutPage') -%>
+
+<div class="container" style="margin-top: 100px">
+  <div class="container">
+    <h2>Select a shipping address</h2>
+    <p>
+      Is the address you'd like to use displayed below? If so, click the
+      corresponding "Deliver to this address" button. Or you can enter a new
+      shipping address.
+    </p>
+    <hr />
+    <div>
+      <h4>Total Amount: TK</h4>
+      <% if(totalCartPrice) { %>
+      <h4 id="totalAmount">
+        <%= totalCartPrice %>
+      </h4>
+      <% } %>
+    </div>
+    <hr />
+    <% if(shippingAddress){%>
+    <form method="POST" action="/payment">
+      <div class="form-group row">
+        <input
+          type="hidden"
+          name="totalAmount"
+          id="totalAmount"
+          value="<%= totalCartPrice %>"
+        />
+        <div class="col-xs-8">
+          <label>Full name:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressName"
+            name="shippingAddressName"
+            type="text"
+            readonly
+            value="<%= shippingAddress.shippingAddressName %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Address line 1:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddress1"
+            name="shippingAddress1"
+            type="text"
+            readonly
+            value="<%= shippingAddress.shippingAddress2 %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Address line 2:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddress2"
+            name="shippingAddress2"
+            type="text"
+            readonly
+            value="<%= shippingAddress.shippingAddress2 %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Area/City:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressCity"
+            name="shippingAddressCity"
+            type="text"
+            readonly
+            value="<%= shippingAddress.shippingAddressCity %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>District:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressDistrict"
+            name="shippingAddressDistrict"
+            type="text"
+            readonly
+            value="<%= shippingAddress.shippingAddressDistrict %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Division:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressDivision"
+            name="shippingAddressDivision"
+            type="text"
+            readonly
+            value="<%= shippingAddress.shippingAddressDivision %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Zip:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressPostalCode"
+            name="shippingAddressPostalCode"
+            type="text"
+            readonly
+            value="<%= shippingAddress.shippingAddressPostalCode %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Country/Region</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressCountry"
+            name="shippingAddressCountry"
+            type="text"
+            readonly
+            value="<%= shippingAddress.shippingAddressCountry %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Phone Number:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressPhone"
+            name="shippingAddressPhone"
+            type="tel"
+            readonly
+            value="<%= shippingAddress.shippingAddressPhone %>"
+          />
+        </div>
+        <div class="col-xs-8">
+          <hr />
+        </div>
+        <div class="col-xs-8">
+          <h2>Select Payment System</h2>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="Cash on delivery"
+              />Cash on delivery</label
+            >
+          </div>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="Card payment"
+              />Card payment</label
+            >
+          </div>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="bKash"
+              />bKash</label
+            >
+          </div>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="Rocket"
+              />Rocket</label
+            >
+          </div>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="Nogod"
+              />Nogod</label
+            >
+          </div>
+          <div class="checkbox disabled">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value=""
+                disabled
+              />Other</label
+            >
+          </div>
+        </div>
+        <div class="col-xs-8">
+          <hr />
+        </div>
+        <div class="col-xs-8">
+          <button type="submit" class="btn btn-warning btn-md">
+            Deliver to this address
+          </button>
+        </div>
+      </div>
+    </form>
+    <% }else{ %>
+    <h2>Have no any address yet</h2>
+    <% } %>
+
+    <hr />
+
+    <form method="POST" action="/payment">
+      <input
+        type="hidden"
+        name="totalAmount"
+        id="totalAmount"
+        value="<%= totalCartPrice %>"
+      />
+      <div class="form-group">
+        <h2>Add a new address</h2>
+        <p>Be sure to click "Deliver to this address" when done.</p>
+        <div class="col-xs-8">
+          <label>Full name:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressName"
+            name="shippingAddressName"
+            type="text"
+            placeholder="Ex. Mr. X"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Address line 1:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddress1"
+            name="shippingAddress1"
+            type="text"
+            placeholder="Street address, P.O. box, company name, c/o"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Address line 2:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddress2"
+            name="shippingAddress2"
+            type="text"
+            placeholder="House, Apartment, suite, building, floor, etc"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Area/City:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressCity"
+            name="shippingAddressCity"
+            type="text"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>District:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressDistrict"
+            name="shippingAddressDistrict"
+            type="text"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Division:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressDivision"
+            name="shippingAddressDivision"
+            type="text"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Zip:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressPostalCode"
+            name="shippingAddressPostalCode"
+            type="text"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Country/Region</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressCountry"
+            name="shippingAddressCountry"
+            type="text"
+          />
+        </div>
+        <div class="col-xs-8">
+          <label>Phone Number:</label>
+          <input
+            class="form-control input-sm"
+            id="shippingAddressPhone"
+            name="shippingAddressPhone"
+            type="tel"
+          />
+        </div>
+        <!-- <div class="col-xs-8">
+          <h2>Add delivery instructions (optional)</h2>
+          <label
+            >Do we need additional instructions to find this address?</label
+          >
+          <input class="form-control input-sm" type="text" />
+        </div>
+        <div class="col-xs-8">
+          <label
+            >Do we need a security code or a call box number to access this
+            building?</label
+          >
+          <input class="form-control input-sm" type="text" />
+        </div> -->
+        <div class="col-xs-8">
+          <hr />
+        </div>
+        <div class="col-xs-8">
+          <h2>Select Payment System</h2>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="Cash on delivery"
+              />Cash on delivery</label
+            >
+          </div>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="Card payment"
+              />Card payment</label
+            >
+          </div>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="bKash"
+              />bKash</label
+            >
+          </div>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="Rocket"
+              />Rocket</label
+            >
+          </div>
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value="Nogod"
+              />Nogod</label
+            >
+          </div>
+          <div class="checkbox disabled">
+            <label
+              ><input
+                type="checkbox"
+                id="paymentMethod"
+                name="paymentMethod"
+                value=""
+                disabled
+              />Other</label
+            >
+          </div>
+        </div>
+        <div class="col-xs-8">
+          <hr />
+        </div>
+        <div class="col-xs-8">
+          <label>
+            <button type="submit" class="btn btn-warning btn-md">
+              Deliver to this address
+            </button>
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

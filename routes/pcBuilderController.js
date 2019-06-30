@@ -68,7 +68,7 @@ router.get('/add-to-pcBuilder/:product_id', function (req, res, next) {
                         for (var i = 0; i < pcBuilder.length; i++) {
                             if (pcBuilder[i].product_id == foundProduct._id) {
                                 newItem = false;
-                                console.log('Hey there');
+                                //console.log('Hey there');
                                 break;
                             }
                         }
@@ -86,10 +86,10 @@ router.get('/add-to-pcBuilder/:product_id', function (req, res, next) {
                     }
                     if (req.session.returnTo) {
                         res.redirect(req.session.returnTo);
-                        console.log('world');
+                        //console.log('world');
                         delete req.session.returnTo;
                     } else {
-                        console.log('Hello');
+                        //console.log('Hello');
                         res.redirect('/pc-builder');
                     }
 

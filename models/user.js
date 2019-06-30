@@ -1,101 +1,127 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
+//  Author: Mohammad Jihad Hossain
+//  Create Date: 02/01/2019
+//  Modify Date: 15/06/2019
+//  Description: User model schema for ECL E-Commerce
+
+//Import library
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const crypto = require('crypto');
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
 
 //Schema
 var UserSchema = new Schema({
+  created: { type: Date, default: Date.now },
 
-    created: { type: Date, default: Date.now },
-    
-    email: { type: String, unique: true, loadClass: true },
-    password: { type: String, min:6, max: 20},
-    name: { type: String, default: '' },
-    contact: { type: String, default: '' },
-    secretToken: { type: String },
-    isActive: Boolean,
+  email: { type: String, unique: true, loadClass: true },
+  password: { type: String, min: 6, max: 20 },
 
-    facebook: String,
-    tokens: Array,
+  name: { type: String },
+  contact: { type: String },
 
-    profile: {
-        name: { type: String, default: '' },
-        picture: { type: String, default: ''}
-    },
-    address: {
-        address1: { type: String, default: '' },
-        address2: { type: String, default: '' }, 
-        city: { type: String, default: '' },
-        district: { type: String, default: '' },
-        country: { type: String, default: '' },
-        postalCode: { type: String, default: '' },
-    },
-    billingAddress: {
-        billingAddressName: { type: String, default: '' },
-        billingAddress1: { type: String, default: '' },
-        billingAddress2: { type: String, default: '' },
-        billingAddressStreet: { type: String, default: '' },
-        billingAddressArea: { type: String, default: '' },
-        billingAddressCity: { type: String, default: '' },
-        billingAddressDistrict: { type: String, },
-        billingAddressCountry: { type: String, default: '' },
-        billingAddressPostalCode: { type: String, default: '' },
-        billingAddressPhone: { type: String, default: '' }
-    },
-    shippingAddress: {
-        shippingAddressName: { type: String, default: '' },
-        shippingAddress1: { type: String, default: '' },
-        shippingAddress2: { type: String, default: '' },
-        shippingAddressStreet: { type: String, default: '' },
-        shippingAddressArea: { type: String, default: '' },
-        shippingAddressCity: { type: String, default: '' },
-        shippingAddressDistrict: { type: String, default: '' },
-        shippingAddressCountry: { type: String, default: '' },
-        shippingAddressPostalCode: { type: String, default: '' },
-        shippingAddressPhone: { type: String, default: '' }
-    },
+  secretToken: { type: String },
+  isActive: Boolean,
 
-    shippingAddressSameAsbillingAddress: Boolean,
-    
+  facebook: String,
+  tokens: Array,
 
-    history: [{
-        paid: { type:Number, default:0 },
-        item: { type: Schema.Types.ObjectId, ref: 'Product' },
-        created: { type: Date, default: Date.now }
-    }],
-      
-    paymentMethod: { type: Schema.Types.ObjectId, ref: 'PaymentMethod' },
-    cardHolderName: { type: String, default: '' },
-    creditCardLast4Digits: { type: String, default: '' },
-    status: Boolean,
-    isSeller: Boolean
+  profile: {
+    name: { type: String },
+    picture: { type: String }
+  },
+  address: {
+    name: { type: String },
+    address1: { type: String },
+    address2: { type: String },
+    city: { type: String },
+    district: { type: String },
+    division: { type: String },
+    country: { type: String },
+    postalCode: { type: String }
+  },
+  billingAddress: [
+    {
+      billingAddressName: { type: String },
+      billingAddress1: { type: String },
+      billingAddress2: { type: String },
+      billingAddressCity: { type: String },
+      billingAddressDistrict: { type: String },
+      billingAddressDivision: { type: String },
+      billingAddressCountry: { type: String },
+      billingAddressPostalCode: { type: String },
+      billingAddressPhone: { type: String }
+    }
+  ],
+  shippingAddress: [
+    {
+      shippingAddressName: { type: String },
+      shippingAddress1: { type: String },
+      shippingAddress2: { type: String },
+      shippingAddressCity: { type: String },
+      shippingAddressDistrict: { type: String },
+      shippingAddressDivision: { type: String },
+      shippingAddressPostalCode: { type: String },
+      shippingAddressCountry: { type: String },
+      shippingAddressPhone: { type: String }
+    }
+  ],
+
+  shippingAddressSameAsbillingAddress: Boolean,
+
+  history: [
+    {
+      paid: { type: Number, default: 0 },
+      item: { type: Schema.Types.ObjectId, ref: "Product" },
+      created: { type: Date, default: Date.now }
+    }
+  ],
+
+  paymentMethod: { type: Schema.Types.ObjectId, ref: "PaymentMethod" },
+  cardHolderName: { type: String, default: "" },
+  creditCardLast4Digits: { type: String, default: "" },
+  status: Boolean,
+  isSeller: Boolean
 });
 
 //Password Hashing
-UserSchema.pre('save', function(next){
-    var user = this;
-    if (!user.isModified('password')) return next();
-    bcrypt.genSalt(10, function(err, salt) {
-        if (err) return next(err);
-        bcrypt.hash(user.password, salt, null, function(err, hash) {
-            if (err) return next(err);
-            user.password = hash;
-            next();
-        });
-    });
+UserSchema.pre("save", async function(next) {
+  try {
+    //User schema is instantiated
+    const user = this;
+
+    //Check if the user has been modified to know if the password has already been hashed
+    if (!user.isModified("password")) return next();
+
+    //Password salting and hashing
+    const salt = await bcrypt.genSalt(10);
+    // Generate a password hash (salt + hash)
+    const passwordHash = await bcrypt.hash(this.password, salt);
+    // Re-assign hashed version over original, plain text password
+    this.password = passwordHash;
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 //Comparing Password
-UserSchema.methods.comparePassword = function(password){
-    return bcrypt.compareSync(password, this.password);
-}
+UserSchema.methods.comparePassword = async function(password) {
+  try {
+    //Copmparing givenPassword and savedPassword
+    return await bcrypt.compare(password, this.password);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
-UserSchema.methods.gravatar = function(size){
-    if(!this.size) size = 200;
-    if(!this.email) return 'https://gravatar.com/avatar/?s' + size + '&d=retro';
-    var md5 = crypto.createHash('md5').update(this.email).digest('hex');
-    return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
-}
+UserSchema.methods.gravatar = function(size) {
+  if (!this.size) size = 200;
+  if (!this.email) return "https://gravatar.com/avatar/?s" + size + "&d=retro";
+  var md5 = crypto
+    .createHash("md5")
+    .update(this.email)
+    .digest("hex");
+  return "https://gravatar.com/avatar/" + md5 + "?s=" + size + "&d=retro";
+};
 
-
-module.exports = mongoose.model('User', UserSchema, 'users');
+module.exports = mongoose.model("User", UserSchema, "users");

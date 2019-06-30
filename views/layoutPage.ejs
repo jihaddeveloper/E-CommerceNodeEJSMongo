@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>ECL E-Commerce</title>
+    <link rel="stylesheet" href="/inc/css/custom.css" />
+    <link rel="stylesheet" href="/inc/css/bootstrap.min.css" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
 
-<head>
+    <!-- home -->
+  </head>
+  <% include ./partials/navbar %>
+  <body>
+    <div class="container" style="padding:100px 0;">
+      <%- body -%>
+    </div>
 
-  <title>ECL E-Commerce</title>
-  <link rel="stylesheet" href="/inc/css/custom.css">
-  <link rel="stylesheet" href="/inc/css/bootstrap.min.css">
-  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  
-
-  <!-- home -->
-
-</head>
-<% include ./partials/navbar %>
-<body>
- <div class="container" style="padding:100px 0;">
-    <%- body -%>
- </div>
-    
-
-  <% include ./partials/footer %>
-  <% include ./partials/javaScript %>
-</body>
+    <% include ./partials/footer %> <% include ./partials/javaScript %>
+  </body>
 </html>

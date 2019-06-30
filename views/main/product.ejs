@@ -1,155 +1,209 @@
 <% layout('layoutPage') -%>
 
 <div class="container" style="margin-top: 100px">
+  <% if (errors.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= errors %>
+  </div>
+  <% } %> <% if (message.length > 0) { %>
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= message %>
+  </div>
+  <% } %>
 
-    <% if (errors.length > 0) { %>
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <%= errors %>
+  <!-- Portfolio Item Row -->
+  <% if(product) { %>
+  <div class="row">
+    <div class="col-md-6">
+      <img
+        class="img-fluid img-responsive"
+        src="<%= product.image[0] %>"
+        alt="<%= product.image[0] %>"
+      />
     </div>
-    <% } %>
+    <hr />
 
-    <% if (message.length > 0) { %>
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <%= message %>
-    </div>
-    <% } %>
+    <div class="col-md-6">
+      <div class="well well-sm" style="background-color:#f4f7ff;">
+        <h3>
+          <strong>
+            <%= product.name %>
+          </strong>
+        </h3>
+        <h4>
+          <b>Price: </b>
+          <%= product.sellingPrice %>TK
+        </h4>
+        <% if(product.availablity === true) { %>
+        <h4 style="color: darkgreen">
+          <b>Available</b>
+        </h4>
+        <% } else { %>
+        <h4 style="color: coral">
+          <b>Not Available</b>
+        </h4>
+        <% } %>
+        <h4>
+          <b>Category Name: </b>
+          <%= product.category.name %>
+        </h4>
+        <% if(product.subcategory) { %>
+        <h4>
+          <b>Subcategory Name: </b>
+          <%= product.subcategory.name %>
+        </h4>
+        <% } %>
+        <h4>
+          <b>Brand Name: </b>
+          <%= product.brand.name %>
+        </h4>
+        <h4>
+          <b>Description: </b>
+          <%= product.description %>
+        </h4>
+        <br />
+        <br />
+        <% if(product.availablity === true) { %>
 
-    <!-- Portfolio Item Row -->
-    <% if(product) { %>
-    <div class="row">
+        <form method="POST" action="/add-to-cart">
+          <div class="btn-group" role="group" aria-label="...">
+            <input type="hidden" name="quantity" id="quantity" value="1" />
+            <button type="button" class="btn btn-default" id="minus" name="">
+              -
+            </button>
+            <button type="button" class="btn btn-default" id="total" name="">
+              1
+            </button>
+            <button type="button" class="btn btn-default" id="plus" name="">
+              +
+            </button>
+          </div>
 
-        <div class="col-md-6">
-            <img class="img-fluid img-responsive" src="data:image/png;base64, <%= product.image %>" style="width:450px;">
+          <div class="form-group">
+            <input
+              type="hidden"
+              name="product_id"
+              id="product_id"
+              value="<%= product._id %>"
+            />
+            <input
+              type="hidden"
+              name="priceHidden"
+              id="priceHidden"
+              value="<%= product.sellingPrice %>"
+            />
+            <input
+              type="text"
+              class="form-control"
+              name="priceValue"
+              id="priceValue"
+              value="<%= product.sellingPrice %>"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-md">
+            Add to Cart
+          </button>
+        </form>
+        <br />
+        <% } %>
+        <div>
+          <a
+            href="/add-to-wishlist/<%= product._id %>"
+            class="btn btn-primary btn-md"
+            >Add to Wishlist</a
+          >
         </div>
-        <hr>
-
-        <div class="col-md-6">
-            <div class="well well-sm" style="background-color:#f4f7ff;">
-                <h3>
-                    <strong>
-                        <%= product.name %>
-                    </strong>
-                </h3>
-                <h4><b>Category Name: </b>
-                    <%= product.categoryName %>
-                </h4>
-                <% if(product.subcategoryName) { %>
-                <h4><b>Subcategory Name: </b>
-                    <%= product.subcategoryName %>
-                </h4>
-                <% } %>
-                <h4><b>Brand Name: </b>
-                    <%= product.brandName %>
-                </h4>
-                <h4><b>Unit Price: </b>
-                    <%= product.unitPrice %>TK
-                </h4>
-                <h4><b>Description: </b>
-                    <%= product.description %>
-                </h4>
-                <br>
-                <br>
-                <div class="addtocart">
-                    <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary btn-md">Add Cart</a>
-                </div>
-                
-            </div>
-
-        </div>
-
+      </div>
     </div>
+  </div>
+  <div class="row">
+    <h2>Product Specification</h2>
     <div class="row">
-        <h2>Product Specification</h2>
+      <li class="list-group-item">
         <div class="row">
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-md-3 col-md-6 ">
-                        <strong>Name</strong>
-                    </div>
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= product.name %></strong>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3 col-md-6 ">
-                        <strong>Price</strong>
-                    </div>
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= product.unitPrice %>TK
-                        </strong>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3 col-md-6 ">
-                        <strong>Brand</strong>
-                    </div>
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= product.brandName %></strong>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3 col-md-6 ">
-                        <strong>Model</strong>
-                    </div>
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= product.model %>
-                        </strong>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3 col-md-6 ">
-                        <strong>Weight</strong>
-                    </div>
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= product.weight %> KG
-                        </strong>
-                    </div>
-                </div>
-                <% if(features) { %>
-                <% for ( var i = 0; i < features.length; i++) { %>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= features[i].label %>
-                        </strong>
-                    </div>
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= features[i].value %>
-                        </strong>
-                    </div>
-                </div>
-                <% } %>
-                <% } %>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3 col-md-6 ">
-                        <strong>Warranty</strong>
-                    </div>
-                    <div class="col-md-3 col-md-6">
-                        <strong>
-                            <%= product.warranty %>
-                        </strong>
-                    </div>
-                </div>
-            </li>
+          <div class="col-md-3 col-md-6 ">
+            <strong>Name</strong>
+          </div>
+          <div class="col-md-3 col-md-6">
+            <strong> <%= product.name %></strong>
+          </div>
         </div>
+        <hr />
+        <div class="row">
+          <div class="col-md-3 col-md-6 ">
+            <strong>Price</strong>
+          </div>
+          <div class="col-md-3 col-md-6">
+            <strong>
+              <%= product.sellingPrice %>TK
+            </strong>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-md-3 col-md-6 ">
+            <strong>Brand</strong>
+          </div>
+          <div class="col-md-3 col-md-6">
+            <strong> <%= product.brand.name %></strong>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-md-3 col-md-6 ">
+            <strong>Model</strong>
+          </div>
+          <div class="col-md-3 col-md-6">
+            <strong>
+              <%= product.model %>
+            </strong>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-md-3 col-md-6 ">
+            <strong>Weight</strong>
+          </div>
+          <div class="col-md-3 col-md-6">
+            <strong>
+              <%= product.weight %> KG
+            </strong>
+          </div>
+        </div>
+        <% if(features) { %> <% for ( var i = 0; i < features.length; i++) { %>
+        <hr />
+        <div class="row">
+          <div class="col-md-3 col-md-6">
+            <strong>
+              <%= features[i].label %>
+            </strong>
+          </div>
+          <div class="col-md-3 col-md-6">
+            <strong>
+              <%= features[i].value %>
+            </strong>
+          </div>
+        </div>
+        <% } %> <% } %>
+        <hr />
+        <div class="row">
+          <div class="col-md-3 col-md-6 ">
+            <strong>Warranty</strong>
+          </div>
+          <div class="col-md-3 col-md-6">
+            <strong>
+              <%= product.warranty %>
+            </strong>
+          </div>
+        </div>
+      </li>
     </div>
-    <% } %>
+  </div>
+  <% } %>
 </div>

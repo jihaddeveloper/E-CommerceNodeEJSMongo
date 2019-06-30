@@ -1,48 +1,56 @@
+<script src="/inc/js/jquery-3.3.1.min.js"></script>
+<script src="/inc/js/bootstrap.min.js"></script>
+<script src="/inc/js/custom.js"></script>
 
-      <script src="/inc/js/jquery-3.3.1.min.js"></script>
-      <script src="/inc/js/bootstrap.min.js"></script> 
-      <script src="/inc/js/custom.js"></script>   
+<!-- For Password matching in signup form -->
+<script>
+  var check = function() {
+    if (
+      document.getElementById("password").value ==
+      document.getElementById("confirm_password").value
+    ) {
+      document.getElementById("message").style.color = "green";
+      document.getElementById("message").innerHTML = "Password Matched";
+    } else {
+      document.getElementById("message").style.color = "red";
+      document.getElementById("message").innerHTML = "Password Not Matched !!";
+    }
+  };
+</script>
+<!-- For Password matching in signup form-->
 
-      <!-- For Password matching in signup form -->
-      <script>
-        var check = function() {
-         if (document.getElementById('password').value ==
-           document.getElementById('confirm_password').value) {
-           document.getElementById('message').style.color = 'green';
-           document.getElementById('message').innerHTML = 'Password Matched';
-         } else {
-           document.getElementById('message').style.color = 'red';
-           document.getElementById('message').innerHTML = 'Password Not Matched !!';
-         }
-        }
-      </script>
-      <!-- For Password matching in signup form-->
-
-      <!-- To add shipping charge -->
-      <script>
-        var setTotal = function(){
-          var shipArea = document.getElementById('city').value;
-          var totalAmount = parseFloat(document.getElementById('totalAmount').innerHTML);
-          if(totalAmount < 3000 && shipArea === 'Dhaka'){
-            document.getElementById('shipCharge').value = 40;
-            document.getElementById('finalTotalAmount').value = (totalAmount + 40).toString();
-            document.getElementById('message').style.color = 'red';
-            document.getElementById('message').innerHTML = 'Total Amount is below Tk3000, so TK40 delivery charge will be added';
-          }else if(totalAmount > 3000 && shipArea === 'Dhaka'){
-            document.getElementById('shipCharge').value = 0;
-            document.getElementById('finalTotalAmount').value = (totalAmount + 0).toString();
-            document.getElementById('message').style.color = 'green';
-            document.getElementById('message').innerHTML = 'Total Amount is over TK3000, so no delivery charge will be added';
-          }else{
-            document.getElementById('shipCharge').value = 0;
-            document.getElementById('finalTotalAmount').value = (totalAmount + 0).toString();
-            document.getElementById('message').style.color = 'red';
-            document.getElementById('message').innerHTML = 'Standard Curirer Charge will be applied for Product delivery to other city outside of Dhaka';
-          }
-          
-        }
-      </script>
-      <!-- To add shipping charge -->
-
-
-      
+<!-- To add shipping charge -->
+<script>
+  var setTotal = function() {
+    var shipArea = document.getElementById("city").value;
+    var totalAmount = parseFloat(
+      document.getElementById("totalAmount").innerHTML
+    );
+    if (totalAmount < 3000 && shipArea === "Dhaka") {
+      document.getElementById("shipCharge").value = 40;
+      document.getElementById("finalTotalAmount").value = (
+        totalAmount + 40
+      ).toString();
+      document.getElementById("message").style.color = "red";
+      document.getElementById("message").innerHTML =
+        "Total Amount is below Tk3000, so TK40 delivery charge will be added";
+    } else if (totalAmount > 3000 && shipArea === "Dhaka") {
+      document.getElementById("shipCharge").value = 0;
+      document.getElementById("finalTotalAmount").value = (
+        totalAmount + 0
+      ).toString();
+      document.getElementById("message").style.color = "green";
+      document.getElementById("message").innerHTML =
+        "Total Amount is over TK3000, so no delivery charge will be added";
+    } else {
+      document.getElementById("shipCharge").value = 0;
+      document.getElementById("finalTotalAmount").value = (
+        totalAmount + 0
+      ).toString();
+      document.getElementById("message").style.color = "red";
+      document.getElementById("message").innerHTML =
+        "Standard Curirer Charge will be applied for Product delivery to other city outside of Dhaka";
+    }
+  };
+</script>
+<!-- To add shipping charge -->

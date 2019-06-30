@@ -1,30 +1,37 @@
 //Product return to live, time checking
-window.setInterval(function () {
-
-  $.get("/return-to-live", {}, function (data_string) {})
-
-}, 10000);
+// window.setInterval(function() {
+//   $.get("/return-to-live", {}, function(data_string) {});
+// }, 10000);
 //Product return to live, time checking
 
 //TotalAmount set the Payment Option
-$(function () {
-  var totalAmount = parseFloat(document.getElementById('totalAmount').innerHTML);
+$(function() {
+  var totalAmount = parseFloat(
+    document.getElementById("totalAmount").innerHTML
+  );
   if (totalAmount > 10000) {
-    $('#payment1').children().hide();
-    $('#payment1').children().attr('disabled', true);
-    document.getElementById('hints').style.color = 'red';
-    document.getElementById('hints').innerHTML = 'Cash on Delivery is not applicable for amount more than 10000Tk.';
+    $("#payment1")
+      .children()
+      .hide();
+    $("#payment1")
+      .children()
+      .attr("disabled", true);
+    document.getElementById("hints").style.color = "red";
+    document.getElementById("hints").innerHTML =
+      "Cash on Delivery is not applicable for amount more than 10000Tk.";
   } else {
-    $('#payment2').children().hide();
-    $('#payment2').children().attr('disabled', true);
-    document.getElementById('hints').style.color = 'red';
-    document.getElementById('hints').innerHTML = 'Cash on Delivery & Online Pay both are applicable for amount 10000Tk or less.';
+    $("#payment2")
+      .children()
+      .hide();
+    $("#payment2")
+      .children()
+      .attr("disabled", true);
+    document.getElementById("hints").style.color = "red";
+    document.getElementById("hints").innerHTML =
+      "Cash on Delivery & Online Pay both are applicable for amount 10000Tk or less.";
   }
-
 });
 //TotalAmount set the Payment Option
-
-
 
 // function add1(id){
 
@@ -52,10 +59,8 @@ $(function () {
 //       document.getElementById("tab").appendChild(tr)
 //     }
 
-
 // });
 // }
-
 
 //   function tableCreate() {
 //     var tbl = document.createElement('table');
@@ -78,3 +83,36 @@ $(function () {
 //     tbl.appendChild(tbdy);
 //     document.getElementById("tab").appendChild(tbl)
 //    }
+
+//Product quantity inecrease
+$(document).on("click", "#plus", function(e) {
+  e.preventDefault();
+  var priceValue = parseFloat($("#priceValue").val());
+  var quantity = parseInt($("#quantity").val());
+
+  priceValue += parseFloat($("#priceHidden").val());
+  quantity += 1;
+
+  $("#quantity").val(quantity);
+  $("#priceValue").val(priceValue.toFixed(2));
+  $("#total").html(quantity);
+});
+
+//Product quantity  decrease
+$(document).on("click", "#minus", function(e) {
+  e.preventDefault();
+  var priceValue = parseFloat($("#priceValue").val());
+  var quantity = parseInt($("#quantity").val());
+
+  if (quantity == 1) {
+    priceValue = $("#priceHidden").val();
+    quantity = 1;
+  } else {
+    priceValue -= parseFloat($("#priceHidden").val());
+    quantity -= 1;
+  }
+
+  $("#quantity").val(quantity);
+  $("#priceValue").val(priceValue.toFixed(2));
+  $("#total").html(quantity);
+});
