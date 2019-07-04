@@ -13,9 +13,11 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const FacebookTokenStrategy = require("passport-facebook-token");
 const GooglePlusTokenStrategy = require("passport-google-plus-token");
 
-var secret = require("../config/secret");
-var User = require("../models/user");
-var async = require("async");
+const secret = require("../config/secret");
+const User = require("../models/user");
+const WishList = require("../models/wishList");
+const Cart = require("../models/cart");
+const async = require("async");
 
 // const opts = {};
 // opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -177,8 +179,8 @@ passport.use(
 //   "facebookToken",
 //   new FacebookTokenStrategy(
 //     {
-//       clientID: secret.facebook.clientID,
-//       clientSecret: secret.facebook.clientSecret
+//       clientID: secret.facebook2.clientID,
+//       clientSecret: secret.facebook2.clientSecret
 //     },
 //     async (accessToken, refreshToken, profile, done) => {
 //       try {
@@ -186,9 +188,9 @@ passport.use(
 //         // 1) When registering for the first time
 //         // 2) When linking account to the existing one
 
-//         // console.log('profile', profile);
-//         // console.log('accessToken', accessToken);
-//         // console.log('refreshToken', refreshToken);
+//         // console.log("profile", profile);
+//         // console.log("accessToken", accessToken);
+//         // console.log("refreshToken", refreshToken);
 
 //         // Checking the user already registered or not
 //         const existingUser = await User.findOne({
@@ -206,10 +208,20 @@ passport.use(
 //         newUser.facebook.email = profile.emails[0].value;
 //         newUser.facebook.id = profile.id;
 //         newUser.name = profile.displayName;
-//         //newUser.avatar = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
+//         newUser.avatar = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
 
 //         // Save new user
-//         await newUser.save();
+//         await newUser.save(function(err, savedUser) {
+//           //Save a blank wishlist for the user
+//           const wishlist = new WishList();
+//           wishlist.owner = savedUser._id;
+//           wishlist.save();
+
+//           //Save a blank cart for the user
+//           const cart = new Cart();
+//           cart.owner = savedUser._id;
+//           cart.save();
+//         });
 //         done(null, newUser);
 //       } catch (error) {
 //         done(error, false, error.message);

@@ -133,7 +133,7 @@ app.get("*", function(req, res, next) {
 //Category load
 app.use(function(req, res, next) {
   var sub_arr = [];
-  Category.find()
+  Category.find({ enabled: true })
     .populate("subCategories")
     .populate("brands")
     .populate({
@@ -150,7 +150,7 @@ app.use(function(req, res, next) {
 
 //SubCategory load
 app.use(function(req, res, next) {
-  SubCategory.find({}, function(err, subCategories) {
+  SubCategory.find({ enabled: true }, function(err, subCategories) {
     if (err) return next(err);
     res.locals.subCategories = subCategories;
     next();
@@ -159,7 +159,7 @@ app.use(function(req, res, next) {
 
 //Brand load
 app.use(function(req, res, next) {
-  Brand.find({}, function(err, brands) {
+  Brand.find({ enabled: true }, function(err, brands) {
     if (err) return next(err);
     res.locals.brands = brands;
     next();

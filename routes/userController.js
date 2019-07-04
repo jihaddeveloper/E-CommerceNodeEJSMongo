@@ -401,16 +401,31 @@ router.post("/add-product", passportConfig.isAuthenticated, function(
 // router.post(
 //   "/oauth/facebook",
 //   passport.authenticate("facebookToken", {
-//     session: false
+//     //session: false
+//     // successRedirect: "/profile",
+//     // failureRedirect: "/login"
 //   }),
 //   (req, res) => {
 //     // Generate Token
 //     const token = signToken(req.user);
-
-//     //Respond with token
-//     res.status(200).json({
-//       token: "Bearer " + token
+//     //Set cookie
+//     res.cookie("access_token", token, {
+//       //year*day*hour*min*sec*milisecond
+//       maxAge: 1 * 1 * 24 * 60 * 60 * 1000, // maxage is setted to 24 hours
+//       expires: new Date(Date.now() + 1 * 1 * 24 * 60 * 60 * 1000), //expires after 1 day
+//       httpOnly: true
 //     });
+//     //Redirect to saved URL
+//     if (req.session.returnTo) {
+//       res.redirect(req.session.returnTo);
+//       delete req.session.returnTo;
+//     } else {
+//       //Redirect to profile
+//       res.redirect("/profile");
+//     }
+
+//     //console.log("Hello World");
+//     //console.log(req.user);
 //   }
 // );
 

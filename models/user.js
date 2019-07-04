@@ -16,6 +16,23 @@ var UserSchema = new Schema({
   email: { type: String, unique: true, loadClass: true },
   password: { type: String, min: 6, max: 20 },
 
+  google: {
+    id: {
+      type: String
+    },
+    email: {
+      type: String
+    }
+  },
+  facebook: {
+    id: {
+      type: String
+    },
+    email: {
+      type: String
+    }
+  },
+
   name: { type: String },
   contact: { type: String },
 
@@ -29,6 +46,9 @@ var UserSchema = new Schema({
     name: { type: String },
     picture: { type: String }
   },
+
+  avatar: { type: String },
+
   address: {
     name: { type: String },
     address1: { type: String },
@@ -79,7 +99,7 @@ var UserSchema = new Schema({
   paymentMethod: { type: Schema.Types.ObjectId, ref: "PaymentMethod" },
   cardHolderName: { type: String, default: "" },
   creditCardLast4Digits: { type: String, default: "" },
-  status: Boolean,
+  status: { type: Boolean, default: true },
   isSeller: Boolean
 });
 
