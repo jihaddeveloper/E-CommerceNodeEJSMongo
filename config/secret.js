@@ -21,3 +21,5 @@ module.exports = {
   // }
 };
 //mongodb://jihad:abc1234@ds343985.mlab.com:43985/e-commerce_db_v1
+//https://ecle-com.herokuapp.com/auth/facebook/callback
+//http://localhost:3000/auth/facebook/callback

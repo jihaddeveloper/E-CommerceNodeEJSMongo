@@ -159,10 +159,14 @@ passport.use(
             });
           },
           function(newUser) {
-            var cart = new Cart();
+            //Save a blank wishlist for the user
+            const wishlist = new WishList();
+            wishlist.owner = newUser._id;
+            wishlist.save();
 
+            //Save a blank cart for the user
+            const cart = new Cart();
             cart.owner = newUser._id;
-
             cart.save(function(err) {
               if (err) return done(err);
               return done(err, newUser);
