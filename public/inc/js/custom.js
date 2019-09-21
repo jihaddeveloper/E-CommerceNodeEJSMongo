@@ -31,6 +31,7 @@ $(function() {
       "Cash on Delivery & Online Pay both are applicable for amount 10000Tk or less.";
   }
 });
+
 //TotalAmount set the Payment Option
 
 // function add1(id){
@@ -116,3 +117,46 @@ $(document).on("click", "#minus", function(e) {
   $("#priceValue").val(priceValue.toFixed(2));
   $("#total").html(quantity);
 });
+
+//Print PDF
+// $("#cmd").click(function() {
+//   domtoimage.toPng(document.getElementById("pcQuotation")).then(function(blob) {
+//     var pdf = new jsPDF("l", "pt", [
+//       $("#pcQuotation").width(),
+//       $("#pcQuotation").height()
+//     ]);
+
+//     pdf.addImage(
+//       blob,
+//       "PNG",
+//       0,
+//       0,
+//       $("#pcQuotation").width(),
+//       $("#pcQuotation").height()
+//     );
+//     pdf.save("test.pdf");
+
+//     that.options.api.optionsChanged();
+//   });
+// });
+
+$(function() {
+  var specialElementHandlers = {
+    "#editor": function(element, renderer) {
+      return true;
+    }
+  };
+  $("#cmd").click(function() {
+    var doc = new jsPDF();
+    doc.fromHTML(
+      $("#pcQuotation").html(),
+      15,
+      15,
+      { width: 100, elementHandlers: specialElementHandlers },
+      function() {
+        doc.save("sample-file.pdf");
+      }
+    );
+  });
+});
+//Print PDF

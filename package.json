@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jihaddeveloper/E-CommerceNodeEJSMongo#readme",
   "dependencies": {
+    "@muniftanjim/is-mobile-phone-number-bd": "^0.1.1",
     "array-unique": "^0.3.2",
     "async": "^2.6.1",
     "bcrypt-nodejs": "0.0.3",
@@ -28,6 +29,7 @@
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
+    "crypto-random-string": "^3.0.1",
     "ejs": "^2.6.1",
     "ejs-mate": "^2.3.0",
     "express": "^4.16.4",

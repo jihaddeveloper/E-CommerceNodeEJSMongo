@@ -1,0 +1,493 @@
+<!-- 
+  Author: Mohammad Jihad Hossain
+  Create Date: 08/02/2019
+  Modify Date: 02/09/2019
+  Description: Single Product Page for ECL E-Commerce 
+  -->
+
+<% layout('layoutPage') -%>
+
+<div class="container" style="margin-top: 100px">
+  <% if (errors.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= errors %>
+  </div>
+  <% } %> <% if (message.length > 0) { %>
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= message %>
+  </div>
+  <% } %>
+
+  <!-- Portfolio Item Row -->
+  <% if(product) { %>
+  <div class="row">
+    <div class="col-md-6">
+      <img
+        class="img-fluid img-responsive"
+        src="<%= product.image[0] %>"
+        alt="<%= product.image[0] %>"
+      />
+    </div>
+    <hr />
+
+    <div class="col-md-6">
+      <div class="well well-sm" style="background-color:#f4f7ff;">
+        <h3>
+          <strong>
+            <%= product.name %>
+          </strong>
+        </h3>
+        <h4>
+          <b>Price: </b>
+          <%= product.sellingPrice %>TK
+        </h4>
+        <% if(discountPrice) { %>
+        <h4>
+          <b>Discount Price: </b>
+          <%= discountPrice %>TK
+        </h4>
+        <% } %> <% if(product.availablity === true) { %>
+        <h4 style="color: darkgreen">
+          <b>Available</b>
+        </h4>
+        <% } else { %>
+        <h4 style="color: coral">
+          <b>Not Available</b>
+        </h4>
+        <% } %>
+        <h4>
+          <b>Category Name: </b>
+          <%= product.category.name %>
+        </h4>
+        <% if(product.subcategory) { %>
+        <h4>
+          <b>Subcategory Name: </b>
+          <%= product.subcategory.name %>
+        </h4>
+        <% } %>
+        <h4>
+          <b>Brand Name: </b>
+          <%= product.brand.name %>
+        </h4>
+        <h4>
+          <b>Description: </b>
+          <%= product.description %>
+        </h4>
+        <% if(product.averageRating) { %>
+        <h4><b>Customer Rating Average: </b> <%= product.averageRating %></h4>
+        <%}%>
+        <br />
+        <br />
+        <% if(product.availablity === true) { %>
+
+        <form method="POST" action="/add-to-cart">
+          <div class="btn-group" role="group" aria-label="...">
+            <input type="hidden" name="quantity" id="quantity" value="1" />
+            <button type="button" class="btn btn-default" id="minus" name="">
+              -
+            </button>
+            <button type="button" class="btn btn-default" id="total" name="">
+              1
+            </button>
+            <button type="button" class="btn btn-default" id="plus" name="">
+              +
+            </button>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="hidden"
+              name="product_id"
+              id="product_id"
+              value="<%= product._id %>"
+            />
+            <input
+              type="hidden"
+              name="priceHidden"
+              id="priceHidden"
+              value="<%= product.sellingPrice %>"
+            />
+            <input
+              type="text"
+              class="form-control"
+              name="priceValue"
+              id="priceValue"
+              value="<%= product.sellingPrice %>"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-md">
+            Add to Cart
+          </button>
+        </form>
+        <br />
+        <% } %>
+        <div>
+          <a
+            href="/add-to-wishlist/<%= product._id %>"
+            class="btn btn-primary btn-md"
+            >Add to Wishlist</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Specification, Gallery, Description, Review -->
+<div class="container">
+  <h2>Product Details</h2>
+  <hr />
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#menu1"> Description</a></li>
+    <li><a data-toggle="tab" href="#menu2"> Specifications</a></li>
+    <li><a data-toggle="tab" href="#menu3"> Reviews</a></li>
+    <li><a data-toggle="tab" href="#menu4">Gallery</a></li>
+    <li><a data-toggle="tab" href="#menu5">Question</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="menu1" class="tab-pane fade in active">
+      <p>
+        <%= product.description %>
+      </p>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+      <div class="row">
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-md-3 col-md-6 ">
+              <strong>Name</strong>
+            </div>
+            <div class="col-md-3 col-md-6">
+              <strong> <%= product.name %></strong>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-3 col-md-6 ">
+              <strong>Price</strong>
+            </div>
+            <div class="col-md-3 col-md-6">
+              <strong>
+                <%= product.sellingPrice %>TK
+              </strong>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-3 col-md-6 ">
+              <strong>Brand</strong>
+            </div>
+            <div class="col-md-3 col-md-6">
+              <strong> <%= product.brand.name %></strong>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-3 col-md-6 ">
+              <strong>Model</strong>
+            </div>
+            <div class="col-md-3 col-md-6">
+              <strong>
+                <%= product.model %>
+              </strong>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-3 col-md-6 ">
+              <strong>Weight</strong>
+            </div>
+            <div class="col-md-3 col-md-6">
+              <strong>
+                <%= product.weight %> KG
+              </strong>
+            </div>
+          </div>
+          <% if(features) { %> <% for ( var i = 0; i < features.length; i++) {
+          %>
+          <hr />
+          <div class="row">
+            <div class="col-md-3 col-md-6">
+              <strong>
+                <%= features[i].label.name %>
+              </strong>
+            </div>
+            <div class="col-md-3 col-md-6">
+              <strong>
+                <%= features[i].value %>
+              </strong>
+            </div>
+          </div>
+          <% } %> <% } %>
+          <hr />
+          <div class="row">
+            <div class="col-md-3 col-md-6 ">
+              <strong>Warranty</strong>
+            </div>
+            <div class="col-md-3 col-md-6">
+              <strong>
+                <%= product.warranty %>
+              </strong>
+            </div>
+          </div>
+        </li>
+      </div>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <form action="/post-review" method="POST">
+        <h3>Write your review</h3>
+        <input
+          type="hidden"
+          name="hidden_product_id"
+          id="hidden_product_id"
+          value="<%= product._id %>"
+        />
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <input
+              name="title"
+              placeholder="Title*"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <input
+              name="email"
+              placeholder="Your Email"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <textarea
+              name="description"
+              rows="5"
+              placeholder="Your Review*"
+              class="form-control"
+            ></textarea>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <label class="control-label">Rating:</label>
+            &nbsp;Bad &nbsp;
+            <input type="radio" name="rating" value="1" /> &nbsp;
+            <input type="radio" name="rating" value="2" /> &nbsp;
+            <input type="radio" name="rating" value="3" /> &nbsp;
+            <input type="radio" name="rating" value="4" /> &nbsp;
+            <input type="radio" name="rating" value="5" /> Good <br /><br />
+            <button type="submit" id="button-review" class="btn submit-btn">
+              Submit Review
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div id="menu4" class="tab-pane fade">
+      <% for ( var i = 0; i < product.image.length; i++ ) { %> <%if(i===0){%>
+      <div class="tab-pane active" id="p<%= i %>">
+        <a id="p<%= i %>" class="MagicZoom" href="<%= product.image[i] %>">
+          <img src="<%= product.image[i] %>" alt="" />
+        </a>
+      </div>
+      <% } else {%>
+      <div class="tab-pane" id="p<%= i %>">
+        <a id="p<%= i %>" class="MagicZoom" href="<%= product.image[i] %>">
+          <img src="<%= product.image[i] %>" alt="" />
+        </a>
+      </div>
+      <% } } %>
+    </div>
+    <div id="menu5" class="tab-pane fade">
+      <form action="/post-question" method="POST">
+        <h3>Write your question</h3>
+        <input
+          type="hidden"
+          name="product_id"
+          id="product_id"
+          value="<%= product._id %>"
+        />
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <input
+              name="name"
+              placeholder="Name*"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <input
+              name="email"
+              placeholder="Your Email"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <textarea
+              name="question"
+              rows="5"
+              placeholder="Your Question*"
+              class="form-control"
+            ></textarea>
+          </div>
+          <br /><br />
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <button type="submit" id="button-review" class="btn submit-btn">
+              Submit Question
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Specification, Gallery, Description, Review -->
+
+<!-- Related Product -->
+<div class="container">
+  <h3 class="h3">Related Products</h3>
+  <div class="row">
+    <% if( product.relatedProducts ) { %> <% for ( var i = 0; i <
+    product.relatedProducts.length; i++ ) { %>
+    <div class="thumbnail">
+      <div class="col-md-2 col-sm-6">
+        <div class="product-grid2">
+          <div class="product-image2">
+            <a
+              data-toggle="modal"
+              data-target="#<%= product.relatedProducts[i]._id %>"
+            >
+              <%if (product.relatedProducts[i].image) {%>
+              <img
+                class=""
+                src="<%= product.relatedProducts[i].image[0] %>"
+                height="50%"
+                width="50%"
+              />
+              <% } %>
+            </a>
+            <ul class="social">
+              <li>
+                <% if(product.relatedProducts[i].availablity === true) { %>
+                <span
+                  style="background: #e67e22;
+                border-radius: 8px;
+                color: #f5f5f5;
+                font-weight: bold;
+                padding: 2px 4px;"
+                >
+                  Available
+                </span>
+                <% } else { %>
+                <span
+                  style="background: #e63f22;
+              border-radius: 8px;
+              color: #f5f5f5;
+              font-weight: bold;
+              padding: 2px 4px;"
+                >
+                  Not Available
+                </span>
+                <% } %>
+              </li>
+            </ul>
+            <a
+              class="add-to-cart"
+              data-toggle="modal"
+              data-target="#<%= product.relatedProducts[i]._id %>"
+              >Quick View</a
+            >
+          </div>
+
+          <div class="product-content">
+            <h3 class="title">
+              <a
+                data-toggle="modal"
+                data-target="#<%= product.relatedProducts[i]._id %>"
+                ><%= product.relatedProducts[i].name %></a
+              >
+            </h3>
+            <span class="price"
+              ><%= product.relatedProducts[i].sellingPrice %>TK</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade product_view"
+      id="<%= product.relatedProducts[i]._id %>"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content" style="margin-top: 150px;">
+          <div class="modal-header">
+            <a href="#" data-dismiss="modal" class="class pull-right"
+              ><span class="glyphicon glyphicon-remove"></span
+            ></a>
+            <h3 class="modal-title"><%= product.relatedProducts[i].name %></h3>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6 product_img">
+                <img
+                  src="<%= product.relatedProducts[i].image[0] %>"
+                  class="img-responsive"
+                />
+              </div>
+              <div class="col-md-6 product_content">
+                <!-- <h4>Product Id: <span>51526</span></h4> -->
+                <p><%= product.relatedProducts[i].description %></p>
+                <h3 class="cost">
+                  <%= product.relatedProducts[i].sellingPrice %>TK
+                </h3>
+                <p>
+                  <% if(product.relatedProducts[i].availablity === true) { %>
+
+                  <span
+                    style="background: #e67e22;
+                                  border-radius: 8px;
+                                  color: #f5f5f5;
+                                  font-weight: bold;
+                                  padding: 2px 4px;"
+                  >
+                    Available
+                  </span>
+                  <% } else { %>
+                  <span
+                    style="background: #e63f22;
+                                border-radius: 8px;
+                                color: #f5f5f5;
+                                font-weight: bold;
+                                padding: 2px 4px;"
+                  >
+                    Not Available
+                  </span>
+                  <% } %>
+                </p>
+
+                <div class="space-ten"></div>
+                <div class="btn-ground">
+                  <a
+                    href="/product/<%= product.relatedProducts[i]._id %>"
+                    class="btn btn-primary"
+                    >View Details</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %> <% } %>
+  </div>
+</div>
+<!-- Related Product -->
+<% } %>

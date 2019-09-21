@@ -1,0 +1,217 @@
+<% layout('layoutPage') -%>
+
+<div class="container" style="width:70%; min-height: 700px">
+  <div class="well">
+    <div class="row">
+      <div class="col-md-12 mx-auto">
+        <div class="card card-body">
+          <h3 class="text-center">Add Product for Sell</h3>
+
+          <% if (errors.length > 0) { %>
+          <div class="alert alert-danger alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= errors %>
+          </div>
+          <% } %> <% if (message.length > 0) { %>
+          <div class="alert alert-success alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= message %>
+          </div>
+          <% } %>
+
+          <form
+            method="POST"
+            action="/add-product2"
+            enctype="multipart/form-data"
+          >
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select name="category" id="category">
+                <option selected>Choose...</option>
+                <% for(var i = 0; i < secondHandProductCategories.length; i++) {
+                %>
+                <option value="<%= secondHandProductCategories[i]._id %>"
+                  ><%= secondHandProductCategories[i].name %></option
+                >
+                <% } %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="category">Sub-Category</label>
+              <select name="subcategory" id="subcategory">
+                <option selected>Choose...</option>
+                <% for(var i = 0; i < secondHandProductSubCategories.length;
+                i++) { %>
+                <option value="<%= secondHandProductSubCategories[i]._id %>"
+                  ><%= secondHandProductSubCategories[i].name %></option
+                >
+                <% } %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="category">Brand</label>
+              <select name="brand" id="brand">
+                <option selected>Choose...</option>
+                <% for(var i = 0; i < secondHandProductBrands.length; i++) { %>
+                <option value="<%= secondHandProductBrands[i]._id %>"
+                  ><%= secondHandProductBrands[i].name %></option
+                >
+                <% } %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="condition">Condition </label>
+              <select name="condition" id="condition">
+                <option selected>Choose...</option>
+                <option value="New">
+                  New
+                </option>
+                <option value="Used">
+                  Used
+                </option>
+              </select>
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="model">Model</label>
+              <input
+                type="text"
+                class="form-control"
+                name="model"
+                id="model"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="name">Product Name </label>
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                id="name"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="quantity">Quantity </label>
+              <input
+                type="number"
+                class="form-control"
+                name="quantity"
+                id="quantity"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="price">Price </label>
+              <input
+                type="number"
+                class="form-control"
+                name="price"
+                id="price"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">Description </label>
+              <textarea
+                type="text"
+                class="form-control"
+                name="description"
+                id="description"
+                value=""
+                placeholder=""
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="images">Image </label>
+              <input
+                type="file"
+                class="form-control"
+                name="images"
+                id="images"
+                accept="image/png, image/jpeg"
+                multiple
+              />
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="person">Contact Person </label>
+              <input
+                type="text"
+                class="form-control"
+                name="person"
+                id="person"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone1">Phone No 1 </label>
+              <input
+                type="tel"
+                class="form-control"
+                name="phone1"
+                id="phone1"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone2">Phone No 2 </label>
+              <input
+                type="tel"
+                class="form-control"
+                name="phone2"
+                id="phone2"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email </label>
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                id="email"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="address">Address </label>
+              <input
+                type="text"
+                class="form-control"
+                name="address"
+                id="address"
+                value=""
+                placeholder=""
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

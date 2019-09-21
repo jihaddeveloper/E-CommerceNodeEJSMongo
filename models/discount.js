@@ -1,11 +1,20 @@
-const mongoose = require('mongoose');
+//  Author: Fathma siddique
+//  last modified: 08/19/19
+//  Description: discount model schema
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
-const discountSchema = new Schema({
-    product: { type: Schema.Types.ObjectId, ref: 'Product' },
-    amount: { type: Number, default: 0 },
-    description : { type: String, default: '' },
-    created: { type: Date, default: Date.now }
+let DiscountSchema = new Schema({
+  name: { type: String },
+  created: { type: Date, default: Date.now },
+  enabled: { type: Boolean, default: false },
+  type: { type: String },
+  usePercentage: { type: Boolean, default: false },
+  discountPercent: { type: Number },
+  discountAmount: { type: Number },
+  maximunDiscountAmount: { type: Number },
+  couponrequired: { type: Boolean, default: false },
+  coupon: { type: String },
+  days: { type: Number },
+  maxNumber: { type: Number }
 });
-
-module.exports = mongoose.model('Discount', discountSchema, 'discounts');
+module.exports = mongoose.model("Discount", DiscountSchema, "discounts");

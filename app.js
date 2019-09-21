@@ -1,6 +1,6 @@
 //  Author: Mohammad Jihad Hossain
 //  Create Date: 02/01/2019
-//  Modify Date: 16/06/2019
+//  Modify Date: 01/09/2019
 //  Description: Main entry file for rest api project for ECL E-Commerce
 
 //  Library import
@@ -51,6 +51,12 @@ const Supplier = require("./models/supplier");
 const Feature = require("./models/feature");
 const WishList = require("./models/wishList");
 const Cart = require("./models/cart");
+const SecondHandProduct = require("./models/secondHandProduct");
+const SecondHandProductCategory = require("./models/secondHandProductCategory");
+const SecondHandProductSubCategory = require("./models/secondHandProductSubCategory");
+const SecondHandProductBrand = require("./models/secondHandProductBrand");
+const Specification = require("./models/specification");
+const Faq = require("./models/faq");
 
 //MongoDB Connection
 mongoose.connect(secret.database, function(err) {
@@ -130,6 +136,7 @@ app.get("*", function(req, res, next) {
   next();
 });
 
+//For Store Product
 //Category load
 app.use(function(req, res, next) {
   var sub_arr = [];
@@ -166,6 +173,42 @@ app.use(function(req, res, next) {
   });
 });
 
+//For Second Hand Product
+//Category load
+app.use(function(req, res, next) {
+  var sub_arr = [];
+  SecondHandProductCategory.find({ enabled: true })
+    .populate("secondHandProductSubCategories")
+    .exec(function(err, secondHandProductCategories) {
+      res.locals.secondHandProductCategories = secondHandProductCategories;
+      next();
+    });
+});
+
+//Sub Category load
+app.use(function(req, res, next) {
+  SecondHandProductSubCategory.find({ enabled: true }, function(
+    err,
+    secondHandProductSubCategories
+  ) {
+    if (err) return next(err);
+    res.locals.secondHandProductSubCategories = secondHandProductSubCategories;
+    next();
+  });
+});
+
+//Brand load
+app.use(function(req, res, next) {
+  SecondHandProductBrand.find({ enabled: true }, function(
+    err,
+    secondHandProductBrands
+  ) {
+    if (err) return next(err);
+    res.locals.secondHandProductBrands = secondHandProductBrands;
+    next();
+  });
+});
+
 //Make Seesion avaiable to every page
 app.use(function(req, res, next) {
   res.locals.login = req.isAuthenticated();
@@ -181,8 +224,8 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next) {
   Product.find(
     {
-      category: "5c7664485db0ec00044cac7a",
-      subcategory: "5c85ee2fe8d2040004b4ea13",
+      category: "5d47d056b044e60004c90115",
+      subcategory: "5d47d0b8b044e60004c9011c",
       isActive: true
     },
     function(err, allMotherBoard) {
@@ -197,7 +240,7 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next) {
   Product.find(
     {
-      category: "5c7664485db0ec00044cac7a",
+      category: "5d47d056b044e60004c90115",
       subcategory: "5c7664545db0ec00044cac7b",
       isActive: true
     },
@@ -213,8 +256,8 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next) {
   Product.find(
     {
-      category: "5c7664485db0ec00044cac7a",
-      subcategory: "5c85f0e5e8d2040004b4ea18",
+      category: "5d47d056b044e60004c90115",
+      subcategory: "5d47d633b044e60004c9017b",
       isActive: true
     },
     function(err, allRAM) {
@@ -229,8 +272,8 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next) {
   Product.find(
     {
-      category: "5c7664485db0ec00044cac7a",
-      subcategory: "5c85ef29e8d2040004b4ea15",
+      category: "5d47d32fb044e60004c9013a",
+      subcategory: "5d47d34db044e60004c9013b",
       isActive: true
     },
     function(err, allHDD) {
@@ -284,6 +327,10 @@ const orderCon = require("./routes/orderController");
 const stripeCon = require("./routes/paymentController");
 const pcBuilderCon = require("./routes/pcBuilderController");
 const wishListCon = require("./routes/wishListController");
+const secHandProductCon = require("./routes/secondHandProductController");
+const filterCon = require("./routes/filterController");
+const reviewCon = require("./routes/reviewController");
+const faqCon = require("./routes/faqController");
 
 //Routes
 app.use(mainCon);
@@ -295,6 +342,10 @@ app.use(orderCon);
 app.use(stripeCon);
 app.use(pcBuilderCon);
 app.use(wishListCon);
+app.use(secHandProductCon);
+app.use(filterCon);
+app.use(reviewCon);
+app.use(faqCon);
 
 app.listen(secret.port, function(err) {
   if (err) throw err;

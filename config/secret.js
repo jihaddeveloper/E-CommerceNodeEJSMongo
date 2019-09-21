@@ -1,3 +1,8 @@
+//  Author: Mohammad Jihad Hossain
+//  Create Date: 02/01/2019
+//  Modify Date: 07/05/2019
+//  Description: Secret file for ECL E-Commerce
+
 module.exports = {
   database: "mongodb://jihad:abc1234@ds245647.mlab.com:45647/e-commerce_db_v12",
   port: process.env.PORT || 3000,
@@ -12,7 +17,8 @@ module.exports = {
   },
   google: {
     clientID: "",
-    clientSecret: ""
+    clientSecret: "",
+    callbackURL: "https://ecle-com.herokuapp.com/auth/google/callback"
   }
   // facebook2: {
   //   clientID: process.env.FACEBOOK_ID || "368535967347432",

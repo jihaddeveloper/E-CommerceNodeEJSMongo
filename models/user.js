@@ -37,7 +37,8 @@ var UserSchema = new Schema({
   contact: { type: String },
 
   secretToken: { type: String },
-  isActive: Boolean,
+  isActive: { type: Boolean, default: false },
+  isValid: { type: Boolean, default: false },
 
   facebook: String,
   tokens: Array,
@@ -100,7 +101,7 @@ var UserSchema = new Schema({
   cardHolderName: { type: String, default: "" },
   creditCardLast4Digits: { type: String, default: "" },
   status: { type: Boolean, default: true },
-  isSeller: Boolean
+  isSeller: { type: Boolean, default: false }
 });
 
 //Password Hashing
@@ -134,6 +135,7 @@ UserSchema.methods.comparePassword = async function(password) {
   }
 };
 
+//  Profile image save fro email
 UserSchema.methods.gravatar = function(size) {
   if (!this.size) size = 200;
   if (!this.email) return "https://gravatar.com/avatar/?s" + size + "&d=retro";

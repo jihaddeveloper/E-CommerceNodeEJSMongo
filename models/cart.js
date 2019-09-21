@@ -1,6 +1,6 @@
 //  Author: Mohammad Jihad Hossain
 //  Create Date: 19/06/2019
-//  Modify Date: 19/06/2019
+//  Modify Date: 03/09/2019
 //  Description: Cart model schema for ECL E-Commerce
 
 //Import library
@@ -15,8 +15,10 @@ var CartSchema = new Schema({
   totalPriceAmount: { type: Number, default: 0 },
   items: [
     {
-      product: { type: Schema.Types.ObjectId, ref: "Product" },
-      quantity: { type: Number, default: 1 },
+      product_id: { type: Schema.Types.ObjectId, ref: "Product" },
+      productName: { type: String },
+      quantity: { type: Number, default: 0 },
+      unitPrice: { type: Number, default: 0 },
       price: { type: Number, default: 0 },
       addedDate: { type: Date, default: Date.now }
     }

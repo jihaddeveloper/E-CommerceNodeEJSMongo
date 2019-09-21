@@ -22,49 +22,105 @@
             </button>
             <%= errors %>
           </div>
+          <% } %> <% if (validationErrors.name) { %>
+          <div class="alert alert-danger alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= validationErrors.name %>
+          </div>
+          <% } %> <% if (validationErrors.password) { %>
+          <div class="alert alert-danger alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= validationErrors.password %>
+          </div>
+          <% } %> <% if (validationErrors.email) { %>
+          <div class="alert alert-danger alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= validationErrors.email %>
+          </div>
+          <% } %> <% if (validationErrors.password2) { %>
+          <div class="alert alert-danger alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <%= validationErrors.password2 %>
+          </div>
           <% } %>
 
-          <form method="POST" action="/register">
+          <form method="POST" action="/signup">
             <div class="form-group">
               <label for="name">Your Name</label>
               <input
                 type="text"
                 class="form-control"
                 name="name"
+                id="name"
                 value=""
                 placeholder="Mr Abc"
                 required
+                onkeyup="check();"
               />
+              <span id="emptyname"></span>
+              <span id="namecharactercheck"></span>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
               <input
                 type="email"
                 name="email"
+                id="email"
                 class="form-control"
                 value=""
                 placeholder="example@abc.com"
                 required
               />
+              <span id="emptyemail"></span>
+              <span id="validemail"></span>
             </div>
             <div class="form-group">
-              <label for="password2">Password</label>
+              <label for="password">Password</label>
               <input
                 type="password"
-                name="password2"
+                name="password"
                 id="password"
                 class="form-control"
                 value=""
-                placeholder="password must be between 6 to 20 characters"
+                placeholder="password must be between 6 to 30 characters"
                 required
                 onkeyup="check();"
               />
+              <span id="passwordcharactercheck"></span>
             </div>
             <div class="form-group">
               <label for="password">Confirm Password</label>
               <input
                 type="password"
-                name="password"
+                name="confirm_password"
                 id="confirm_password"
                 class="form-control"
                 value=""
@@ -72,29 +128,36 @@
                 required
                 onkeyup="check();"
               />
-              <span id="message"></span>
+              <span id="passwordmatching"></span>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input
+                  type="checkbox"
+                  name="isSeller"
+                  class="form-check-input"
+                />Register as a Seller</label
+              >
             </div>
             <button type="submit" class="btn btn-primary">
               Create Account
             </button>
-            <br />
-            <br />
-            <p>
-              By creating an account, you agree to ECL Conditions of Use and
-              Privacy Policy.
-            </p>
-            <br />
-            <p>Existing user? Login here ..</p>
-            <a class="btn btn-primary" role="button" href="/login">Login</a>
-            <br />
-            <br />
-            <a
-              class="btn btn-block btn-social btn-facebook"
-              href="/auth/facebook"
-            >
-              <i class="fa fa-facebook"></i>Sign in with facebook
-            </a>
           </form>
+          <p>
+            By creating an account, you agree to ECL Conditions of Use and
+            Privacy Policy.
+          </p>
+          <br />
+          <p>Existing user? Login here ..</p>
+          <a class="btn btn-primary" role="button" href="/login">Login</a>
+          <br />
+          <br />
+          <a
+            class="btn btn-block btn-social btn-facebook"
+            href="/auth/facebook"
+          >
+            <i class="fa fa-facebook"></i>Sign in with facebook
+          </a>
         </div>
       </div>
     </div>

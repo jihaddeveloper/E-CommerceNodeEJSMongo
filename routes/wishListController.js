@@ -78,7 +78,7 @@ router.get("/wishlist", passportConfig.isAuthenticated, function(
     .populate("items.product")
     .exec(function(err, wishList) {
       if (err) return next(err);
-      return res.render("main/wishlist", {
+      return res.render("accounts/wishlist", {
         wishList: wishList,
         moment: moment
       });

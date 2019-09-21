@@ -1,0 +1,113 @@
+<% layout('layoutPage') -%>
+
+<div class="container" style="margin-top: 100px; width:100%; min-height: 700px">
+  <div class="row">
+    <div class="col-sm-3 ">
+      <h2>Product Filtering</h2>
+      <Div class="well">
+        <form
+          action="/products/brands/filter/<%= category %>/<%= subcategory %>/<%= brand %>"
+          method="POST"
+        >
+          <input type="hidden" name="number" value="<%= number %>" />
+          <div class="form-group">
+            <label for="brand">Brand</label>
+            <select
+              class="form-control"
+              data-style="btn-info"
+              name="brand"
+              id="brand"
+            >
+              <option name="" value="0">Select Brand</option>
+              <% for ( var i = 0; i < brands.length; i++ ) { %>
+              <option name="<%= brands[i].name %>" value="<%= brands[i]._id %>"
+                ><%= brands[i].name %></option
+              >
+              <% } %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price Range</label>
+            <select name="price" class="form-control">
+              <option value="0">Select Price</option>
+              <option value="0-10000">0 - 10,000</option>
+              <option value="10001-20000">10,001-20,000</option>
+              <option value="20001-30000">20,001-30,000</option>
+              <option value="30001-40000">30,001-40,000</option>
+              <option value="40001-50000">40,001-50,000</option>
+              <option value="50001-60000">50,001-60,000</option>
+              <option value="60001-70000">60,001-70,000</option>
+            </select>
+          </div>
+
+          <% for ( var i = 0; i < dropdown_label.length; i++ ) { %>
+          <div class="form-group">
+            <label for="v<%= i %>"><%= dropdown_label[i].label %></label>
+            <select
+              class="form-control"
+              data-style="btn-info"
+              name="v<%= i %>"
+              class="form-group"
+            >
+              <option name="" value="0"
+                >Select <%= dropdown_label[i].label %></option
+              >
+              <% for ( var j = 0; j < dropdown_label[i].values.length; j++ ) {
+              %>
+              <option
+                name="<%= dropdown_label[i].values[j] %>"
+                value="<%=  dropdown_label[i].values[j] %>"
+                ><%= dropdown_label[i].values[j] %></option
+              >
+              <% } %>
+            </select>
+          </div>
+          <% } %>
+          <button type="submit" class="btn btn-primary">submit</button>
+        </form>
+      </Div>
+    </div>
+    <div class="col-sm-9 ">
+      <h2>Result</h2>
+      <% if (products.length === 0) { %>
+      <h3>Not found</h3>
+      <% } else { %>
+      <div class="row">
+        <% for ( var i = 0; i < products[0].length; i++ ) { %>
+        <div class="col-md-4">
+          <a href="/product/<%= products[0][i]._id %>">
+            <div class="thumbnail">
+              <img
+                src="<%= products[0][i].image[0] %>"
+                height="50"
+                width="50"
+              />
+              <div class="caption">
+                <h3><%= products[0][i].name %></h3>
+                <% if(products[0][i].sellingPrice) { %>
+                <p><%= products[0][i].sellingPrice %>TK</p>
+                <% } %> <% if(products[0][i].availablity === true) { %>
+                <h4 style="color: darkgreen">
+                  <b>Available</b>
+                </h4>
+                <% } else { %>
+                <h4 style="color: coral">
+                  <b>Not Available</b>
+                </h4>
+                <% } %>
+                <p><%= products[0][i].category.name %></p>
+                <% if(products[0][i].subcategory) {%>
+                <p><%= products[0][i].subcategory.name %></p>
+                <% } %>
+                <p><%= products[0][i].brand.name %></p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>

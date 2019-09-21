@@ -18,6 +18,116 @@
       <% } %>
     </div>
     <hr />
+    <% if (validationErrors.shippingAddressName) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddressName %>
+    </div>
+    <% } %> <% if (validationErrors.shippingAddress1) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddress1 %>
+    </div>
+    <% } %> <% if (validationErrors.shippingAddress2) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddress2 %>
+    </div>
+    <% } %> <% if (validationErrors.shippingAddressCity) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddressCity %>
+    </div>
+    <% } %> <% if (validationErrors.shippingAddressDistrict) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddressDistrict %>
+    </div>
+    <% } %> <% if (validationErrors.shippingAddressDivision) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddressDivision %>
+    </div>
+    <% } %> <% if (validationErrors.shippingAddressPostalCode) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddressPostalCode %>
+    </div>
+    <% } %> <% if (validationErrors.shippingAddressCountry) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddressCountry %>
+    </div>
+    <% } %> <% if (validationErrors.shippingAddressPhone) { %>
+    <div class="alert alert-danger alert-dismissible">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= validationErrors.shippingAddressPhone %>
+    </div>
+    <% } %>
+    <hr />
     <% if(shippingAddress){%>
     <form method="POST" action="/payment">
       <div class="form-group row">
@@ -46,7 +156,7 @@
             name="shippingAddress1"
             type="text"
             readonly
-            value="<%= shippingAddress.shippingAddress2 %>"
+            value="<%= shippingAddress.shippingAddress1 %>"
           />
         </div>
         <div class="col-xs-8">
@@ -227,6 +337,7 @@
             name="shippingAddressName"
             type="text"
             placeholder="Ex. Mr. X"
+            required
           />
         </div>
         <div class="col-xs-8">
@@ -237,6 +348,7 @@
             name="shippingAddress1"
             type="text"
             placeholder="Street address, P.O. box, company name, c/o"
+            required
           />
         </div>
         <div class="col-xs-8">
@@ -247,6 +359,7 @@
             name="shippingAddress2"
             type="text"
             placeholder="House, Apartment, suite, building, floor, etc"
+            required
           />
         </div>
         <div class="col-xs-8">
@@ -256,6 +369,7 @@
             id="shippingAddressCity"
             name="shippingAddressCity"
             type="text"
+            required
           />
         </div>
         <div class="col-xs-8">
@@ -265,6 +379,7 @@
             id="shippingAddressDistrict"
             name="shippingAddressDistrict"
             type="text"
+            required
           />
         </div>
         <div class="col-xs-8">
@@ -274,6 +389,7 @@
             id="shippingAddressDivision"
             name="shippingAddressDivision"
             type="text"
+            required
           />
         </div>
         <div class="col-xs-8">
@@ -283,6 +399,7 @@
             id="shippingAddressPostalCode"
             name="shippingAddressPostalCode"
             type="text"
+            required
           />
         </div>
         <div class="col-xs-8">
@@ -292,6 +409,7 @@
             id="shippingAddressCountry"
             name="shippingAddressCountry"
             type="text"
+            required
           />
         </div>
         <div class="col-xs-8">
@@ -301,6 +419,7 @@
             id="shippingAddressPhone"
             name="shippingAddressPhone"
             type="tel"
+            required
           />
         </div>
         <!-- <div class="col-xs-8">

@@ -5,7 +5,7 @@
     <div class="col-sm-3 ">
       <h2>Product Filtering</h2>
       <Div class="well">
-        <form action="/products/brands/filter/<%= brand %>" method="POST">
+        <form action="/products/brands/filter/<%= category %>/<%= brand %>" method="POST">
           <input type="hidden" name="number" value="<%= number %>" />
           <div class="form-group">
             <label for="brand">Brand</label>
@@ -15,7 +15,7 @@
               name="brand"
               id="brand"
             >
-              <option name="" value="0">Select table</option>
+              <option name="" value="0">Select Brand</option>
               <% for ( var i = 0; i < brands.length; i++ ) { %>
               <option name="<%= brands[i].name %>" value="<%= brands[i]._id %>"
                 ><%= brands[i].name %></option
@@ -27,7 +27,7 @@
           <div class="form-group">
             <label for="price">Price Range</label>
             <select name="price" class="form-control">
-              <option value="0">Select One</option>
+              <option value="0">Select Price</option>
               <option value="0-10000">0 - 10,000</option>
               <option value="10001-20000">10,001-20,000</option>
               <option value="20001-30000">20,001-30,000</option>
@@ -47,7 +47,9 @@
               name="v<%= i %>"
               class="form-group"
             >
-              <option name="" value="0">Select table</option>
+              <option name="" value="0"
+                >Select <%= dropdown_label[i].label %></option
+              >
               <% for ( var j = 0; j < dropdown_label[i].values.length; j++ ) {
               %>
               <option

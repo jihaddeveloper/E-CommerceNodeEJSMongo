@@ -101,8 +101,9 @@
                         </tbody>
                     </table>
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+        <div  class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                 <% if(pcBuilder) { %>
+                    <div id="pcQuotation">
                     <table class="table table-bordered">
                       <tr>
                         <th class="text-center">Image</th>
@@ -113,7 +114,7 @@
                       </tr>
                       <% for(var i = 0; i < pcBuilder.length; i++) { %>
                       <tr>
-                        <td><img class="img-fluid img-thumbnail" style="width: 10%; height: 10%;" src="data:image/png;base64, <%= pcBuilder[i].image %>"></td>
+                        <td><img class="" height="40" width="40" src="<%= pcBuilder[i].image %>"></td>
                         <td>
                           <%= pcBuilder[i].title %>
                         </td>
@@ -133,6 +134,12 @@
                         </td>
                       </tr>
                     </table>
+
+                    <!-- <a href="#" onclick="window.print();return false;" title="Click to print this page">Download</a> -->
+                    
+                    </div>
+                    <div id="editor"><h2>Hello World !!</h2></div>
+                    <button id="cmd">Generate PDF</button>
                     <% } else { %>
                     <h3 class="text-center">Empty Quotation</h3>
                     <% } %>
@@ -161,12 +168,12 @@
                         </tr>
                         <% for(var i = 0; i < allMotherBoard.length; i++) { %>
                         <tr>
-                            <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allMotherBoard[i].image %>"></td>
+                            <td><img class="" height="40" width="40" src="<%= allMotherBoard[i].image[0] %>"></td>
                             <td>
                                 <%= allMotherBoard[i].name %>
                             </td>
                             <td>
-                                <%= allMotherBoard[i].unitPrice %>TK
+                                <%= allMotherBoard[i].sellingPrice %>TK
                             </td>
                             <td>
                                 <a href="/add-to-pcBuilder/<%= allMotherBoard[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
@@ -207,12 +214,12 @@
                     </tr>
                     <% for(var i = 0; i < allCPU.length; i++) { %>
                     <tr>
-                        <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allCPU[i].image %>"></td>
+                        <td><img class="" height="40" width="40" src="<%= allCPU[i].image[0] %>"></td>
                         <td>
                             <%= allCPU[i].name %>
                         </td>
                         <td>
-                            <%= allCPU[i].unitPrice %>TK
+                            <%= allCPU[i].sellingPrice %>TK
                         </td>
                         <td>
                             <a href="/add-to-pcBuilder/<%= allCPU[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
@@ -253,12 +260,12 @@
                     </tr>
                     <% for(var i = 0; i < allRAM.length; i++) { %>
                     <tr>
-                        <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allRAM[i].image %>"></td>
+                        <td><img class="" height="40" width="40" src="<%= allRAM[i].image[0] %>"></td>
                         <td>
                             <%= allRAM[i].name %>
                         </td>
                         <td>
-                            <%= allRAM[i].unitPrice %>TK
+                            <%= allRAM[i].sellingPrice %>TK
                         </td>
                         <td>
                             <a href="/add-to-pcBuilder/<%= allRAM[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
@@ -299,7 +306,7 @@
                     </tr>
                     <% for(var i = 0; i < allHDD.length; i++) { %>
                     <tr>
-                        <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allHDD[i].image %>"></td>
+                        <td><img class="" height="40" width="40" src="<%= allHDD[i].image[0] %>"></td>
                         <td>
                             <%= allHDD[i].name %>
                         </td>
@@ -345,12 +352,12 @@
                     </tr>
                     <% for(var i = 0; i < allCasing.length; i++) { %>
                     <tr>
-                        <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allCasing[i].image %>"></td>
+                        <td><img class="" height="40" width="40" src="<%= allCasing[i].image[0] %>"></td>
                         <td>
                             <%= allCasing[i].name %>
                         </td>
                         <td>
-                            <%= allCasing[i].unitPrice %>TK
+                            <%= allCasing[i].sellingPrice %>TK
                         </td>
                         <td>
                             <a href="/add-to-pcBuilder/<%= allCasing[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>
@@ -391,12 +398,12 @@
                         </tr>
                         <% for(var i = 0; i < allKeyboard.length; i++) { %>
                         <tr>
-                            <td><img class="img-fluid img-thumbnail" src="data:image/png;base64, <%= allKeyboard[i].image %>"></td>
+                            <td><img class="" height="40" width="40" src="<%= allKeyboard[i].image[0] %>"></td>
                             <td>
                                 <%= allKeyboard[i].name %>
                             </td>
                             <td>
-                                <%= allKeyboard[i].unitPrice %>TK
+                                <%= allKeyboard[i].sellingPrice %>TK
                             </td>
                             <td>
                                 <a href="/add-to-pcBuilder/<%= allKeyboard[i]._id %>" class="btn btn-primary btn-sm">Add To List</a><br>

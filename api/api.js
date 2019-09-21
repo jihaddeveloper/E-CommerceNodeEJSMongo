@@ -1,43 +1,49 @@
-const router = require('express').Router();
-const async = require('async');
-const faker = require('faker');
+//  Author: Mohammad Jihad Hossain
+//  Create Date: 02/01/2019
+//  Modify Date: 02/01/2019
+//  Description: Search constoller of Elastic Search file of ECL E-Commerce
 
-var Category = require('../models/category');
-var Product = require('../models/product');
+const router = require("express").Router();
+const async = require("async");
+const faker = require("faker");
 
+var Category = require("../models/category");
+var Product = require("../models/product");
 
 //Search Api for Elastic Search
-router.post('/search', function(req, res, next){
-    //console.log(req.body.search_term);
-    Product.search({ query_string: { query: req.body.search_term } }, function(err, results) {
-        if(err) return next(err);
-        res.json(results);
-    });
-});
+// router.post("/search", function(req, res, next) {
+//   //console.log(req.body.search_term);
+//   Product.search({ query_string: { query: req.body.search_term } }, function(
+//     err,
+//     results
+//   ) {
+//     if (err) return next(err);
+//     res.json(results);
+//   });
+// });
 
-router.get('/:name', function(req, res, next){
-    async.waterfall([
-        function(callback){
-            Category.findOne({ name: req.params.name }, function(err, category){
-                if(err) return next(err);
-                callback(null, category);
-            });
-        },
-        function(category, callback){
-            for(var i = 0; i < 5; i++){
+router.get("/:name", function(req, res, next) {
+  async.waterfall([
+    function(callback) {
+      Category.findOne({ name: req.params.name }, function(err, category) {
+        if (err) return next(err);
+        callback(null, category);
+      });
+    },
+    function(category, callback) {
+      for (var i = 0; i < 5; i++) {
+        var product = new Product();
 
-                var product = new Product();
+        product.category = category._id;
+        product.name = faker.commerce.productName();
+        product.price = faker.commerce.price();
+        product.image = faker.image.image();
 
-                product.category = category._id;
-                product.name = faker.commerce.productName();
-                product.price = faker.commerce.price();
-                product.image = faker.image.image();
-
-                product.save();
-            }
-        }
-    ]);
-    res.json({ message: 'Success' });
+        product.save();
+      }
+    }
+  ]);
+  res.json({ message: "Success" });
 });
 
 module.exports = router;

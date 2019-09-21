@@ -1,23 +1,10 @@
-<script src="/inc/js/jquery-3.3.1.min.js"></script>
-<script src="/inc/js/bootstrap.min.js"></script>
-<script src="/inc/js/custom.js"></script>
-
-<!-- For Password matching in signup form -->
-<script>
-  var check = function() {
-    if (
-      document.getElementById("password").value ==
-      document.getElementById("confirm_password").value
-    ) {
-      document.getElementById("message").style.color = "green";
-      document.getElementById("message").innerHTML = "Password Matched";
-    } else {
-      document.getElementById("message").style.color = "red";
-      document.getElementById("message").innerHTML = "Password Not Matched !!";
-    }
-  };
-</script>
-<!-- For Password matching in signup form-->
+<script type="text/javascript" src="/inc/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/inc/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/inc/js/custom.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"
+></script>
 
 <!-- To add shipping charge -->
 <script>
@@ -54,3 +41,87 @@
   };
 </script>
 <!-- To add shipping charge -->
+
+<!-- Signup form validation -->
+<script>
+  var check = function() {
+    // // Regular expression check for name
+    // function checkName(name) {
+    //   var namere = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
+    //   return namere.test(name);
+    // }
+
+    // // Name character check
+    // namere = /^\w+$/;
+    // if (!checkName(document.getElementById("name").value)) {
+    //   document.getElementById("namecharactercheck").style.color = "red";
+    //   document.getElementById("namecharactercheck").innerHTML =
+    //     "Username must contain only letters, numbers and underscores!!!";
+    // } else {
+    //   document.getElementById("namecharactercheck").innerHTML = "";
+    // }
+
+    // Regular expression check for password
+    function checkPassword(str) {
+      var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
+      return re.test(str);
+    }
+
+    // Regular expression check for email
+    function validateEmail(email) {
+      var emailre = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return emailre.test(email);
+    }
+
+    // Name can not be empty
+    if (document.getElementById("name").value == "") {
+      document.getElementById("emptyname").style.color = "red";
+      document.getElementById("emptyname").innerHTML =
+        "Name can not be empty  !!";
+    } else {
+      document.getElementById("emptyname").innerHTML = "";
+    }
+
+    // Email can not be empty
+    if (document.getElementById("email").value == "") {
+      document.getElementById("emptyemail").style.color = "red";
+      document.getElementById("emptyemail").innerHTML =
+        "Email can not be empty  !!";
+    } else {
+      document.getElementById("emptyemail").innerHTML = "";
+    }
+
+    // Email validation check
+    if (!validateEmail(document.getElementById("email").value)) {
+      document.getElementById("validemail").style.color = "red";
+      document.getElementById("validemail").innerHTML = "Email must be valid";
+    } else {
+      document.getElementById("validemail").innerHTML = "";
+    }
+
+    // Password character check
+    re = /^\w+$/;
+    if (!re.test(document.getElementById("password").value)) {
+      document.getElementById("passwordcharactercheck").style.color = "red";
+      document.getElementById("passwordcharactercheck").innerHTML =
+        "Password must contain only letters, numbers and underscores!!!";
+    } else {
+      document.getElementById("passwordcharactercheck").innerHTML = "";
+    }
+
+    //Both password should be same
+    if (
+      document.getElementById("password").value ==
+      document.getElementById("confirm_password").value
+    ) {
+      document.getElementById("passwordmatching").style.color = "green";
+      document.getElementById("passwordmatching").innerHTML =
+        "Password Matched";
+    } else {
+      document.getElementById("passwordmatching").style.color = "red";
+      document.getElementById("passwordmatching").innerHTML =
+        "Password Not Matched !!";
+    }
+  };
+</script>
+<!-- Signup form validation -->

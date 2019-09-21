@@ -1,104 +1,112 @@
 <% layout('layoutPage') -%>
 
 <div class="container" style="margin-top: 100px">
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <img class="img-circle img-responsive img-center" src="<%= user.profile.picture %>" alt="">
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <p> Name:
-                <%= user.profile.name %>
-            </p>
-            <p> Email:
-                <%= user.email %>
-            </p>
-            <% if(user.contact === '' || typeof user.contact === 'undefined') { %>
-            <p>Contact: <span style="color: brown; font-weight: bold">You have no contact</span></p>
-            <% } else { %>
-            <p> Contact:
-                <%= user.contact %>
-            </p>
-            <% } %>
-            <% if(user.address.city === '' || typeof user.address.city === 'undefined') { %>
-            <p>Address: <span style="color: brown; font-weight: bold">You have no address</span></p>
-            <% } else { %>
-            <p> Address:
-                <%= user.address.city %>
-            </p>
-        </div>
-        <% } %>
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <img
+        class="img-circle img-responsive img-center"
+        src="<%= user.profile.picture %>"
+        alt=""
+      />
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <a href="/edit-profile" class="btn btn-primary btn-sm">Your Orders</a>
-
-            <a href="/edit-profile" class="btn btn-primary btn-sm">Your Addresses</a>
-
-            <a href="/edit-profile" class="btn btn-primary btn-sm">Login & Security</a>
-
-            <a href="/edit-profile" class="btn btn-primary btn-sm">Payment Options</a>
-
-            <a href="/edit-profile" class="btn btn-primary btn-sm">Gift Cards</a>
-
-            <a href="/edit-profile" class="btn btn-primary btn-sm">Edit Profile</a>
-
-            <a href="/edit-address" class="btn btn-primary btn-sm">Edit Address</a>
-        </div>
-    </div>
-
-    <% if(user.isSeller === true) { %>
-    <p class="lead">Seller Actions</p>
-    <div class="row">
-        <div class="col-md-8 mb-3">
-            <a href="/add-product" class="btn btn-primary btn-lg">Post Products For Sell</a>
-            <br>
-            <br>
-            <a href="/edit-profile" class="btn btn-primary btn-lg">My Products</a>
-        </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <p>Name: <%= user.profile.name %></p>
+      <p>Email: <%= user.email %></p>
+      <% if(user.contact === '' || typeof user.contact === 'undefined') { %>
+      <p>
+        Contact:
+        <span style="color: brown; font-weight: bold">You have no contact</span>
+      </p>
+      <% } else { %>
+      <p>Contact: <%= user.contact %></p>
+      <% } %> <% if(user.address.city === '' || typeof user.address.city ===
+      'undefined') { %>
+      <p>
+        Address:
+        <span style="color: brown; font-weight: bold">You have no address</span>
+      </p>
+      <% } else { %>
+      <p>Address: <%= user.address.city %></p>
     </div>
     <% } %>
-
+  </div>
+  <div class="row">
     <div class="col-md-12">
-        <table class="table table-bordered table-stripped sticky-header">
-            <h2 class="text-center"> Oredered Product Histroy</h2>
-            <th class="text-center">Date</th>
-            <th class="text-center">Product</th>
-            <th class="text-center">Total Price</th>
-            <% if (orders) { %>
-            <% for (var i = 0; i < orders.length; i++ )  { %>
-            <tr>
-                <td>
-                    <%= moment(orders[i].created).format("YYYY-MM-DD HH:mm") %>
-                </td>
-                <td>
-                    <table class="table table-bordered">
-                <th class="text-center">Name</th>
-                <th class="text-center">Quantity</th>
-                <th class="text-center">Unit Price</th>
-                <th class="text-center">Price</th>
-                <% for(var j = 0; j < orders[i].cart.length; j++) { %>
-            <tr>
-                <td>
-                    <%= orders[i].cart[j].product.name %>
-                </td>
-                <td>
-                    <%= orders[i].cart[j].quantity %>
-                </td>
-                <td>
-                    <%= orders[i].cart[j].unitPrice %>
-                </td>
-                <td>
-                    <%= orders[i].cart[j].price %>
-                </td>
-            </tr>
-            <% } %>
-        </table>
+      <a href="/edit-profile" class="btn btn-primary btn-sm">Your Orders</a>
+
+      <a href="/edit-profile" class="btn btn-primary btn-sm">Your Addresses</a>
+
+      <a href="/edit-profile" class="btn btn-primary btn-sm"
+        >Login & Security</a
+      >
+
+      <a href="/edit-profile" class="btn btn-primary btn-sm">Payment Options</a>
+
+      <a href="/edit-profile" class="btn btn-primary btn-sm">Gift Cards</a>
+
+      <a href="/edit-profile" class="btn btn-primary btn-sm">Edit Profile</a>
+
+      <a href="/edit-address" class="btn btn-primary btn-sm">Edit Address</a>
+    </div>
+  </div>
+
+  <% if(user.isSeller === true) { %>
+  <p class="lead">Seller Actions</p>
+  <div class="row">
+    <div class="col-md-8 mb-3">
+      <a href="/add-category" class="btn btn-primary btn-lg">Add Category</a>
+      <a href="/add-subcategory" class="btn btn-primary btn-lg"
+        >Add Sub Category</a
+      >
+      <a href="/add-brand" class="btn btn-primary btn-lg">Add Brand</a>
+      <a href="/add-product" class="btn btn-primary btn-lg"
+        >Post Products For Sell</a
+      >
+      <a href="/my-product" class="btn btn-primary btn-lg">My Products</a>
+    </div>
+  </div>
+  <% } %>
+
+  <div class="col-md-12">
+    <table class="table table-bordered table-stripped sticky-header">
+      <h2 class="text-center">Oredered Product Histroy</h2>
+      <th class="text-center">Date</th>
+      <th class="text-center">Product</th>
+      <th class="text-center">Total Price</th>
+      <% if (orders) { %> <% for (var i = 0; i < orders.length; i++ ) { %>
+      <tr>
+        <td>
+          <%= moment(orders[i].created).format("YYYY-MM-DD HH:mm") %>
         </td>
         <td>
-            <%= orders[i].totalAmount %>TK</td>
-        </tr>
-        <% } %>
-        <% } %>
-        </table>
-    </div>
+          <table class="table table-bordered">
+            <th class="text-center">Name</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-center">Unit Price</th>
+            <th class="text-center">Price</th>
+            <% for(var j = 0; j < orders[i].cart.length; j++) { %>
+            <tr>
+              <td>
+                <%= orders[i].cart[j].product.name %>
+              </td>
+              <td>
+                <%= orders[i].cart[j].quantity %>
+              </td>
+              <td>
+                <%= orders[i].cart[j].unitPrice %>
+              </td>
+              <td>
+                <%= orders[i].cart[j].price %>
+              </td>
+            </tr>
+            <% } %>
+          </table>
+        </td>
+        <td>
+          <%= orders[i].totalAmount %>TK
+        </td>
+      </tr>
+      <% } %> <% } %>
+    </table>
+  </div>
 </div>

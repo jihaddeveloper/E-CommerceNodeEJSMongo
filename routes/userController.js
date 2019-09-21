@@ -1,6 +1,6 @@
 //  Author: Mohammad Jihad Hossain
 //  Create Date: 02/01/2019
-//  Modify Date: 12/06/2019
+//  Modify Date: 06/08/2019
 //  Description: User controller file to handle all user action of ECL E-Commerce
 
 //Library import
@@ -13,7 +13,6 @@ const Product = require("../models/product");
 const Category = require("../models/category");
 const Review = require("../models/review");
 const randomString = require("randomstring");
-const CustomerOrder = require("../models/customerOrder");
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -23,9 +22,14 @@ const moment = require("moment");
 const User = require("../models/user");
 const WishList = require("../models/wishList");
 const Cart = require("../models/cart");
+const CustomerOrder = require("../models/customerOrder");
 
 //Import secret file
 const secret = require("../config/secret");
+
+//Import input validator
+const validateSignupInput = require("../validation/signupValidation");
+const validateLoginInput = require("../validation/loginValidation");
 
 //Mail Sender
 const mailer = require("../misc/mailer");
@@ -47,143 +51,165 @@ signToken = user => {
   return jwt.sign(payload, secret.secretKey);
 };
 
-//Create User
-router.post("/register", (req, res, next) => {
-  async.waterfall([
-    function(callback) {
-      User.findOne({
-        email: req.body.email
-      }).then(existingUser => {
-        if (existingUser) {
-          req.flash("errors", "Account with that email address already exists");
-          return res.redirect("/signup");
-        } else if (req.body.password2 != req.body.password) {
-          req.flash("errors", "Passwords do not match");
-          return res.redirect("/signup");
-        } else if (req.body.password.length < 6) {
-          req.flash("errors", "Password must be between 6 to 20 characters");
-          return res.redirect("/signup");
-        } else {
-          const avatar = gravatar.url(req.body.email, {
-            s: "200", //Size
-            r: "pg", //Rating
-            d: "mm" //Default
-          });
-
-          //Secret Token for email validation
-          let newSecretToken = randomString.generate();
-
-          const newUser = new User();
-
-          newUser.name = req.body.name;
-          newUser.profile.name = req.body.name;
-          newUser.email = req.body.email;
-          newUser.password = req.body.password;
-          newUser.secretToken = newSecretToken;
-          newUser.isActive = false;
-          newUser.profile.picture = avatar;
-
-          newUser.save(function(err, user) {
-            if (err) return next(err);
-
-            //Mail body
-            const html = `Hello,
-                            <br/>
-                            Thank you for register
-                            <br/>
-                            <br/>
-                            Now, please verify your eamil by typing the following token:
-                            <br/>
-                            Token: <b>${user.secretToken}<b/>
-                            <br/>
-                            Clicking on the following page:
-                            <a href="https://ecle-com.herokuapp.com/verify">https://ecle-com.herokuapp.com/verify<a/>
-                            <br/>
-                            <br/>
-                            Good Day.... `;
-
-            //Mail sending
-            mailer.sendEmail(
-              '"Md Jihad Hossain" <devtestjihad@gmail.com>',
-              user.email, // Receiver
-              "Email Verification", //Subject
-              html //Mail body
-            );
-
-            // Generate JWT Token
-            const token = signToken(user);
-
-            //console.log(token);
-
-            // Respond with token
-            res.cookie("access_token", token, {
-              //year*day*hour*min*sec*milisecond
-              maxAge: 1 * 1 * 24 * 60 * 60 * 1000, // maxage setted to 24 hours
-              expires: new Date(Date.now() + 1 * 1 * 24 * 60 * 60 * 1000), //expires after 1 day
-              httpOnly: true
-            });
-
-            res.render("accounts/verify", {
-              message:
-                "Successfully account created, now check your eamil and verify to login",
-              errors: ""
-            });
-
-            // //Respond with token
-            // res.status(200).json({
-            //   token: "Bearer " + token
-            // });
-
-            callback(null, user);
-          });
-        }
-      });
-    },
-    function(user) {
-      //Save a blank wishlist for the user
-      const wishlist = new WishList();
-      wishlist.owner = user._id;
-      wishlist.save();
-
-      //Save a blank cart for the user
-      const cart = new Cart();
-      cart.owner = user._id;
-      cart.save();
-    }
-  ]);
-});
-
 //User signup form
 router.get("/signup", function(req, res, next) {
-  res.render("accounts/signup", { errors: req.flash("errors") });
+  res.render("accounts/signup", {
+    errors: req.flash("errors"),
+    validationErrors: ""
+  });
 });
 
-//User email token verify
-router.get("/verify", function(req, res, next) {
-  res.render("accounts/verify", { message: "", errors: "" });
+//Create User
+router.post("/signup", function(req, res, next) {
+  //Set Validation
+  const { validationErrors, isValid } = validateSignupInput(req.body);
+
+  //Check Validation
+  if (!isValid) {
+    //console.log(validationErrors);
+    return res.render("accounts/signup", {
+      validationErrors: validationErrors
+    });
+  } else {
+    User.findOne({
+      email: req.body.email
+    }).then(existingUser => {
+      validationErrors.email = "Email already exists";
+
+      if (existingUser) {
+        return res.render("accounts/signup", {
+          validationErrors: validationErrors
+        });
+      } else {
+        const avatar = gravatar.url(req.body.email, {
+          s: "200", //Size
+          r: "pg", //Rating
+          d: "mm" //Default
+        });
+
+        //Secret Token for email validation
+        let newSecretToken = randomString.generate();
+
+        //new user object
+        const newUser = new User();
+
+        var isSeller;
+        if (req.body.isSeller === "on") {
+          isSeller = true;
+        } else {
+          isSeller = false;
+        }
+
+        newUser.name = req.body.name;
+        newUser.profile.name = req.body.name;
+        newUser.email = req.body.email;
+        newUser.password = req.body.password;
+        newUser.secretToken = newSecretToken;
+        newUser.isActive = false;
+        newUser.profile.picture = avatar;
+        newUser.isSeller = isSeller;
+
+        newUser.save(function(err, user) {
+          if (err) return next(err);
+
+          //Mail body
+          const html = `Hello,
+                              <br/>
+                              Thank you for register
+                              <br/>
+                              <br/>
+                              Now, please verify your eamil by typing the following token:
+                              <br/>
+                              <br/>
+                              Clicking on the following button:
+                              <a href="http://localhost:3000/verify?token=${user.secretToken}&email=${user.email}">Verify<a/>
+                              <br/>
+                              <br/>
+                              Good Day.... `;
+
+          //https://ecle-com.herokuapp.com/verify">https://ecle-com.herokuapp.com/verify
+          //Token: <b>${user.secretToken}<b/>
+
+          //Mail sending
+          mailer.sendEmail(
+            '"Md Jihad Hossain" <devtestjihad@gmail.com>', // Sender
+            user.email, // Receiver
+            "Email Verification", //Subject
+            html //Mail body
+          );
+
+          // Generate JWT Token
+          const token = signToken(user);
+
+          // Respond with token
+          res.cookie("access_token", token, {
+            //year*day*hour*min*sec*milisecond
+            maxAge: 1 * 1 * 24 * 60 * 60 * 1000, // maxage setted to 24 hours
+            expires: new Date(Date.now() + 1 * 1 * 24 * 60 * 60 * 1000), //expires after 1 day
+            httpOnly: true
+          });
+
+          //Save a blank wishlist for the user
+          const wishlist = new WishList();
+          wishlist.owner = user._id;
+          wishlist.save();
+
+          //Save a blank cart for the user
+          const cart = new Cart();
+          cart.owner = user._id;
+          cart.save();
+
+          res.render("accounts/signupSuccess", {
+            message:
+              "Successfully account created, now check your eamil and verify to login",
+            errors: ""
+          });
+
+          // //Respond with token
+          // res.status(200).json({
+          //   token: "Bearer " + token
+          // });
+        });
+      }
+    });
+  }
 });
 
-router.post("/verify", async (req, res, next) => {
+//Customer email validation
+router.get("/verify", async (req, res, next) => {
   try {
-    const secretToken = req.body.secretToken;
+    const user = await User.findOne({ email: req.query.email.trim() });
 
-    const user = await User.findOne({ secretToken: secretToken.trim() });
+    if (user) {
+      if (user.isActive) {
+        return res.render("accounts/login", {
+          message: "Already verified",
+          errors: ""
+        });
+      } else {
+        if (user.secretToken === req.query.token.trim()) {
+          //Set User as Active
+          user.isActive = true;
+          user.secretToken = "";
+          await user.save();
 
-    if (!user) {
-      return res.render("accounts/verify", {
+          res.render("accounts/login", {
+            message: "Successful, now you may login",
+            errors: ""
+          });
+        } else {
+          res.render("accounts/login", {
+            message: "",
+            errors: "Token expired"
+          });
+        }
+      }
+    } else {
+      return res.render("accounts/login", {
         message: "",
         errors: "No User found"
       });
     }
-
-    user.isActive = true;
-    user.secretToken = "";
-    await user.save();
-
-    res.render("accounts/login", {
-      message: "Successful, now you may login",
-      errors: ""
-    });
   } catch (error) {
     next(error);
   }
@@ -198,6 +224,7 @@ router.get("/profile", passportConfig.isAuthenticated, function(
   CustomerOrder.find({ user: req.user })
     .populate("cart.product")
     .exec(function(err, orders) {
+      //console.log(orders);
       if (err) return next(err);
       res.render("accounts/profile", {
         user: req.user,
@@ -212,7 +239,8 @@ router.get("/login", function(req, res, next) {
   if (req.user) return res.redirect("/");
   res.render("accounts/login", {
     message: "",
-    errors: req.flash("loginMessage")
+    errors: req.flash("loginMessage"),
+    validationErrors: ""
   });
 });
 
@@ -226,26 +254,37 @@ router.post(
     failureFlash: true
   }),
   function(req, res, next) {
-    // Generate token
-    const token = signToken(req.user);
+    //Set Validation
+    const { validationErrors, isValid } = validateLoginInput(req.body);
 
-    //console.log(token);
-
-    //Set cookie
-    res.cookie("access_token", token, {
-      //year*day*hour*min*sec*milisecond
-      maxAge: 1 * 1 * 24 * 60 * 60 * 1000, // maxage is setted to 24 hours
-      expires: new Date(Date.now() + 1 * 1 * 24 * 60 * 60 * 1000), //expires after 1 day
-      httpOnly: true
-    });
-
-    //Redirect to saved URL
-    if (req.session.returnTo) {
-      res.redirect(req.session.returnTo);
-      delete req.session.returnTo;
+    //Check Validation
+    if (!isValid) {
+      //console.log(validationErrors);
+      return res.render("accounts/login", {
+        validationErrors: validationErrors
+      });
     } else {
-      //Redirect to profile
-      res.redirect("/profile");
+      // Generate token
+      const token = signToken(req.user);
+
+      //console.log(token);
+
+      //Set cookie
+      res.cookie("access_token", token, {
+        //year*day*hour*min*sec*milisecond
+        maxAge: 1 * 1 * 24 * 60 * 60 * 1000, // maxage is setted to 24 hours
+        expires: new Date(Date.now() + 1 * 1 * 24 * 60 * 60 * 1000), //expires after 1 day
+        httpOnly: true
+      });
+
+      //Redirect to saved URL
+      if (req.session.returnTo) {
+        res.redirect(req.session.returnTo);
+        delete req.session.returnTo;
+      } else {
+        //Redirect to profile
+        res.redirect("/profile");
+      }
     }
   }
 );
@@ -267,6 +306,9 @@ router.get("/logout", function(req, res, next) {
   //Remove old url
   delete req.session.returnTo;
 });
+
+//Password recovery
+router.get("/passwordRecovery", function(req, res, next) {});
 
 //Profile update form
 router.get("/edit-profile", passportConfig.isAuthenticated, function(
@@ -346,7 +388,7 @@ router.get(
   passport.authenticate("facebook", { scope: "email" })
 );
 
-//facebook login
+//facebook login callback
 router.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
@@ -355,46 +397,7 @@ router.get(
   })
 );
 
-//Add product from user form
-router.get("/add-product", passportConfig.isAuthenticated, function(
-  req,
-  res,
-  next
-) {
-  res.render("accounts/addProduct", { message: req.flash("success") });
-});
-
-//Add product from user function
-router.post("/add-product", passportConfig.isAuthenticated, function(
-  req,
-  res,
-  next
-) {
-  User.findOne({ _id: req.user._id }, function(err, user) {
-    if (err) return next(err);
-
-    Category.findOne({ name: req.body.categoryName }, function(err, category) {
-      if (err) return next(err);
-      var newCategory = category;
-
-      let product = new Product();
-
-      product.category = newCategory._id;
-      product.name = req.body.name;
-      product.price = req.body.price;
-      product.description = req.body.description;
-      product.owner = req.user._id;
-      //product.image = req.file.location;
-
-      product.save(function(err, product) {
-        if (err) return next(err);
-        req.flash("success", "Successfully added product");
-        return res.redirect("/add-product");
-      });
-    });
-  });
-});
-
+//  //Passport jwt facebook and google
 // // @route   POST /api/user/oauth/facebook
 // // @desc    Facebook oauth
 // // @access  Private

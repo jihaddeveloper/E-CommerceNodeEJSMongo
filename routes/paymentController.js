@@ -1,6 +1,6 @@
 //  Author: Mohammad Jihad Hossain
 //  Create Date: 02/01/2019
-//  Modify Date: 23/06/2019
+//  Modify Date: 19/08/2019
 //  Description: Payment controller of ECL E-Commerce
 
 //Library import
@@ -8,14 +8,19 @@ const router = require("express").Router();
 const async = require("async");
 const randomString = require("randomstring");
 const passportConfig = require("../config/passport");
+const ejs = require("ejs");
+const fs = require("fs");
+const ejsmate = require("ejs-mate");
+
+//Model import
+const Invoice = require("../models/invoice");
 var Product = require("../models/product");
 var Review = require("../models/review");
 const User = require("../models/user");
 const CustomerOrder = require("../models/customerOrder");
-const ejs = require("ejs");
-const fs = require("fs");
-const ejsmate = require("ejs-mate");
-const Invoice = require("../models/invoice");
+
+//Import input validator
+const validatePaymentInput = require("../validation/paymentValidation");
 
 //Mail Sender
 const mailer = require("../misc/mailer");
@@ -56,7 +61,7 @@ router.post("/edit-address", passportConfig.isAuthenticated, function(
   });
 });
 
-//Stripe payment route form
+// Payment route form
 router.get("/payment", passportConfig.isAuthenticated, async function(
   req,
   res,
@@ -71,12 +76,13 @@ router.get("/payment", passportConfig.isAuthenticated, async function(
   res.render("main/shippingAddress", {
     cart: req.session.cart,
     totalCartPrice: req.session.totalCartPrice,
-    shippingAddress: user.shippingAddress[0]
+    shippingAddress: user.shippingAddress[0],
+    validationErrors: ""
   });
 });
 
 // Payment
-router.post("/payment", passportConfig.isAuthenticated, function(
+router.post("/payment", passportConfig.isAuthenticated, async function(
   req,
   res,
   next
@@ -84,131 +90,139 @@ router.post("/payment", passportConfig.isAuthenticated, function(
   //For returning to same page
   req.session.returnTo = req.originalUrl;
 
-  (async () => {
-    //Save new shipping address to user
-    //Find the current user
-    const user = await User.findOne({ _id: req.user._id });
+  //Set Validation
+  const { validationErrors, isValid } = validatePaymentInput(req.body);
 
-    //Set shipping address
-    var shippingAddress = {
-      shippingAddressName: req.body.shippingAddressName,
-      shippingAddress1: req.body.shippingAddress1,
-      shippingAddress2: req.body.shippingAddress2,
-      shippingAddressCity: req.body.shippingAddressCity,
-      shippingAddressDistrict: req.body.shippingAddressDistrict,
-      shippingAddressDivision: req.body.shippingAddressDivision,
-      shippingAddressPostalCode: req.body.shippingAddressPostalCode,
-      shippingAddressCountry: req.body.shippingAddressCountry,
-      shippingAddressPhone: req.body.shippingAddressPhone
-    };
+  //Check Validation
+  if (!isValid) {
+    //Find user for existing shipping address
+    var user = await User.findOne({ _id: req.user.id });
 
-    // //Set shipping address to user
-    // await user.shippingAddress.push(shippingAddress);
-
-    // //Save user with new shipping address
-    // user.save();
-
-    //Save user with new shipping address
-    await User.findByIdAndUpdate(
-      { _id: req.user._id },
-      { $push: { shippingAddress: shippingAddress } },
-      { safe: true, upsert: true }
-    );
-
-    //Get the cart items
-    var arr = [];
-    req.session.cart.map(rs => {
-      //console.log(rs.product)
-      var obj = {};
-      obj.product = rs.product;
-      obj.quantity = rs.quantity;
-      obj.unitPrice = rs.unitPrice;
-      obj.price = rs.price;
-      arr.push(obj);
+    return res.render("main/shippingAddress", {
+      cart: req.session.cart,
+      totalCartPrice: req.session.totalCartPrice,
+      shippingAddress: user.shippingAddress[0],
+      validationErrors: validationErrors
     });
+  } else {
+    (async () => {
+      //Save new shipping address to user
+      //Find the current user
+      const user = await User.findOne({ _id: req.user._id });
 
-    //Set history object
-    var history = {
-      date: new Date(),
-      comment: "Email body",
-      status: "New",
-      customerNotified: "Yes"
-    };
+      //Set shipping address
+      var shippingAddress = {
+        shippingAddressName: req.body.shippingAddressName,
+        shippingAddress1: req.body.shippingAddress1,
+        shippingAddress2: req.body.shippingAddress2,
+        shippingAddressCity: req.body.shippingAddressCity,
+        shippingAddressDistrict: req.body.shippingAddressDistrict,
+        shippingAddressDivision: req.body.shippingAddressDivision,
+        shippingAddressPostalCode: req.body.shippingAddressPostalCode,
+        shippingAddressCountry: req.body.shippingAddressCountry,
+        shippingAddressPhone: req.body.shippingAddressPhone
+      };
 
-    //customer order id
-    let orderId = user.email + randomString.generate();
-    //Total cart price
-    let totalAmount = parseFloat(req.session.totalCartPrice);
+      //Save user with new shipping address
+      await User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $push: { shippingAddress: shippingAddress } },
+        { safe: true, upsert: true }
+      );
 
-    //Invoice id
-    let invoiceId = randomString.generate();
-
-    //Set order objetc
-    var customerOrder = new CustomerOrder({
-      orderId: orderId,
-      user: req.user,
-      cart: arr,
-      totalAmount: totalAmount,
-      shippingAddress: shippingAddress,
-      paymentMethod: req.body.paymentMethod,
-      paymentId: "abc",
-      shippingCharge: req.body.shipCharge,
-      history: history
-    });
-
-    //Save the customer order
-    await customerOrder.save(function(err, order) {
-      if (err) return console.log(err);
-
-      //Generate new invoice
-      var newInvoice = new Invoice({
-        invoiceId: invoiceId,
-        user: req.user._id,
-        order: order._id
+      //Get the cart items
+      var arr = [];
+      req.session.cart.map(rs => {
+        //console.log(rs.product)
+        var obj = {};
+        obj.product = rs.product_id;
+        obj.quantity = rs.quantity;
+        obj.unitPrice = rs.unitPrice;
+        obj.price = rs.price;
+        arr.push(obj);
       });
 
-      //Save the invoice
-      newInvoice.save();
-    });
+      //Set history object
+      var history = {
+        date: new Date(),
+        comment: "Email body",
+        status: "New",
+        customerNotified: "Yes"
+      };
 
-    //Generate invoice object
+      //customer order id
+      let orderId = user.email + randomString.generate();
+      //Total cart price
+      let totalAmount = parseFloat(req.session.totalCartPrice);
 
-    //Generating the email body html
-    ejs.renderFile(
-      __dirname + "/emailTemplate/invoice.ejs",
-      {
-        cart: req.session.cart,
-        user: user,
+      //Invoice id
+      let invoiceId = randomString.generate();
+
+      //Set order objetc
+      var customerOrder = new CustomerOrder({
         orderId: orderId,
-        invoiceId: invoiceId,
-        paymentMethod: req.body.paymentMethod,
+        user: req.user,
+        cart: arr,
+        totalAmount: totalAmount,
         shippingAddress: shippingAddress,
-        totalCartPrice: req.session.totalCartPrice
-      },
-      function(err, invoiceBody) {
-        if (err) {
-          console.log(err);
-        } else {
-          //Mail sending
-          mailer.sendEmail(
-            '"Md Jihad Hossain" <devtestjihad@gmail.com>', //Sender
-            user.email, // Receiver
-            "Primary Invoice", //Subject
-            invoiceBody //Mail body
-          );
+        paymentMethod: req.body.paymentMethod,
+        paymentId: "abc",
+        shippingCharge: req.body.shipCharge,
+        history: history
+      });
+
+      //Save the customer order
+      await customerOrder.save(function(err, order) {
+        if (err) return console.log(err);
+
+        //Generate new invoice
+        var newInvoice = new Invoice({
+          invoiceId: invoiceId,
+          user: req.user._id,
+          order: order._id
+        });
+
+        //Save the invoice
+        newInvoice.save();
+      });
+
+      //Generating the email body html
+      ejs.renderFile(
+        __dirname + "/emailTemplate/invoice.ejs",
+        {
+          cart: req.session.cart,
+          user: user,
+          orderId: orderId,
+          invoiceId: invoiceId,
+          paymentMethod: req.body.paymentMethod,
+          shippingAddress: shippingAddress,
+          totalCartPrice: req.session.totalCartPrice
+        },
+        function(err, invoiceBody) {
+          if (err) {
+            console.log(err);
+          } else {
+            //Mail sending
+            mailer.sendEmail(
+              '"Md Jihad Hossain" <devtestjihad@gmail.com>', //Sender
+              user.email, // Receiver
+              "Primary Invoice", //Subject
+              invoiceBody //Mail body
+            );
+          }
         }
-      }
-    );
+      );
 
-    //Delete the cart
-    delete req.session.cart;
+      //Delete the cart
+      delete req.session.cart;
 
-    //Set total price 0
-    req.session.totalCartPrice = 0;
+      //Set total price 0
+      req.session.totalCartPrice = 0;
 
-    //Redirect to success page
-    res.redirect("/order-success");
-  })();
+      //Redirect to success page
+      res.redirect("/order-success");
+    })();
+  }
 });
 
 //Order Success Page
