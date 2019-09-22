@@ -96,21 +96,24 @@ router.get("/product/:id", function(req, res, next) {
       if (err) return next(err);
 
       //To find the discount price
-      if (product.discount.enabled) {
-        if (product.discount.usePercentage) {
-          var discountPrice =
-            parseFloat(product.sellingPrice) -
-            parseFloat(
-              (parseFloat(product.sellingPrice) *
-                parseFloat(product.discount.discountPercent)) /
-                100
-            );
-        } else {
-          var discountPrice =
-            parseFloat(product.sellingPrice) -
-            parseFloat(product.discount.discountAmount);
+      if (product.discount) {
+        if (product.discount.enabled) {
+          if (product.discount.usePercentage) {
+            var discountPrice =
+              parseFloat(product.sellingPrice) -
+              parseFloat(
+                (parseFloat(product.sellingPrice) *
+                  parseFloat(product.discount.discountPercent)) /
+                  100
+              );
+          } else {
+            var discountPrice =
+              parseFloat(product.sellingPrice) -
+              parseFloat(product.discount.discountAmount);
+          }
         }
       }
+
       res.render("main/singleProduct", {
         product: product,
         discountPrice: discountPrice,
