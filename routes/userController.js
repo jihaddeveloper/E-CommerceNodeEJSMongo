@@ -122,7 +122,7 @@ router.post("/signup", function(req, res, next) {
                               <br/>
                               <br/>
                               Clicking on the following button:
-                              <a href="http://ecle-com.herokuapp.com/verify?token=${user.secretToken}&email=${user.email}">Verify<a/>
+                              <a href="http://localhost:3000/verify?token=${user.secretToken}&email=${user.email}">Verify<a/>
                               <br/>
                               <br/>
                               Good Day.... `;
@@ -184,7 +184,8 @@ router.get("/verify", async (req, res, next) => {
       if (user.isActive) {
         return res.render("accounts/login", {
           message: "Already verified",
-          errors: ""
+          errors: "",
+          validationErrors: ""
         });
       } else {
         if (user.secretToken === req.query.token.trim()) {
@@ -195,19 +196,22 @@ router.get("/verify", async (req, res, next) => {
 
           res.render("accounts/login", {
             message: "Successful, now you may login",
-            errors: ""
+            errors: "",
+            validationErrors: ""
           });
         } else {
           res.render("accounts/login", {
             message: "",
-            errors: "Token expired"
+            errors: "Token expired",
+            validationErrors: ""
           });
         }
       }
     } else {
       return res.render("accounts/login", {
         message: "",
-        errors: "No User found"
+        errors: "No User found",
+        validationErrors: ""
       });
     }
   } catch (error) {

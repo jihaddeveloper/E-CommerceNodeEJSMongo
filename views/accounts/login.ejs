@@ -31,7 +31,8 @@
             </button>
             <%= message %>
           </div>
-          <% } %> <% if (validationErrors.email) { %>
+          <% } %> <% if(validationErrors) { %> <% if (validationErrors.email) {
+          %>
           <div class="alert alert-danger alert-dismissible">
             <button
               type="button"
@@ -55,7 +56,7 @@
             </button>
             <%= validationErrors.password %>
           </div>
-          <% } %>
+          <% } %> <% } %>
 
           <form method="POST" action="/login">
             <div class="form-group">
