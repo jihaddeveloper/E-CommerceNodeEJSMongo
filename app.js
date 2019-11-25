@@ -57,6 +57,7 @@ const SecondHandProductSubCategory = require("./models/secondHandProductSubCateg
 const SecondHandProductBrand = require("./models/secondHandProductBrand");
 const Specification = require("./models/specification");
 const Faq = require("./models/faq");
+const Test = require("./models/test");
 
 //MongoDB Connection
 mongoose.connect(secret.database, function(err) {
@@ -331,6 +332,7 @@ const secHandProductCon = require("./routes/secondHandProductController");
 const filterCon = require("./routes/filterController");
 const reviewCon = require("./routes/reviewController");
 const faqCon = require("./routes/faqController");
+const testCon = require("./routes/testController");
 
 //Routes
 app.use(mainCon);
@@ -346,6 +348,7 @@ app.use(secHandProductCon);
 app.use(filterCon);
 app.use(reviewCon);
 app.use(faqCon);
+app.use(testCon);
 
 app.listen(secret.port, function(err) {
   if (err) throw err;
