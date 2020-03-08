@@ -120,39 +120,25 @@
   </div>
 </div>
 
-<div class="container" style="margin-top: 20px">
-  <Center>
-    <h1><strong>Offers on Products</strong></h1>
-  </Center>
-  <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-      <h1>Helllo</h1>
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-      <h1>World</h1>
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-      <h1>Helllo</h1>
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-      <h1>World</h1>
-    </div>
-  </div>
-</div>
-
 <div class="container">
   <div class="row" id="dealsOfDayProducts">
     <Center>
       <h1><strong>Today's Deals</strong></h1>
     </Center>
     <% if( products ) { %> <% for ( var i = 0; i < products.length; i++ ) { %>
-    <div class="col-md-3">
-      <div class="thumbnail">
+    <div class="col-md-2">
+      <div class="card" style="width: 18rem;">
         <a role="button" href="/product/<%= products[i]._id %>">
           <%if (products[i].image) {%>
-          <img src="<%= products[i].image[0] %>" height="50%" width="50%" />
+          <img
+            src="<%= products[i].image[0] %>"
+            height="50%"
+            width="50%"
+            class="card-img-top"
+            alt="Card image cap"
+          />
           <% } %>
-          <div class="caption">
+          <div class="card-body">
             <h3>
               <%= products[i].name %>
             </h3>
@@ -180,13 +166,19 @@
       <h1><strong>Exclusive Products</strong></h1>
     </Center>
     <% if( products ) { %> <% for ( var i = 0; i < products.length; i++ ) { %>
-    <div class="col-md-3">
-      <div class="thumbnail">
+    <div class="col-md-2">
+      <div class="card" style="width: 18rem;">
         <a role="button" href="/product/<%= products[i]._id %>">
           <%if (products[i].image) {%>
-          <img src="<%= products[i].image[0] %>" height="50%" width="50%" />
+          <img
+            src="<%= products[i].image[0] %>"
+            height="50%"
+            width="50%"
+            class="card-img-top"
+            alt="Card image cap"
+          />
           <% } %>
-          <div class="caption">
+          <div class="card-body">
             <h3>
               <%= products[i].name %>
             </h3>
@@ -214,13 +206,19 @@
       <h1><strong>Trending Products</strong></h1>
     </Center>
     <% if( products ) { %> <% for ( var i = 0; i < products.length; i++ ) { %>
-    <div class="col-md-3">
-      <div class="thumbnail">
+    <div class="col-md-2">
+      <div class="card" style="width: 18rem;">
         <a role="button" href="/product/<%= products[i]._id %>">
           <%if (products[i].image) {%>
-          <img src="<%= products[i].image[0] %>" height="50%" width="50%" />
+          <img
+            src="<%= products[i].image[0] %>"
+            height="50%"
+            width="50%"
+            class="card-img-top"
+            alt="Card image cap"
+          />
           <% } %>
-          <div class="caption">
+          <div class="card-body">
             <h3>
               <%= products[i].name %>
             </h3>
@@ -228,7 +226,7 @@
               <b>Price: </b>
               <%= products[i].sellingPrice %>TK
             </p>
-            <% if(products[i].availablity === true) { %>
+            <% if(products[i].availablity) { %>
             <h4 style="color: darkgreen">
               <b>Available</b>
             </h4>
@@ -243,8 +241,51 @@
     </div>
     <% } %> <% } %>
   </div>
+</div>
 
-  <!-- <ul class="pagination text-center">
+<div class="container" style="margin-top: 20px">
+  <Center>
+    <h1><strong>Collections</strong></h1>
+  </Center>
+  <div class="row">
+    <% for(var i = 0; i < 3; i++) { %> <% if(categories[i].subCategories.length
+    != 0) { %>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <div class="card">
+        <a href="/products/category/<%= categories[i].id %>">
+          <h1 class="card-title"><%= categories[i].name %></h1>
+          <h6 class="card-subtitle">Support card subtitle</h6>
+          <p class="card-text">
+            Some quick example.
+          </p>
+          <a href="#" class="card-link">link</a>
+          <a href="#" class="card-link">Second link</a>
+        </a>
+      </div>
+    </div>
+    <% } %> <% } %>
+  </div>
+  <div class="row">
+    <% for(var i = 5; i < 9; i++) { %> <% if(categories[i].subCategories.length
+    != 0) { %>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <div class="card">
+        <a href="/products/category/<%= categories[i].id %>">
+          <h1 class="card-title"><%= categories[i].name %></h1>
+          <h6 class="card-subtitle">Support card subtitle</h6>
+          <p class="card-text">
+            Some quick example.
+          </p>
+          <a href="#" class="card-link">link</a>
+          <a href="#" class="card-link">Second link</a>
+        </a>
+      </div>
+    </div>
+    <% } %> <% } %>
+  </div>
+</div>
+
+<!-- <ul class="pagination text-center">
         <li>
             <% for(var i = 1; i <= pages; i++ ) { %>
             <% if(i === 1) { %>
@@ -257,4 +298,3 @@
         <% } %>
         </li>
     </ul> -->
-</div>

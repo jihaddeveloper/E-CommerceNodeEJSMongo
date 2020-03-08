@@ -19,7 +19,7 @@ var unique = require("array-unique");
 //Pagination function
 function paginate(req, res, next) {
   //Paginate product page
-  var perPage = 3;
+  var perPage = 6;
   var page = req.params.page;
 
   Product.find({
@@ -42,7 +42,7 @@ function paginate(req, res, next) {
     .populate("discount")
     .exec(function(err, products) {
       if (err) return next(err);
-      //console.log(products);
+      //console.log(products.length);
       Product.count().exec(function(err, count) {
         if (err) return next(err);
 
