@@ -65,7 +65,7 @@ async function paginate(req, res, next) {
 
         //console.log(discountProducts);
 
-        res.render("main/productMain", {
+        res.render("main/index", {
           products: products,
           discountProducts: discountProducts,
           pages: count / perPage,
