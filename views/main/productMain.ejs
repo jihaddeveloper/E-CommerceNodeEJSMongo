@@ -123,30 +123,44 @@
 <div class="container">
   <div class="row" id="dealsOfDayProducts">
     <Center>
-      <h1><strong>Today's Deals</strong></h1>
+      <h1><strong>Best Deals</strong></h1>
     </Center>
-    <% if( products ) { %> <% for ( var i = 0; i < products.length; i++ ) { %>
+    <% if( discountProducts ) { %> <% for ( var i = 0; i <
+    discountProducts.length; i++ ) { %>
     <div class="col-md-2">
       <div class="card" style="width: 18rem;">
         <a role="button" href="/product/<%= products[i]._id %>">
-          <%if (products[i].image) {%>
+          <%if (discountProducts[i].image) {%>
           <img
-            src="<%= products[i].image[0] %>"
+            src="<%= discountProducts[i].image[0] %>"
             height="50%"
             width="50%"
-            class="card-img-top"
+            class="img-responsive"
             alt="Card image cap"
           />
           <% } %>
           <div class="card-body">
             <h3>
-              <%= products[i].name %>
+              <%= discountProducts[i].name %>
             </h3>
             <p>
               <b>Price: </b>
-              <%= products[i].sellingPrice %>TK
+              <%= discountProducts[i].sellingPrice %>TK
             </p>
-            <% if(products[i].availablity) { %>
+            <p>
+              <b>Discount Price: </b>
+              <% if (discountProducts[i].discount) { %> <%if
+              (discountProducts[i].discount.enabled) { %> <%
+              if(discountProducts[i].discount.usePercentage) { %> <% var
+              discountPrice = parseFloat(discountProducts[i].sellingPrice) -
+              parseFloat((parseFloat(discountProducts[i].sellingPrice) *
+              parseFloat(discountProducts[i].discount.discountPercent)) / 100 );
+              %> <% } else { %> <% var discountPrice =
+              parseFloat(discountProducts[i].sellingPrice) -
+              parseFloat(discountProducts[i].discount.discountAmount); %> <% }
+              %> <% } %> <% } %> <%= discountPrice %>TK
+            </p>
+            <% if(discountProducts[i].availablity) { %>
             <h4 style="color: darkgreen">
               <b>Available</b>
             </h4>

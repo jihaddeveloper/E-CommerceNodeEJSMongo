@@ -1,6 +1,6 @@
 //  Author: Mohammad Jihad Hossain
 //  Create Date: 02/01/2019
-//  Modify Date: 02/09/2019
+//  Modify Date: 10/03/2020
 //  Description: Main controller file of ECL E-Commerce
 
 // Library import
@@ -17,11 +17,12 @@ const User = require("../models/user");
 var unique = require("array-unique");
 
 //Pagination function
-function paginate(req, res, next) {
+async function paginate(req, res, next) {
   //Paginate product page
   var perPage = 6;
   var page = req.params.page;
 
+  // Find all Products
   Product.find({
     isActive: true
   })
@@ -43,11 +44,30 @@ function paginate(req, res, next) {
     .exec(function(err, products) {
       if (err) return next(err);
       //console.log(products.length);
-      Product.count().exec(function(err, count) {
+      Product.count().exec(async function(err, count) {
         if (err) return next(err);
+
+        // Find Products with discount
+        var discountProducts = await Product.find({
+          $and: [
+            { isActive: true },
+            { discount: { $ne: null } },
+            { discount: { $exists: true } }
+          ]
+        })
+          .populate("category")
+          .populate("subcategory")
+          .populate("brand")
+          .populate("features.label")
+          .populate("relatedProducts")
+          .populate("reviews")
+          .populate("discount");
+
+        //console.log(discountProducts);
 
         res.render("main/productMain", {
           products: products,
+          discountProducts: discountProducts,
           pages: count / perPage,
           message: "",
           errors: req.flash("errors")
