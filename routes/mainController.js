@@ -47,6 +47,25 @@ async function paginate(req, res, next) {
       Product.count().exec(async function(err, count) {
         if (err) return next(err);
 
+        // Find Hot Deals Products newly added discount
+        var hotDealsProducts = await Product.find({
+          $and: [
+            { isActive: true },
+            { discount: { $ne: null } },
+            { discount: { $exists: true } }
+          ]
+        })
+          .sort({ created_at: -1 })
+          .limit(10)
+          .populate("category")
+          .populate("subcategory")
+          .populate("brand")
+          .populate("features.label")
+          .populate("relatedProducts")
+          .populate("reviews")
+          .populate("discount");
+        //console.log(hotDealsProducts);
+
         // Find Products with discount
         var discountProducts = await Product.find({
           $and: [
@@ -55,6 +74,8 @@ async function paginate(req, res, next) {
             { discount: { $exists: true } }
           ]
         })
+          .sort({ created_at: 1 })
+          .limit(10)
           .populate("category")
           .populate("subcategory")
           .populate("brand")
@@ -62,12 +83,26 @@ async function paginate(req, res, next) {
           .populate("relatedProducts")
           .populate("reviews")
           .populate("discount");
-
         //console.log(discountProducts);
+
+        // Find recently added Products
+        var recentProducts = await Product.find()
+          .sort({ created_at: -1 })
+          .limit(10)
+          .populate("category")
+          .populate("subcategory")
+          .populate("brand")
+          .populate("features.label")
+          .populate("relatedProducts")
+          .populate("reviews")
+          .populate("discount");
+        //console.log(recentProducts.length);
 
         res.render("main/index", {
           products: products,
+          hotDealsProducts: hotDealsProducts,
           discountProducts: discountProducts,
+          recentProducts: recentProducts,
           pages: count / perPage,
           message: "",
           errors: req.flash("errors")

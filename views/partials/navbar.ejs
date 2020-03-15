@@ -35,8 +35,6 @@
             <ul class="custom-menu">
               <li><a href="#">USD ($)</a></li>
               <li><a href="#">EUR (€)</a></li>
-            </ul>
-          </li>
         </ul>
       </div>
     </div>
@@ -49,26 +47,40 @@
       <div class="pull-left">
         <!-- Logo -->
         <div class="header-logo">
-          <a class="logo" href="#">
-            <img src="../inc/img/logo.png" alt="" />
+          <a class="logo" href="/">
+            <i class="fa fa-home"></i> ECL eCommerce
+            <!-- <img src="../inc/img/logo.png" alt="" /> -->
           </a>
         </div>
         <!-- /Logo -->
 
         <!-- Search -->
-        <div class="header-search">
-          <form>
+        <div class="header-search" style="width: 700px;">
+          <form
+            action="/search"
+            method="POST"
+            role="search"
+            style="width: 700px;"
+          >
             <input
               class="input search-input"
               type="text"
-              placeholder="Enter your keyword"
+              placeholder="Search Product Here ..."
+              name="q"
+              style="width: 700px;"
             />
             <select class="input search-categories">
-              <option value="0">All Categories</option>
-              <option value="1">Category 01</option>
-              <option value="1">Category 02</option>
+              <option value="">All Categories</option>
+              <% if(categories) {%> <% for(var i = 0; i < categories.length;
+              i++) { %> <% if(categories[i].subCategories.length != 0) { %>
+              <option value="<%= categories[i].id %>"
+                ><%= categories[i].name %></option
+              >
+              <% } %> <% } %> <% } %>
             </select>
-            <button class="search-btn"><i class="fa fa-search"></i></button>
+            <button class="search-btn" type="submit">
+              <i class="fa fa-search"></i>
+            </button>
           </form>
         </div>
         <!-- /Search -->
