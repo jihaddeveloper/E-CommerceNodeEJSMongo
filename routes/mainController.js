@@ -83,10 +83,10 @@ async function paginate(req, res, next) {
           .populate("relatedProducts")
           .populate("reviews")
           .populate("discount");
-        //console.log(discountProducts);
+        //console.log(discountProducts.length);
 
         // Find recently added Products
-        var recentProducts = await Product.find()
+        var recentProducts = await Product.find({ isActive: true })
           .sort({ created_at: -1 })
           .limit(10)
           .populate("category")

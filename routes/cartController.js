@@ -28,19 +28,21 @@ router.post("/add-to-cart", async function(req, res, next) {
   }).populate("discount");
 
   //To find the current price
-  if (foundProduct.discount.enabled) {
-    if (foundProduct.discount.usePercentage) {
-      var productPrice =
-        parseFloat(foundProduct.sellingPrice) -
-        parseFloat(
-          (parseFloat(foundProduct.sellingPrice) *
-            parseFloat(foundProduct.discount.discountPercent)) /
-            100
-        );
-    } else {
-      var productPrice =
-        parseFloat(foundProduct.sellingPrice) -
-        parseFloat(foundProduct.discount.discountAmount);
+  if (foundProduct.discount) {
+    if (foundProduct.discount.enabled) {
+      if (foundProduct.discount.usePercentage) {
+        var productPrice =
+          parseFloat(foundProduct.sellingPrice) -
+          parseFloat(
+            (parseFloat(foundProduct.sellingPrice) *
+              parseFloat(foundProduct.discount.discountPercent)) /
+              100
+          );
+      } else {
+        var productPrice =
+          parseFloat(foundProduct.sellingPrice) -
+          parseFloat(foundProduct.discount.discountAmount);
+      }
     }
   } else {
     var productPrice = parseFloat(foundProduct.sellingPrice);

@@ -111,7 +111,7 @@
               <li>
                 <a href="/wishlis"><i class="fa fa-heart-o"></i> My Wishlist</a>
               </li>
-              <li><a href="/checkout">Cart</a></li>
+              <li><a href="/checkout"><i class="fa fa-shopping-cart"></i>Cart</a></li>
               <!-- <li>
                 <a href="#"><i class="fa fa-exchange"></i> Compare</a>
               </li>
@@ -169,8 +169,7 @@
                   <div class="product product-widget">
                     <div class="product-thumb">
                       <img class="product-image"
-                      style="width: 10%; height: 10%;"
-                      src="data:image/png;base64, <%= cart[i].image %>" alt="" />
+                      src="<%= cart[i].image %>" alt="" />
                     </div>
                     <div class="product-body">
                       <h3 class="product-price">
@@ -204,9 +203,8 @@
                   <% } %>
                 </div>
                 <div class="shopping-cart-btns">
-                  <button class="main-btn">View Cart</button>
-                  <button class="primary-btn">
-                    Checkout <i class="fa fa-arrow-circle-right"></i>
+                  <button class="main-btn">Close</button>
+                  <button class="primary-btn"><a href="/checkout"> View Cart</a><i class="fa fa-arrow-circle-right"></i>
                   </button>
                 </div>
               </div>
