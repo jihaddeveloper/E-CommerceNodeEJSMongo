@@ -169,7 +169,7 @@ router.get("/product/:id", function(req, res, next) {
         }
       }
 
-      res.render("main/singleProduct", {
+      res.render("main/product-page", {
         product: product,
         discountPrice: discountPrice,
         features: product.features

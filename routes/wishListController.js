@@ -26,24 +26,28 @@ router.get(
 
     let quantity = 1;
 
+    
     WishList.findOne({ owner: req.user._id }, async function(err, wishList) {
-      //Find the product
+      if(wishList){
+        //Find the product
       const product = await Product.findOne({ _id: product_id });
 
       //Set product as new product.
       var newItem = true;
 
       //Check the product is already in wishlist
-      for (var i = 0; i < wishList.items.length; i++) {
-        if (wishList.items[i].product == product_id) {
-          newItem = false;
-          //console.log("World");
-          req.flash("errors", "This product is already exist in wishlist");
-          req.flash("message", "");
-          return res.redirect("/product/" + req.params.product_id);
+      if(wishList.items){
+        for (var i = 0; i < wishList.items.length; i++) {
+          if (wishList.items[i].product == product_id) {
+            newItem = false;
+            //console.log("World");
+            req.flash("errors", "This product is already exist in wishlist");
+            req.flash("message", "");
+            return res.redirect("/product/" + req.params.product_id);
+          }
         }
       }
-
+      
       //If the product is new
       if (newItem) {
         wishList.items.push({
@@ -61,6 +65,8 @@ router.get(
           return res.redirect("/product/" + req.params.product_id);
         });
       }
+      }
+      
     });
   }
 );
