@@ -601,27 +601,35 @@
 					<li><span>00 S</span></li>
 				  </ul>
 				  <button class="main-btn quick-view" >
-					<i class="fa fa-search-plus"></i><a href="/product/<%= relatedProducts[i]._id %>">Quick view</a> 
+					<i class="fa fa-search-plus"></i><a href="/product/<%= product.relatedProducts[i]._id %>">Quick view</a> 
 				  </button>
 				  <img height="50%"
 				  width="50%"
 				  class="img-responsive"
 				  alt="Card image cap"
-				  src="<%= relatedProducts[i].image[0] %>" />
+				  src="<%= product.relatedProducts[i].image[0] %>" />
 				</div>
 				<div class="product-body">
-				  <h3 class="product-price">
-					<% if (relatedProducts[i].discount) { %> <%if
-					  (relatedProducts[i].discount.enabled) { %> <%
-					  if(relatedProducts[i].discount.usePercentage) { %> <% var
-					  discountPrice = parseFloat(relatedProducts[i].sellingPrice) -
-					  parseFloat((parseFloat(relatedProducts[i].sellingPrice) *
-					  parseFloat(relatedProducts[i].discount.discountPercent)) / 100 );
-					  %> <% } else { %> <% var discountPrice =
-					  parseFloat(relatedProducts[i].sellingPrice) -
-					  parseFloat(relatedProducts[i].discount.discountAmount); %> <% }
-					  %> <% } %> <% } %> <%= discountPrice %> TK <del class="product-old-price"><%= relatedProducts[i].sellingPrice %>TK</del>
-				  </h3>
+					<% if (product.relatedProducts[i].discount) { %> <%if
+						(product.relatedProducts[i].discount.enabled) { %> <%
+						if(product.relatedProducts[i].discount.usePercentage) { %> <% var
+						discountPrice = parseFloat(product.relatedProducts[i].sellingPrice) -
+						parseFloat((parseFloat(product.relatedProducts[i].sellingPrice) *
+						parseFloat(product.relatedProducts[i].discount.discountPercent)) / 100 );
+						%> <% } else { %> <% var discountPrice =
+						parseFloat(product.relatedProducts[i].sellingPrice) -
+						parseFloat(product.relatedProducts[i].discount.discountAmount); %> <% }
+						%> <% } %> <% } %>
+						<% if(discountPrice) { %> 
+							<h3 class="product-price">
+								<%= discountPrice %> TK <del class="product-old-price"><%= product.relatedProducts[i].sellingPrice %>TK</del>
+							 </h3>
+						<% } else { %>
+							<h3 class="product-price">
+								<%= product.relatedProducts[i].sellingPrice %> TK
+							 </h3>
+						<% } %>
+				  
 				  <div class="product-rating">
 					<i class="fa fa-star"></i>
 					<i class="fa fa-star"></i>
@@ -630,7 +638,7 @@
 					<i class="fa fa-star-o empty"></i>
 				  </div>
 				  <h2 class="product-name">
-					<a href="#"><%= relatedProducts[i].name %></a>
+					<a href="#"><%= product.relatedProducts[i].name %></a>
 				  </h2>
 				  <div class="product-btns">
 					<button class="main-btn icon-btn">
@@ -640,7 +648,7 @@
 					  <i class="fa fa-exchange"></i>
 					</button>
 					<button class="primary-btn add-to-cart">
-					  <i class="fa fa-shopping-cart"></i><a href="/product/<%= relatedProducts[i]._id %>">Add to Cart</a>
+					  <i class="fa fa-shopping-cart"></i><a href="/product/<%= product.relatedProducts[i]._id %>">Add to Cart</a>
 					</button>
 				  </div>
 				</div>
@@ -689,18 +697,26 @@
 			  src="<%= recentProducts[0].image[0] %>" />
 			</div>
 			<div class="product-body">
-			  <h3 class="product-price">
 				<% if (recentProducts[0].discount) { %> <%if
-				  (recentProducts[0].discount.enabled) { %> <%
-				  if(recentProducts[0].discount.usePercentage) { %> <% var
-				  discountPrice = parseFloat(recentProducts[0].sellingPrice) -
-				  parseFloat((parseFloat(recentProducts[0].sellingPrice) *
-				  parseFloat(recentProducts[0].discount.discountPercent)) / 100 );
-				  %> <% } else { %> <% var discountPrice =
-				  parseFloat(recentProducts[0].sellingPrice) -
-				  parseFloat(recentProducts[0].discount.discountAmount); %> <% }
-				  %> <% } %> <% } %> <%= discountPrice %> TK <del class="product-old-price"><%= recentProducts[0].sellingPrice %> TK</del>
-			  </h3>
+					(recentProducts[0].discount.enabled) { %> <%
+					if(recentProducts[0].discount.usePercentage) { %> <% var
+					discountPrice = parseFloat(recentProducts[0].sellingPrice) -
+					parseFloat((parseFloat(recentProducts[0].sellingPrice) *
+					parseFloat(recentProducts[0].discount.discountPercent)) / 100 );
+					%> <% } else { %> <% var discountPrice =
+					parseFloat(recentProducts[0].sellingPrice) -
+					parseFloat(recentProducts[0].discount.discountAmount); %> <% }
+					%> <% } %> <% } %>
+
+					<% if(discountPrice) { %> 
+						<h3 class="product-price">
+							<%= discountPrice %> TK <del class="product-old-price"><%= recentProducts[0].sellingPrice %>TK</del>
+						 </h3>
+					<% } else { %>
+						<h3 class="product-price">
+							<%= recentProducts[0].sellingPrice %> TK
+						 </h3>
+					<% } %>
 			  <div class="product-rating">
 				<i class="fa fa-star"></i>
 				<i class="fa fa-star"></i>
