@@ -130,13 +130,13 @@ router.get("/about", function(req, res, next) {
 });
 
 //Single product view
-router.get("/product/:id", function(req, res, next) {
+router.get("/product/:id", async function(req, res, next) {
   //Store the current URL
   req.session.returnTo = req.originalUrl;
 
   //console.log(req.session.cart);
 
-  Product.findOne({
+  await Product.findOne({
     _id: req.params.id
   })
     .populate("category")
@@ -146,7 +146,7 @@ router.get("/product/:id", function(req, res, next) {
     .populate("relatedProducts")
     .populate("reviews")
     .populate("discount")
-    .exec(function(err, product) {
+    .exec(async function(err, product) {
       //console.log(product);
       if (err) return next(err);
 
@@ -169,8 +169,22 @@ router.get("/product/:id", function(req, res, next) {
         }
       }
 
+      // Find recently added Products
+      var recentProducts = await Product.find({ isActive: true })
+      .sort({ created_at: -1 })
+      .limit(10)
+      .populate("category")
+      .populate("subcategory")
+      .populate("brand")
+      .populate("features.label")
+      .populate("relatedProducts")
+      .populate("reviews")
+      .populate("discount");
+      //console.log(recentProducts.length);
+
       res.render("main/product-page", {
         product: product,
+        recentProducts: recentProducts,
         discountPrice: discountPrice,
         features: product.features
       });

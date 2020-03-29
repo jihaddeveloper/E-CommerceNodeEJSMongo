@@ -122,8 +122,8 @@
 		<ul class="breadcrumb">
 			<li><a href="#">Home</a></li>
 			<li><a href="#">Products</a></li>
-			<li><a href="#">Category</a></li>
-			<li class="active">Product Name Goes Here</li>
+			<li><a href="#"><%= product.category.name %></a></li>
+			<li class="active"><%= product.name %></li>
 		</ul>
 	</div>
 </div>
@@ -149,7 +149,6 @@
 	<!-- error or success message -->
 </div>
 
-
 <!-- section -->
 <div class="section">
 	<!-- container -->
@@ -161,32 +160,18 @@
 			<div class="product product-details clearfix">
 				<div class="col-md-6">
 					<div id="product-main-view">
+						<% for( var i=0; i< product.image.length; i++ ){ %>
 						<div class="product-view">
-							<img src="<%= product.image[0] %>" alt="">
+							<img src="<%= product.image[i] %>" alt="">
 						</div>
-						<div class="product-view">
-							<img src="<%= product.image[0] %>" alt="">
-						</div>
-						<div class="product-view">
-							<img src="<%= product.image[0] %>" alt="">
-						</div>
-						<div class="product-view">
-							<img src="<%= product.image[0] %>" alt="">
-						</div>
+						<% } %>
 					</div>
 					<div id="product-view">
-						<div class="product-view">
-							<img src="<%= product.image[0] %>" alt="">
-						</div>
-						<div class="product-view">
-							<img src="<%= product.image[0] %>" alt="">
-						</div>
-						<div class="product-view">
-							<img src="<%= product.image[0] %>" alt="">
-						</div>
-						<div class="product-view">
-							<img src="<%= product.image[0] %>" alt="">
-						</div>
+						<% for( var i=0; i< product.image.length; i++ ){ %>
+							<div class="product-view">
+								<img src="<%= product.image[i] %>" alt="">
+							</div>
+						<% } %>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -210,7 +195,7 @@
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star-o empty"></i>
 							</div>
-							<a href="#">3 Review(s) / Add Review</a>
+							<a href="#"> Review(s) / Add Review</a>
 						</div>
 						<% } else { %>
 							<div>
@@ -221,7 +206,7 @@
 									<i class="fa fa-star"></i>
 									<i class="fa fa-star-o empty"></i>
 								</div>
-								<a href="#">3 Review(s) / Add Review</a>
+								<a href="#"> Review(s) / Add Review</a>
 							</div>
 							<% } %>
 						<% if(product.availablity === true) { %>
@@ -247,7 +232,6 @@
 							</ul>
 						</div> -->
 						<form method="POST" action="/add-to-cart">
-							
 							<div class="product-btns">
 								<input type="hidden" name="product_id" id="product_id" value="<%= product._id %>"/>
 								<div class="qty-input">
@@ -263,24 +247,114 @@
 								</div>
 							</div>
 						</form>
-						<button class="main-btn icon-btn"><a href="/add-to-wishlist/<%= product._id %>"><i class="fa fa-heart"></i></a></button>
+						<br>
+						<div>
+							<button class="main-btn icon-btn"><a href="/add-to-wishlist/<%= product._id %>"><i class="fa fa-heart"></i></a></button>
+						</div>
+						
 					</div>
 				</div>
 				<div class="col-md-12">
 					<div class="product-tab">
 						<ul class="tab-nav">
-							<li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
-							<li><a data-toggle="tab" href="#tab1">Details</a></li>
+							<li class="active"><a data-toggle="tab" href="#tab">Description</a></li>
+							<li><a data-toggle="tab" href="#tab1">Specification</a></li>
 							<li><a data-toggle="tab" href="#tab2">Reviews (3)</a></li>
+							<li><a data-toggle="tab" href="#tab3">Question</a></li>
 						</ul>
 						<div class="tab-content">
-							<div id="tab1" class="tab-pane fade in active">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-									irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<div id="tab" class="tab-pane fade in active">
+								<% if(product.description) { %>
+									<p><%= product.description %></p>
+								<% } else { %>
+									<p> No Details</p>
+								<% } %>
+							</div>
+							<div id="tab1" class="tab-pane fade in">
+								<div class="row">
+									<li class="list-group-item">
+									  <div class="row">
+										<div class="col-md-3 col-md-6 ">
+										  <strong>Name</strong>
+										</div>
+										<div class="col-md-3 col-md-6">
+										  <strong> <%= product.name %></strong>
+										</div>
+									  </div>
+									  <hr />
+									  <div class="row">
+										<div class="col-md-3 col-md-6 ">
+										  <strong>Price</strong>
+										</div>
+										<div class="col-md-3 col-md-6">
+										  <strong>
+											<%= product.sellingPrice %>TK
+										  </strong>
+										</div>
+									  </div>
+									  <hr />
+									  <div class="row">
+										<div class="col-md-3 col-md-6 ">
+										  <strong>Brand</strong>
+										</div>
+										<div class="col-md-3 col-md-6">
+										  <strong> <%= product.brand.name %></strong>
+										</div>
+									  </div>
+									  <hr />
+									  <div class="row">
+										<div class="col-md-3 col-md-6 ">
+										  <strong>Model</strong>
+										</div>
+										<div class="col-md-3 col-md-6">
+										  <strong>
+											<%= product.model %>
+										  </strong>
+										</div>
+									  </div>
+									  <hr />
+									  <div class="row">
+										<div class="col-md-3 col-md-6 ">
+										  <strong>Weight</strong>
+										</div>
+										<div class="col-md-3 col-md-6">
+										  <strong>
+											<%= product.weight %> KG
+										  </strong>
+										</div>
+									  </div>
+									  <% if(features) { %> <% for ( var i = 0; i < features.length; i++) {
+									  %>
+									  <hr />
+									  <div class="row">
+										<div class="col-md-3 col-md-6">
+										  <strong>
+											<%= features[i].label.name %>
+										  </strong>
+										</div>
+										<div class="col-md-3 col-md-6">
+										  <strong>
+											<%= features[i].value %>
+										  </strong>
+										</div>
+									  </div>
+									  <% } %> <% } %>
+									  <hr />
+									  <div class="row">
+										<div class="col-md-3 col-md-6 ">
+										  <strong>Warranty</strong>
+										</div>
+										<div class="col-md-3 col-md-6">
+										  <strong>
+											<%= product.warranty %>
+										  </strong>
+										</div>
+									  </div>
+									</li>
+								  </div>
 							</div>
 							<div id="tab2" class="tab-pane fade in">
-
-								<div class="row">
+								<!-- <div class="row">
 									<div class="col-md-6">
 										<div class="product-reviews">
 											<div class="single-review">
@@ -373,10 +447,97 @@
 											<button class="primary-btn">Submit</button>
 										</form>
 									</div>
-								</div>
-
-
-
+								</div> -->
+								<form action="/post-review" method="POST">
+									<h3>Write your review</h3>
+									<input
+									  type="hidden"
+									  name="hidden_product_id"
+									  id="hidden_product_id"
+									  value="<%= product._id %>"
+									/>
+									<div class="row">
+									  <div class="col-xs-12 col-sm-6 col-md-6">
+										<input
+										  name="title"
+										  placeholder="Title*"
+										  type="text"
+										  class="form-control"
+										/>
+									  </div>
+									  <div class="col-xs-12 col-sm-6 col-md-6">
+										<input
+										  name="email"
+										  placeholder="Your Email"
+										  type="text"
+										  class="form-control"
+										/>
+									  </div>
+									  <div class="col-xs-12 col-sm-6 col-md-6">
+										<textarea
+										  name="description"
+										  rows="5"
+										  placeholder="Your Review*"
+										  class="form-control"
+										></textarea>
+									  </div>
+									  <div class="col-xs-12 col-sm-6 col-md-6">
+										<label class="control-label">Rating:</label>
+										&nbsp;Bad &nbsp;
+										<input type="radio" name="rating" value="1" /> &nbsp;
+										<input type="radio" name="rating" value="2" /> &nbsp;
+										<input type="radio" name="rating" value="3" /> &nbsp;
+										<input type="radio" name="rating" value="4" /> &nbsp;
+										<input type="radio" name="rating" value="5" /> Good <br /><br />
+										<button type="submit" id="button-review" class="btn submit-btn">
+										  Submit Review
+										</button>
+									  </div>
+									</div>
+								  </form>
+							</div>
+							<div id="tab3" class="tab-pane fade in">
+								<form action="/post-question" method="POST">
+									<h3>Write your question</h3>
+									<input
+									  type="hidden"
+									  name="product_id"
+									  id="product_id"
+									  value="<%= product._id %>"
+									/>
+									<div class="row">
+									  <div class="col-xs-12 col-sm-6 col-md-6">
+										<input
+										  name="name"
+										  placeholder="Name*"
+										  type="text"
+										  class="form-control"
+										/>
+									  </div>
+									  <div class="col-xs-12 col-sm-6 col-md-6">
+										<input
+										  name="email"
+										  placeholder="Your Email"
+										  type="text"
+										  class="form-control"
+										/>
+									  </div>
+									  <div class="col-xs-12 col-sm-6 col-md-6">
+										<textarea
+										  name="question"
+										  rows="5"
+										  placeholder="Your Question*"
+										  class="form-control"
+										></textarea>
+									  </div>
+									  <br /><br />
+									  <div class="col-xs-12 col-sm-6 col-md-6">
+										<button type="submit" id="button-review" class="btn submit-btn">
+										  Submit Question
+										</button>
+									  </div>
+									</div>
+								  </form>
 							</div>
 						</div>
 					</div>
@@ -392,140 +553,239 @@
 </div>
 <!-- /section -->
 
-<!-- section -->
+<!-- section Related and Latest -->
 <div class="section">
 	<!-- container -->
 	<div class="container">
-		<!-- row -->
-		<div class="row">
-			<!-- section title -->
-			<div class="col-md-12">
-				<div class="section-title">
-					<h2 class="title">Picked For You</h2>
-				</div>
+	  <!-- row deals of the Day -->
+	  <div class="row">
+		<!-- section-title -->
+		<div class="col-md-12">
+		  <div class="section-title">
+			<h2 class="title">Related Products</h2>
+			<div class="pull-right">
+			  <div class="product-slick-dots-1 custom-dots"></div>
 			</div>
-			<!-- section title -->
-
-			<!-- Product Single -->
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="product product-single">
-					<div class="product-thumb">
-						<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-						<img src="./img/product04.jpg" alt="">
-					</div>
-					<div class="product-body">
-						<h3 class="product-price">$32.50</h3>
-						<div class="product-rating">
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star-o empty"></i>
-						</div>
-						<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-						<div class="product-btns">
-							<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-							<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-							<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /Product Single -->
-
-			<!-- Product Single -->
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="product product-single">
-					<div class="product-thumb">
-						<div class="product-label">
-							<span>New</span>
-						</div>
-						<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-						<img src="./img/product03.jpg" alt="">
-					</div>
-					<div class="product-body">
-						<h3 class="product-price">$32.50</h3>
-						<div class="product-rating">
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star-o empty"></i>
-						</div>
-						<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-						<div class="product-btns">
-							<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-							<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-							<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /Product Single -->
-
-			<!-- Product Single -->
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="product product-single">
-					<div class="product-thumb">
-						<div class="product-label">
-							<span class="sale">-20%</span>
-						</div>
-						<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-						<img src="./img/product02.jpg" alt="">
-					</div>
-					<div class="product-body">
-						<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-						<div class="product-rating">
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star-o empty"></i>
-						</div>
-						<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-						<div class="product-btns">
-							<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-							<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-							<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /Product Single -->
-
-			<!-- Product Single -->
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="product product-single">
-					<div class="product-thumb">
-						<div class="product-label">
-							<span>New</span>
-							<span class="sale">-20%</span>
-						</div>
-						<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-						<img src="./img/product01.jpg" alt="">
-					</div>
-					<div class="product-body">
-						<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-						<div class="product-rating">
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star-o empty"></i>
-						</div>
-						<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-						<div class="product-btns">
-							<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-							<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-							<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /Product Single -->
+		  </div>
 		</div>
-		<!-- /row -->
+		<!-- /section-title -->
+  
+		<!-- banner -->
+		<!-- <div class="col-md-3 col-sm-6 col-xs-6">
+		  <div class="banner banner-2">
+			<img src="./inc/img/banner14.jpg" alt="" />
+			<div class="banner-caption">
+			  <h2 class="white-color">NEW<br />COLLECTION</h2>
+			  <button class="primary-btn">Shop Now</button>
+			</div>
+		  </div>
+		</div> -->
+		<!-- /banner -->
+  
+		<!-- Product Slick -->
+		<div class="col-md-12 col-sm-6 col-xs-6">
+		  <div class="row">
+			<div id="product-slick-1" class="product-slick">
+			  <!-- Product Single -->
+			  <% if( product.relatedProducts ) { %> <% for ( var i = 0; i <
+				product.relatedProducts.length; i++ ) { %>
+			  <div class="product product-single">
+				<div class="product-thumb">
+				  <div class="product-label">
+					<span>New</span>
+					<span class="sale">-20%</span>
+				  </div>
+				  <ul class="product-countdown">
+					<li><span>00 H</span></li>
+					<li><span>00 M</span></li>
+					<li><span>00 S</span></li>
+				  </ul>
+				  <button class="main-btn quick-view" >
+					<i class="fa fa-search-plus"></i><a href="/product/<%= relatedProducts[i]._id %>">Quick view</a> 
+				  </button>
+				  <img height="50%"
+				  width="50%"
+				  class="img-responsive"
+				  alt="Card image cap"
+				  src="<%= relatedProducts[i].image[0] %>" />
+				</div>
+				<div class="product-body">
+				  <h3 class="product-price">
+					<% if (relatedProducts[i].discount) { %> <%if
+					  (relatedProducts[i].discount.enabled) { %> <%
+					  if(relatedProducts[i].discount.usePercentage) { %> <% var
+					  discountPrice = parseFloat(relatedProducts[i].sellingPrice) -
+					  parseFloat((parseFloat(relatedProducts[i].sellingPrice) *
+					  parseFloat(relatedProducts[i].discount.discountPercent)) / 100 );
+					  %> <% } else { %> <% var discountPrice =
+					  parseFloat(relatedProducts[i].sellingPrice) -
+					  parseFloat(relatedProducts[i].discount.discountAmount); %> <% }
+					  %> <% } %> <% } %> <%= discountPrice %> TK <del class="product-old-price"><%= relatedProducts[i].sellingPrice %>TK</del>
+				  </h3>
+				  <div class="product-rating">
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star-o empty"></i>
+				  </div>
+				  <h2 class="product-name">
+					<a href="#"><%= relatedProducts[i].name %></a>
+				  </h2>
+				  <div class="product-btns">
+					<button class="main-btn icon-btn">
+					  <i class="fa fa-heart"></i>
+					</button>
+					<button class="main-btn icon-btn">
+					  <i class="fa fa-exchange"></i>
+					</button>
+					<button class="primary-btn add-to-cart">
+					  <i class="fa fa-shopping-cart"></i><a href="/product/<%= relatedProducts[i]._id %>">Add to Cart</a>
+					</button>
+				  </div>
+				</div>
+			  </div>
+			  <% } %> <% } else { %>
+				<p>No related product</p>
+				 <% } %>
+			  <!-- /Product Single -->
+			</div>
+		  </div>
+		</div>
+		<!-- /Product Slick -->
+	  </div>
+	  <!-- /row deals of the Day -->
+  
+	  <!-- row Latest -->
+	  <div class="row">
+		<!-- section title -->
+		<div class="col-md-12">
+		  <div class="section-title">
+			<h2 class="title"> Latest Products</h2>
+			<div class="pull-right">
+			  <div class="product-slick-dots-2 custom-dots"></div>
+			</div>
+		  </div>
+		</div>
+		<!-- section title -->
+  
+		<% if( recentProducts ) { %> 
+		<!-- Product Single -->
+		<div class="col-md-3 col-sm-6 col-xs-6">
+		  <div class="product product-single product-hot">
+			<div class="product-thumb">
+			  <div class="product-label">
+				<span>New</span>
+			  </div>
+			  <div class="product-label">
+			  </div>
+			  <button class="main-btn quick-view">
+				<i class="fa fa-search-plus"></i><a href="/product/<%= recentProducts[0]._id %>">Quick view</a>
+			  </button>
+			  <img height="50%"
+			  width="50%"
+			  class="img-responsive"
+			  alt="Card image cap"
+			  src="<%= recentProducts[0].image[0] %>" />
+			</div>
+			<div class="product-body">
+			  <h3 class="product-price">
+				<% if (recentProducts[0].discount) { %> <%if
+				  (recentProducts[0].discount.enabled) { %> <%
+				  if(recentProducts[0].discount.usePercentage) { %> <% var
+				  discountPrice = parseFloat(recentProducts[0].sellingPrice) -
+				  parseFloat((parseFloat(recentProducts[0].sellingPrice) *
+				  parseFloat(recentProducts[0].discount.discountPercent)) / 100 );
+				  %> <% } else { %> <% var discountPrice =
+				  parseFloat(recentProducts[0].sellingPrice) -
+				  parseFloat(recentProducts[0].discount.discountAmount); %> <% }
+				  %> <% } %> <% } %> <%= discountPrice %> TK <del class="product-old-price"><%= recentProducts[0].sellingPrice %> TK</del>
+			  </h3>
+			  <div class="product-rating">
+				<i class="fa fa-star"></i>
+				<i class="fa fa-star"></i>
+				<i class="fa fa-star"></i>
+				<i class="fa fa-star"></i>
+				<i class="fa fa-star-o empty"></i>
+			  </div>
+			  <h2 class="product-name"><a href="#"><%= recentProducts[0].name %></a></h2>
+			  <div class="product-btns">
+				<button class="main-btn icon-btn">
+				  <i class="fa fa-heart"></i>
+				</button>
+				<button class="main-btn icon-btn">
+				  <i class="fa fa-exchange"></i>
+				</button>
+				<button class="primary-btn add-to-cart">
+				  <i class="fa fa-shopping-cart"></i><a href="/product/<%= recentProducts[0]._id %>">Add to Cart</a>
+				</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<!-- /Product Single -->
+		<% } %> 
+  
+		<!-- Product Slick -->
+		<div class="col-md-9 col-sm-6 col-xs-6">
+		  <div class="row">
+			<div id="product-slick-2" class="product-slick">
+			  <!-- Product Single -->
+			  <% if( recentProducts ) { %> <% for ( var i = 0; i < recentProducts.length; i++ ) { %>
+			  <div class="product product-single">
+				<div class="product-thumb">
+				  <button class="main-btn quick-view">
+					<i class="fa fa-search-plus"></i><a href="/product/<%= recentProducts[i]._id %>">Quick view</a>
+				  </button>
+				  <img height="50%"
+				  width="50%"
+				  class="img-responsive"
+				  alt="Card image cap" src="<%= recentProducts[i].image[0] %>"/>
+				</div>
+				<div class="product-body">
+				  <h3 class="product-price">
+					<% if (recentProducts[i].discount) { %> <% if
+					  (recentProducts[i].discount.enabled) { %> <%
+					  if(recentProducts[i].discount.usePercentage) { %> <% var
+					  discountPrice = parseFloat(recentProducts[i].sellingPrice) -
+					  parseFloat((parseFloat(recentProducts[i].sellingPrice) *
+					  parseFloat(recentProducts[i].discount.discountPercent)) / 100 );
+					  %> <% } else { %> <% var discountPrice =
+					  parseFloat(recentProducts[i].sellingPrice) -
+					  parseFloat(recentProducts[i].discount.discountAmount); %> <% }
+					  %> <% } %> <% } %> <%= discountPrice %> TK <del class="product-old-price"><%= recentProducts[i].sellingPrice %>TK</del>
+				  </h3>
+				  <div class="product-rating">
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star-o empty"></i>
+				  </div>
+				  <h2 class="product-name">
+					<a href="#"><%= recentProducts[i].name %></a>
+				  </h2>
+				  <div class="product-btns">
+					<button class="main-btn icon-btn">
+					  <i class="fa fa-heart"></i>
+					</button>
+					<button class="main-btn icon-btn">
+					  <i class="fa fa-exchange"></i>
+					</button>
+					<button class="primary-btn add-to-cart">
+					  <i class="fa fa-shopping-cart"></i><a href="/product/<%= recentProducts[i]._id %>">Add to Cart</a> 
+					</button>
+				  </div>
+				</div>
+			  </div>
+			  <% } %> <% } %>
+			</div>
+		  </div>
+		</div>
+		<!-- /Product Slick -->
+	  </div>
+	  <!-- /row Latest -->
 	</div>
 	<!-- /container -->
-</div>
-<!-- /section -->
+  </div>
+  <!-- /section Related and Latest -->
