@@ -85,7 +85,7 @@ function categoryfilterpage(req, res, obj) {
 
         //console.log(docs.length);
 
-        res.render("filter/categoryFilterPage", {
+        res.render("main/productsCategory", {
           title: "Products",
           category: req.params.id,
           products: resultArray,
@@ -250,7 +250,7 @@ router.post("/products/category/filter/:id", (req, res, next) => {
           resultArray.push(docs.slice(i, i + docs.length));
         }
 
-        res.render("filter/categoryFilterPage", {
+        res.render("main/productsCategory", {
           title: "Products",
           category: req.params.id,
           products: resultArray,
@@ -296,7 +296,7 @@ function subCategoryFilterPage(req, res, obj) {
           resultArray.push(docs.slice(i, i + docs.length));
         }
 
-        res.render("filter/subCategoryFilterPage", {
+        res.render("main/productsSubcategory", {
           title: "Products",
           subcategory: req.params.id,
           products: resultArray,
@@ -461,7 +461,7 @@ router.post("/products/subCategory/filter/:id", (req, res, next) => {
           resultArray.push(docs.slice(i, i + docs.length));
         }
 
-        res.render("filter/subCategoryFilterPage", {
+        res.render("main/productsSubcategory", {
           title: "Products",
           subcategory: req.params.id,
           products: resultArray,
@@ -678,7 +678,7 @@ router.post(
             resultArray.push(docs.slice(i, i + docs.length));
           }
 
-          res.render("filter/brandCategoryFilterPage", {
+          res.render("main/productsCategoryBrand", {
             title: "Products",
             category: req.params.category_id,
             brand: req.params.brand_id,
@@ -724,7 +724,7 @@ function brandCategorySubCategoryFilterPage(req, res, obj) {
           resultArray.push(docs.slice(i, i + docs.length));
         }
 
-        res.render("filter/brandCategorySubcategoryFilterPage", {
+        res.render("main/productsCategorySubcategoryBrand", {
           title: "Products",
           category: req.params.category_id,
           subcategory: req.params.subcategory_id,
@@ -900,7 +900,7 @@ router.post(
             resultArray.push(docs.slice(i, i + docs.length));
           }
 
-          res.render("filter/brandCategorySubcategoryFilterPage", {
+          res.render("main/productsCategorySubcategoryBrand", {
             title: "Products",
             category: req.params.category_id,
             subcategory: req.params.subcategory_id,
