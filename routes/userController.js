@@ -123,7 +123,7 @@ router.post("/signup", function(req, res, next) {
                               <br/>
                               <br/>
                               Clicking on the following button:
-                              <a href="http://localhost:3000/verify?token=${user.secretToken}&email=${user.email}">Verify<a/>
+                              <a href="https://ecle-com.herokuapp.com/verify?token=${user.secretToken}&email=${user.email}">Verify<a/>
                               <br/>
                               <br/>
                               Good Day.... `;

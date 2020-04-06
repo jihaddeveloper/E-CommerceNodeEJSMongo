@@ -1,48 +1,158 @@
 <% layout('layoutPage') -%>
 
-<div class="container" style="width:70%; min-height: 700px; margin-top: 100px">
-    <div class="well">
-        <div class="row">
-            <div class="col-md-12 mx-auto">
-                <div class="card card-body">
-                    <h3 class="text-center">Edit Profile</h3>
+<!-- NAVIGATION -->
+<div id="navigation">
+    <!-- container -->
+    <div class="container">
+      <div id="responsive-nav">
+      <!-- category nav -->
+      <div class="category-nav show-on-click">
+        <span class="category-header"
+        >ALL Categories ECL <i class="fa fa-list"></i
+        ></span>
+        <ul class="category-list">
+        <li class="dropdown side-dropdown" role="menu" aria-labelledby="dropdownMenu">
+          <% for(var i = 0; i < categories.length; i++) { %> <%
+          if(categories[i].subCategories.length != 0) { %>
+          <li class="dropdown-submenu pull-right1">
+          <a tabindex="-1" href="/products/category/<%= categories[i].id %>">
+            <%= categories[i].name %></a
+          >
+          <ul class="dropdown-menu">
+            <% for(var j = 0; j < categories[i].subCategories.length; j++) { %>
+            <li class="dropdown-submenu pull-right2">
+            <a
+              tabindex="-1"
+              data-target=""
+              href="/products/subCategory/<%= categories[i].subCategories[j].id %>"
+            >
+              <%= categories[i].subCategories[j].name %></a
+            >
+            <ul class="dropdown-menu pull-right2">
+              <% for(var k = 0; k <
+              categories[i].subCategories[j].brands.length; k++) { %>
+              <li>
+              <a
+                data-target=""
+                href="/products/<%= categories[i].id %>/<%= categories[i].subCategories[j].id %>/<%= categories[i].subCategories[j].brands[k].id %>"
+              >
+                <%= categories[i].subCategories[j].brands[k].name %></a
+              >
+              </li>
+              <% } %>
+            </ul>
+            </li>
+            <% } %>
+          </ul>
+          </li>
+          <% }else{ %>
+          <li class="dropdown-submenu pull-right1">
+          <a
+            tabindex="-1"
+            data-target=""
+            href="/products/category/<%= categories[i].id %>"
+          >
+            <%= categories[i].name %></a
+          >
+          <ul class="dropdown-menu">
+            <% for(var k = 0; k < categories[i].brands.length; k++) { %>
+            <li>
+            <a
+              data-target=""
+              href="/products/<%= categories[i].id %>/<%= categories[i].brands[k].id %>"
+            >
+              <%= categories[i].brands[k].name %></a
+            >
+            <% } %>
+            </li>
+          </ul>
+          </li>
+          <% } %> <% } %>
+        </li>
+        </ul>
+      </div>
+      <!-- /category nav -->
+    
+      <!-- menu nav -->
+      <div class="menu-nav">
+        <span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+        <ul class="menu-list">
+        <li>
+          <a href="/all-secondhandproduct"> Used Product</a>
+        </li>
+        <li>
+          <a href="/pc-builder"
+          ><i class="fa fa-desktop color-desktop"></i> PC Builder</a
+          >
+        </li>
+        <li class="dropdown default-dropdown">
+          <a
+          class="dropdown-toggle"
+          data-toggle="dropdown"
+          aria-expanded="true"
+          >Pages <i class="fa fa-caret-down"></i
+          ></a>
+          <ul class="custom-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="product-page.html">Product Details</a></li>
+          <li><a href="checkout.html">Checkout</a></li>
+          </ul>
+        </li>
+        </ul>
+      </div>
+      <!-- menu nav -->
+      </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /NAVIGATION -->
 
-                    <% if (message.length > 0) { %>
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <%= message %>
-                        </div>
-                    <% } %>
+<div class="section">
+    <div class="container" style="width:70%; min-height: 700px; margin-top: 100px">
+        <div class="well">
+            <div class="row">
+                <div class="col-md-12 mx-auto">
+                    <div class="card card-body">
+                        <h3 class="text-center">Edit Profile</h3>
 
-                    <form method="POST">
-                        <div class="form-group">
-                            <label for="name">Address 1</label>
-                            <input type="text" class="form-control" name="address1" value="<%= user.address.address1 %>" placeholder="" required>
-                        </div>
-                        <div class="form-group">
-                                <label for="email">Address 2</label>
-                                <input type="text" class="form-control" name="address2" value="<%= user.address.address2 %>" placeholder="" required>
-                        </div>
-                        <div class="form-group">
-                                <label for="contact">City</label>
-                                <input type="text" name="city" class="form-control" value="<%= user.address.city %>" placeholder="" required>
-                        </div>
-                        <div class="form-group">
-                                <label for="contact">District</label>
-                                <input type="text" name="district" class="form-control" value="<%= user.address.district %>" placeholder="" required>
-                        </div>
-                        <div class="form-group">
-                                <label for="contact">Country</label>
-                                <input type="text" name="country" class="form-control" value="<%= user.address.country %>" placeholder="" required>
-                        </div>
-                        <div class="form-group">
-                                <label for="contact">Postal Code</label>
-                                <input type="text" name="postalCode" class="form-control" value="<%= user.address.postalCode %>" placeholder="" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                        <% if (message.length > 0) { %>
+                            <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <%= message %>
+                            </div>
+                        <% } %>
+
+                        <form method="POST">
+                            <div class="form-group">
+                                <label for="name">Address 1</label>
+                                <input type="text" class="form-control" name="address1" value="<%= user.address.address1 %>" placeholder="" required>
+                            </div>
+                            <div class="form-group">
+                                    <label for="email">Address 2</label>
+                                    <input type="text" class="form-control" name="address2" value="<%= user.address.address2 %>" placeholder="" required>
+                            </div>
+                            <div class="form-group">
+                                    <label for="contact">City</label>
+                                    <input type="text" name="city" class="form-control" value="<%= user.address.city %>" placeholder="" required>
+                            </div>
+                            <div class="form-group">
+                                    <label for="contact">District</label>
+                                    <input type="text" name="district" class="form-control" value="<%= user.address.district %>" placeholder="" required>
+                            </div>
+                            <div class="form-group">
+                                    <label for="contact">Country</label>
+                                    <input type="text" name="country" class="form-control" value="<%= user.address.country %>" placeholder="" required>
+                            </div>
+                            <div class="form-group">
+                                    <label for="contact">Postal Code</label>
+                                    <input type="text" name="postalCode" class="form-control" value="<%= user.address.postalCode %>" placeholder="" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
