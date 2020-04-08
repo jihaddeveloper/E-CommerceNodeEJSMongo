@@ -2,9 +2,10 @@ const nodemailer = require("nodemailer");
 const configMailer = require("../config/configMailer");
 
 const transport = nodemailer.createTransport({
-  service: "gmail",
+  service: "Gmail",
   secure: false,
-  port: 25,
+  host: 'smtp.gmail.com',
+  port: 465,
   auth: {
     user: configMailer.MAILGUN_USER,
     pass: configMailer.MAILGUN_PASS
@@ -20,8 +21,8 @@ module.exports = {
       transport.sendMail({ from, to, subject, html }, (error, info) => {
         if (error) return console.log(error);
 
-        //console.log('The Email was sent');
-        //console.log(info);
+        console.log('The Email was sent');
+        console.log(info);
         resolve(info);
       });
     });

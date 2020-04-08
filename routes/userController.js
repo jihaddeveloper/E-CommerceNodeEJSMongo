@@ -119,14 +119,16 @@ router.post("/signup", function(req, res, next) {
                               Thank you for register
                               <br/>
                               <br/>
-                              Now, please verify your eamil by typing the following token:
+                              Now, please verify your email by typing the following token:
                               <br/>
                               <br/>
                               Clicking on the following button:
                               <a href="https://ecle-com.herokuapp.com/verify?token=${user.secretToken}&email=${user.email}">Verify<a/>
                               <br/>
                               <br/>
-                              Good Day.... `;
+                              Good Day....
+                              ECL Dev Teams 
+                              `;
 
           //https://ecle-com.herokuapp.com/verify">https://ecle-com.herokuapp.com/verify
           //Token: <b>${user.secretToken}<b/>
