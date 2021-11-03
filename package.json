@@ -60,7 +60,7 @@
     "randomstring": "^1.1.5",
     "stripe": "^6.15.1",
     "text": "^0.1.0",
-    "validator": "^11.0.0"
+    "validator": "^13.7.0"
   },
   "engines": {
     "node": "10.15.1",
