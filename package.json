@@ -22,7 +22,7 @@
   "dependencies": {
     "@muniftanjim/is-mobile-phone-number-bd": "^0.1.1",
     "array-unique": "^0.3.2",
-    "async": "^2.6.1",
+    "async": "^2.6.4",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
